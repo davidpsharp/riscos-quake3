@@ -54,3 +54,9 @@
 01:28 pi4-socrates 160x120 vl NO DRAWING: 833 frames 2.0 seconds 415.3 fps 1.0/2.4/7.0/1.1 ms
 01:29 pi4-socrates 480x300 vl no CVA: 833 frames 30.1 seconds 27.7 fps 15.0/36.1/62.0/7.6 ms
 01:31 pi4-socrates 480x300 vl r_speeds (draws): 833 frames 30.3 seconds 27.5 fps 17.0/36.4/60.0/7.1 ms
+01:37 pi4-plato timedemo FS render 300 lines: 833 frames 32.8 seconds 25.4 fps 21.0/39.4/63.0/6.9 ms
+01:37 pi4-plato timedemo FS render 240 lines: 833 frames 25.9 seconds 32.2 fps 16.0/31.1/47.0/5.4 ms
+01:38 pi4-plato timedemo FS-window render 300 lines: 833 frames 29.1 seconds 28.7 fps 15.0/34.9/59.0/7.4 ms
+01:39 pi4-plato timedemo FS-window render 300, r_overlay 0: 833 frames 34.7 seconds 24.0 fps 21.0/41.7/66.0/7.4 ms
+01:40 pi4-socrates timedemo FS default 240 lines: 833 frames 21.6 seconds 38.5 fps 11.0/26.0/43.0/5.6 ms
+01:41 pi4-plato timedemo FS default (now full window+overlay) 300: 833 frames 29.0 seconds 28.8 fps 16.0/34.8/60.0/7.4 ms

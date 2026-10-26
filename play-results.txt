@@ -25,3 +25,39 @@ fpslog: 30.6 fps, ms/frame all 31.6 sv 0.8 game 0.2 cl 30.4 rfront 0.0 rback 0.0
 fpslog: 32.5 fps, ms/frame all 30.8 sv 0.8 game 0.2 cl 29.7 rfront 0.0 rback 0.0
 fpslog: 35.2 fps, ms/frame all 27.4 sv 0.7 game 1.2 cl 25.5 rfront 0.0 rback 0.0
 fpslog: 31.5 fps, ms/frame all 31.7 sv 0.8 game 0.3 cl 30.5 rfront 0.0 rback 0.0
+== 01:34 pi4-plato live FS render 240 lines
+fpslog: 28.3 fps, ms/frame all 35.3 sv 0.8 game 0.3 cl 34.1 rfront 0.0 rback 0.0
+fpslog: 27.5 fps, ms/frame all 35.8 sv 1.0 game 0.4 cl 34.3 rfront 0.0 rback 0.0
+fpslog: 28.5 fps, ms/frame all 35.1 sv 0.9 game 0.3 cl 33.8 rfront 0.0 rback 0.0
+fpslog: 29.8 fps, ms/frame all 33.6 sv 0.8 game 0.2 cl 32.4 rfront 0.0 rback 0.0
+fpslog: 36.6 fps, ms/frame all 27.3 sv 0.7 game 0.8 cl 25.7 rfront 0.0 rback 0.0
+fpslog: 35.8 fps, ms/frame all 28.0 sv 0.7 game 0.3 cl 26.9 rfront 0.0 rback 0.0
+fpslog: 28.8 fps, ms/frame all 34.1 sv 0.8 game 0.3 cl 32.9 rfront 0.0 rback 0.0
+fpslog: 29.1 fps, ms/frame all 34.3 sv 0.9 game 1.0 cl 32.3 rfront 0.0 rback 0.0
+== 01:34 pi4-socrates live FS render 300 lines + fastsky
+fpslog: 31.3 fps, ms/frame all 31.9 sv 0.8 game 1.3 cl 29.7 rfront 0.0 rback 0.0
+fpslog: 29.2 fps, ms/frame all 34.2 sv 0.8 game 0.3 cl 33.0 rfront 0.0 rback 0.0
+fpslog: 27.8 fps, ms/frame all 36.0 sv 0.9 game 0.2 cl 34.7 rfront 0.0 rback 0.0
+fpslog: 33.3 fps, ms/frame all 29.1 sv 0.7 game 0.3 cl 28.0 rfront 0.0 rback 0.0
+fpslog: 28.9 fps, ms/frame all 34.6 sv 0.9 game 1.4 cl 32.1 rfront 0.0 rback 0.0
+fpslog: 28.9 fps, ms/frame all 34.6 sv 0.9 game 0.3 cl 33.3 rfront 0.0 rback 0.0
+fpslog: 37.8 fps, ms/frame all 26.5 sv 0.8 game 0.2 cl 25.4 rfront 0.0 rback 0.0
+fpslog: 31.2 fps, ms/frame all 31.0 sv 0.9 game 0.2 cl 29.8 rfront 0.0 rback 0.0
+== 01:35 pi4-plato live FS render 360 lines
+fpslog: 17.6 fps, ms/frame all 55.8 sv 1.2 game 0.5 cl 54.0 rfront 0.0 rback 0.0
+fpslog: 17.1 fps, ms/frame all 58.4 sv 1.4 game 0.5 cl 56.4 rfront 0.0 rback 0.0
+fpslog: 16.6 fps, ms/frame all 59.2 sv 1.3 game 1.5 cl 56.3 rfront 0.0 rback 0.0
+fpslog: 21.3 fps, ms/frame all 46.9 sv 1.1 game 0.3 cl 45.4 rfront 0.0 rback 0.0
+fpslog: 22.5 fps, ms/frame all 44.4 sv 0.9 game 0.4 cl 43.0 rfront 0.0 rback 0.0
+fpslog: 16.9 fps, ms/frame all 59.2 sv 1.1 game 0.5 cl 57.5 rfront 0.0 rback 0.0
+fpslog: 27.8 fps, ms/frame all 35.9 sv 0.9 game 0.3 cl 34.6 rfront 0.0 rback 0.0
+fpslog: 22.5 fps, ms/frame all 43.6 sv 1.2 game 1.2 cl 41.2 rfront 0.0 rback 0.0
+== 01:36 pi4-socrates live FS render 300 lines + nearest
+fpslog: 25.6 fps, ms/frame all 39.1 sv 1.0 game 0.3 cl 37.7 rfront 0.0 rback 0.0
+fpslog: 22.7 fps, ms/frame all 42.7 sv 0.9 game 1.9 cl 39.7 rfront 0.0 rback 0.0
+fpslog: 26.8 fps, ms/frame all 37.2 sv 1.0 game 0.3 cl 35.9 rfront 0.0 rback 0.0
+fpslog: 29.4 fps, ms/frame all 34.0 sv 0.8 game 0.3 cl 32.8 rfront 0.0 rback 0.0
+fpslog: 35.4 fps, ms/frame all 28.3 sv 0.7 game 0.2 cl 27.2 rfront 0.0 rback 0.0
+fpslog: 39.8 fps, ms/frame all 25.1 sv 0.7 game 0.2 cl 24.2 rfront 0.0 rback 0.0
+fpslog: 33.6 fps, ms/frame all 28.8 sv 0.8 game 0.3 cl 27.6 rfront 0.0 rback 0.0
+fpslog: 35.0 fps, ms/frame all 28.5 sv 0.6 game 0.2 cl 27.6 rfront 0.0 rback 0.0

@@ -500,6 +500,10 @@ static int GLimp_SetMode(int mode, qboolean fullscreen, qboolean noborder, qbool
 		{
 			SDL_SetHint( "SDL_RISCOS_GL_RENDER_SIZE", va( "%dx%d", renderWidth, renderHeight ) );
 			SDL_SetHint( "SDL_RISCOS_GL_OVERLAY", overlay ? "1" : "0" );
+			// The overlay needs a full screen window (which multitasks):
+			// a mode change gets the picture stretched by the CPU instead.
+			if ( overlay )
+				SDL_SetHint( "SDL_RISCOS_FULLSCREEN_WINDOW", "1" );
 		}
 		else if ( !getenv( "SDL_RISCOS_GL_RENDER_SIZE" ) )
 		{
