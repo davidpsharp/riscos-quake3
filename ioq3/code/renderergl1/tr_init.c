@@ -110,6 +110,7 @@ cvar_t  *r_ext_multisample;
 cvar_t	*r_drawBuffer;
 cvar_t	*r_lightmap;
 cvar_t	*r_glFastest;
+cvar_t	*r_textureRGBA;
 cvar_t	*r_vertexLight;
 cvar_t	*r_uiFullScreen;
 cvar_t	*r_shadows;
@@ -1062,8 +1063,11 @@ void R_Register( void )
 #endif
 #ifdef __riscos__
 	r_glFastest = ri.Cvar_Get( "r_glFastest", "1", CVAR_ARCHIVE | CVAR_LATCH );
+	// 1 measured slower on riscos-mesa 20.3.5-16 (25.0 against 28.8 fps)
+	r_textureRGBA = ri.Cvar_Get( "r_textureRGBA", "0", CVAR_ARCHIVE | CVAR_LATCH );
 #else
 	r_glFastest = ri.Cvar_Get( "r_glFastest", "0", CVAR_ARCHIVE | CVAR_LATCH );
+	r_textureRGBA = ri.Cvar_Get( "r_textureRGBA", "0", CVAR_ARCHIVE | CVAR_LATCH );
 #endif
 	r_uiFullScreen = ri.Cvar_Get( "r_uifullscreen", "0", 0);
 	r_subdivisions = ri.Cvar_Get ("r_subdivisions", "4", CVAR_ARCHIVE | CVAR_LATCH);

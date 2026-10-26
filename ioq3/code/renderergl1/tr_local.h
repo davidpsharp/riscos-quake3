@@ -1040,7 +1040,8 @@ extern	cvar_t	*r_offsetUnits;
 
 extern	cvar_t	*r_fullbright;					// avoid lightmap pass
 extern	cvar_t	*r_lightmap;					// render lightmaps only
-extern	cvar_t	*r_glFastest;					// GL_FASTEST perspective hint (software GL: one mip level per triangle)
+extern	cvar_t	*r_glFastest;
+extern	cvar_t	*r_textureRGBA;					// upload opaque textures with four bytes a texel					// GL_FASTEST perspective hint (software GL: one mip level per triangle)
 extern	cvar_t	*r_vertexLight;					// vertex lighting mode for better performance
 extern	cvar_t	*r_uiFullScreen;				// ui is running fullscreen
 

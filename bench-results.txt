@@ -60,3 +60,11 @@
 01:39 pi4-plato timedemo FS-window render 300, r_overlay 0: 833 frames 34.7 seconds 24.0 fps 21.0/41.7/66.0/7.4 ms
 01:40 pi4-socrates timedemo FS default 240 lines: 833 frames 21.6 seconds 38.5 fps 11.0/26.0/43.0/5.6 ms
 01:41 pi4-plato timedemo FS default (now full window+overlay) 300: 833 frames 29.0 seconds 28.8 fps 16.0/34.8/60.0/7.4 ms
+01:43 pi4-plato FS300 base: 833 frames 29.0 seconds 28.7 fps 15.0/34.8/60.0/7.4 ms
+01:44 pi4-plato FS300 cg_drawGun 0: 833 frames 27.8 seconds 29.9 fps 14.0/33.4/60.0/7.3 ms
+01:44 pi4-plato FS300 r_znear 8: 833 frames 28.5 seconds 29.3 fps 15.0/34.2/56.0/7.2 ms
+01:46 pi4-plato 480x300 vl PROFILED (thread sampler): 833 frames 29.4 seconds 28.4 fps 16.0/35.3/61.0/7.6 ms
+01:49 pi4-plato 480x300 vl RGBA OFF: 833 frames 29.1 seconds 28.7 fps 15.0/34.9/61.0/7.4 ms
+01:50 pi4-plato 480x300 vl RGBA ON: 833 frames 33.4 seconds 25.0 fps 18.0/40.1/68.0/8.6 ms
+01:50 pi4-plato 480x300 vl RGBA OFF: 833 frames 28.9 seconds 28.8 fps 15.0/34.7/60.0/7.4 ms
+01:51 pi4-plato 480x300 vl RGBA ON: 833 frames 33.4 seconds 25.0 fps 18.0/40.0/68.0/8.6 ms

@@ -18,6 +18,7 @@ if(USE_HTTP)
 endif()
 
 if(RISCOS)
+    list(APPEND SYSTEM_PLATFORM_SOURCES ${SOURCE_DIR}/sys/sys_riscos_prof.c)
     # Everything is linked statically: UnixLib has no dynamic loader
     list(APPEND COMMON_LIBRARIES m)
 else()

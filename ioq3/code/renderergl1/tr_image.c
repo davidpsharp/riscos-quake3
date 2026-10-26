@@ -738,6 +738,10 @@ static void Upload32( unsigned *data,
 		}
 	}
 
+	// Four bytes a texel for every texture (an experiment for software GL)
+	if ( r_textureRGBA->integer && ( internalFormat == GL_RGB || internalFormat == GL_RGB8 ) )
+		internalFormat = GL_RGBA8;
+
 	// copy or resample data as appropriate for first MIP level
 	if ( ( scaled_width == width ) && 
 		( scaled_height == height ) ) {
