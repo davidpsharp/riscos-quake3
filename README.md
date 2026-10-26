@@ -64,6 +64,7 @@ q3dm1, recorded spectating a bot (made headless with a Linux build under Xvfb).
 | 480x300 window, vertex lighting | 29.4 |
 | 480x300 window, lightmaps, `r_ext_multitexture 1` (two texture units: general route) | 6.1 |
 | 480x300 window, lightmaps, `r_ext_multitexture 0` (two passes, both fast route) | 16.5 |
+| 384x240 window, lightmaps, `r_ext_multitexture 0` | 21.8 |
 | Full screen 1680x1050, drawn at 480x300, screen mode change (CPU stretches) | 25.4 |
 | Full screen 1680x1050, drawn at 480x300, full screen window + overlay (**default**) | 28.8 |
 | Same, drawn at 384x240 (`r_renderHeight 240`) | 38.5 |
