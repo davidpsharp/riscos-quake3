@@ -487,9 +487,14 @@ static int GLimp_SetMode(int mode, qboolean fullscreen, qboolean noborder, qbool
 	// riscos-mesa's SDL can draw at a smaller size and have the display
 	// (the Raspberry Pi's hardware overlay) or the plot scale it up.
 	{
+		// Every pixel is drawn by the CPU: by default draw 300 lines, as
+		// wide as the window's shape needs (r_renderWidth 0), and scale up.
 		int renderWidth = ri.Cvar_Get( "r_renderWidth", "0", CVAR_ARCHIVE | CVAR_LATCH )->integer;
-		int renderHeight = ri.Cvar_Get( "r_renderHeight", "0", CVAR_ARCHIVE | CVAR_LATCH )->integer;
+		int renderHeight = ri.Cvar_Get( "r_renderHeight", "300", CVAR_ARCHIVE | CVAR_LATCH )->integer;
 		int overlay = ri.Cvar_Get( "r_overlay", "1", CVAR_ARCHIVE | CVAR_LATCH )->integer;
+
+		if ( renderWidth <= 0 && renderHeight > 0 )
+			renderWidth = ( renderHeight * glConfig.vidWidth / glConfig.vidHeight + 1 ) & ~1;
 
 		if ( renderWidth > 0 && renderHeight > 0 && renderWidth * renderHeight < glConfig.vidWidth * glConfig.vidHeight )
 		{

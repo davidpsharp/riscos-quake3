@@ -1054,7 +1054,12 @@ void R_Register( void )
 	r_customheight = ri.Cvar_Get( "r_customheight", "1024", CVAR_ARCHIVE | CVAR_LATCH );
 	r_customPixelAspect = ri.Cvar_Get( "r_customPixelAspect", "1", CVAR_ARCHIVE | CVAR_LATCH );
 	r_simpleMipMaps = ri.Cvar_Get( "r_simpleMipMaps", "1", CVAR_ARCHIVE | CVAR_LATCH );
+#ifdef __riscos__
+	// Lightmaps cost a second pass over every pixel, off riscos-mesa's fast path
+	r_vertexLight = ri.Cvar_Get( "r_vertexLight", "1", CVAR_ARCHIVE | CVAR_LATCH );
+#else
 	r_vertexLight = ri.Cvar_Get( "r_vertexLight", "0", CVAR_ARCHIVE | CVAR_LATCH );
+#endif
 #ifdef __riscos__
 	r_glFastest = ri.Cvar_Get( "r_glFastest", "1", CVAR_ARCHIVE | CVAR_LATCH );
 #else

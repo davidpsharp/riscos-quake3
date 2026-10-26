@@ -28,3 +28,15 @@
 00:41 pi4-plato 160x120 lite: 833 frames 9.9 seconds 84.3 fps 10.0/11.9/20.0/3.9 ms
 00:42 pi4-plato FS render 400x250 overlay: 833 frames 24.8 seconds 33.5 fps 20.0/29.8/50.0/6.3 ms
 00:45 pi4-plato 400x300 lite (us timer): 833 frames 22.5 seconds 37.1 fps 15.0/27.0/72.0/6.0 ms
+00:50 pi4-plato 480x300 vl base: 833 frames 28.3 seconds 29.4 fps 15.0/34.0/59.0/7.3 ms
+00:50 pi4-plato 480x300 vl + r_fastsky 1: 833 frames 25.2 seconds 33.0 fps 16.0/30.3/53.0/6.4 ms
+00:51 pi4-plato 480x300 vl + r_dynamiclight 0: 833 frames 28.6 seconds 29.1 fps 15.0/34.3/62.0/7.3 ms
+00:52 pi4-plato 480x300 vl + r_picmip 2: 833 frames 28.3 seconds 29.5 fps 14.0/34.0/57.0/7.2 ms
+00:53 pi4-plato 480x300 vl + r_picmip 0: 833 frames 28.7 seconds 29.1 fps 16.0/34.4/60.0/7.3 ms
+00:54 pi4-plato 480x300 vl + cg_shadows 0: 833 frames 27.9 seconds 29.8 fps 14.0/33.6/59.0/7.2 ms
+00:54 pi4-plato 480x300 vl + r_flares 0: 833 frames 28.3 seconds 29.4 fps 15.0/34.0/60.0/7.4 ms
+00:55 pi4-plato 480x300 vl + cg_marks 0: 833 frames 27.9 seconds 29.9 fps 14.0/33.5/57.0/7.0 ms
+00:56 pi4-plato 480x300 vl + r_detailtextures 0: 833 frames 28.4 seconds 29.4 fps 15.0/34.1/59.0/7.3 ms
+00:57 pi4-plato 480x300 vl + r_ext_multitexture 0: 833 frames 28.3 seconds 29.4 fps 14.0/34.0/58.0/7.2 ms
+00:58 pi4-socrates socrates 480x300 vl base: 833 frames 27.7 seconds 30.1 fps 14.0/33.2/59.0/7.2 ms
+00:59 pi4-socrates socrates 480x300 vl r_speeds: 833 frames 29.4 seconds 28.3 fps 17.0/35.3/61.0/7.1 ms

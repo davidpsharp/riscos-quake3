@@ -1146,6 +1146,37 @@ Sys_Dialog
 Display a *nix dialog box
 ==============
 */
+#ifdef __riscos__
+/*
+==============
+Sys_Dialog
+
+A Wimp error box on RISC OS
+==============
+*/
+dialogResult_t Sys_Dialog( dialogType_t type, const char *message, const char *title )
+{
+	struct { int errnum; char errmess[252]; } block;
+	int flags, clicked = 1;
+
+	Com_Printf( "%s: %s\n", title, message );
+
+	block.errnum = 0;
+	Q_strncpyz( block.errmess, message, sizeof( block.errmess ) );
+
+	// 1: OK box, 2: Cancel box, 16: no "Error from" prefix
+	flags = 1 | 16;
+	if ( type == DT_YES_NO || type == DT_OK_CANCEL )
+		flags |= 2;
+
+	if ( _swix( Wimp_ReportError, _INR(0,2)|_OUT(1), &block, flags, title, &clicked ) )
+		return DR_OK;
+
+	if ( clicked == 2 )
+		return type == DT_YES_NO ? DR_NO : DR_CANCEL;
+	return type == DT_YES_NO ? DR_YES : DR_OK;
+}
+#else
 dialogResult_t Sys_Dialog( dialogType_t type, const char *message, const char *title )
 {
 	typedef enum
@@ -1210,6 +1241,7 @@ dialogResult_t Sys_Dialog( dialogType_t type, const char *message, const char *t
 	Com_DPrintf( S_COLOR_YELLOW "WARNING: failed to show a dialog\n" );
 	return DR_OK;
 }
+#endif
 #endif
 
 /*
@@ -1368,6 +1400,10 @@ Sys_OpenFolderInPlatformFileManager
 */
 qboolean Sys_OpenFolderInPlatformFileManager( const char *path )
 {
+#ifdef __riscos__
+	// Starting other programs from a Wimp program isn't safe under UnixLib
+	return qfalse;
+#endif
 	Sys_ClearExecBuffer( );
 
 #ifdef __APPLE__

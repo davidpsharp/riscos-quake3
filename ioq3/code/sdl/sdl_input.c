@@ -33,6 +33,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "../client/client.h"
 #include "../sys/sys_local.h"
 
+#ifdef __riscos__
+#include <kernel.h>
+#include <swis.h>
+#endif
+
 #if !SDL_VERSION_ATLEAST(2, 0, 17)
 #define KMOD_SCROLL KMOD_RESERVED
 #endif
@@ -1027,6 +1032,78 @@ static void IN_JoyMove( void )
 IN_ProcessEvents
 ===============
 */
+#ifdef __riscos__
+/*
+===============
+IN_RISCOS_MouseMove
+
+riscos-mesa's SDL has no relative mouse mode and can't move the pointer, so
+its motion stops at the screen's edges. While the game has the mouse, full
+screen, read the mouse directly, send how far it moved from the middle of
+the screen, and put it back there.
+===============
+*/
+static qboolean riscos_mouseCentred;
+
+static int IN_RISCOS_ModeVar( int var )
+{
+	int value = 0;
+
+	_swix( OS_ReadModeVariable, _INR(0,1)|_OUT(2), -1, var, &value );
+	return value;
+}
+
+static void IN_RISCOS_SetMouse( int x, int y )
+{
+	unsigned char block[5];
+
+	block[1] = x & 0xff; block[2] = ( x >> 8 ) & 0xff;
+	block[3] = y & 0xff; block[4] = ( y >> 8 ) & 0xff;
+	block[0] = 3;	// OS_Word 21,3: set the mouse position
+	_swix( OS_Word, _INR(0,1), 21, block );
+	block[0] = 5;	// OS_Word 21,5: set the pointer position
+	_swix( OS_Word, _INR(0,1), 21, block );
+}
+
+static void IN_RISCOS_MouseMove( void )
+{
+	unsigned char block[5] = { 4 };	// OS_Word 21,4: read the unbuffered mouse position
+	int xeig, yeig, cx, cy, x, y, dx, dy;
+
+	if ( !mouseActive || !cls.glconfig.isFullscreen )
+	{
+		riscos_mouseCentred = qfalse;
+		return;
+	}
+
+	xeig = IN_RISCOS_ModeVar( 4 );	// XEigFactor
+	yeig = IN_RISCOS_ModeVar( 5 );	// YEigFactor
+	cx = ( ( IN_RISCOS_ModeVar( 11 ) + 1 ) << xeig ) / 2;	// XWindLimit
+	cy = ( ( IN_RISCOS_ModeVar( 12 ) + 1 ) << yeig ) / 2;	// YWindLimit
+
+	if ( !riscos_mouseCentred )
+	{
+		IN_RISCOS_SetMouse( cx, cy );
+		riscos_mouseCentred = qtrue;
+		return;
+	}
+
+	if ( _swix( OS_Word, _INR(0,1), 21, block ) )
+		return;
+	x = (short)( block[1] | block[2] << 8 );
+	y = (short)( block[3] | block[4] << 8 );
+
+	// OS units to screen pixels; y goes up in OS units
+	dx = ( x - cx ) >> xeig;
+	dy = ( cy - y ) >> yeig;
+	if ( dx || dy )
+	{
+		Com_QueueEvent( in_eventTime, SE_MOUSE, dx, dy, 0, NULL );
+		IN_RISCOS_SetMouse( cx, cy );
+	}
+}
+#endif
+
 static void IN_ProcessEvents( void )
 {
 	SDL_Event e;
@@ -1113,6 +1190,13 @@ static void IN_ProcessEvents( void )
 				break;
 
 			case SDL_MOUSEMOTION:
+				if( in_mouse->integer == 2 )
+					Com_Printf( "mouse motion: active %d at %d,%d by %d,%d\n", mouseActive,
+						e.motion.x, e.motion.y, e.motion.xrel, e.motion.yrel );
+#ifdef __riscos__
+				if( mouseActive && cls.glconfig.isFullscreen )
+					break;	// IN_RISCOS_MouseMove reads the mouse itself
+#endif
 				if( mouseActive )
 				{
 					if( !e.motion.xrel && !e.motion.yrel )
@@ -1258,7 +1342,13 @@ void IN_Frame( void )
 		// Loading in windowed mode
 		IN_DeactivateMouse( cls.glconfig.isFullscreen );
 	}
+#ifdef __riscos__
+	// riscos-mesa's SDL gives a window the mouse focus but never the input focus
+	else if( !cls.glconfig.isFullscreen &&
+		!( SDL_GetWindowFlags( SDL_window ) & ( SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS ) ) )
+#else
 	else if( !( SDL_GetWindowFlags( SDL_window ) & SDL_WINDOW_INPUT_FOCUS ) )
+#endif
 	{
 		// Window not got focus
 		IN_DeactivateMouse( cls.glconfig.isFullscreen );
@@ -1267,6 +1357,9 @@ void IN_Frame( void )
 		IN_ActivateMouse( cls.glconfig.isFullscreen );
 
 	IN_ProcessEvents( );
+#ifdef __riscos__
+	IN_RISCOS_MouseMove( );
+#endif
 
 	// Set event time for next frame to earliest possible time an event could happen
 	in_eventTime = Sys_Milliseconds( );
@@ -1317,7 +1410,12 @@ void IN_Init( void *windowData )
 	IN_DeactivateMouse( Cvar_VariableIntegerValue( "r_fullscreen" ) != 0 );
 
 	appState = SDL_GetWindowFlags( SDL_window );
+#ifdef __riscos__
+	// No input focus events from riscos-mesa's SDL: count the game as focused
+	Cvar_SetValue( "com_unfocused", 0 );
+#else
 	Cvar_SetValue( "com_unfocused",	!( appState & SDL_WINDOW_INPUT_FOCUS ) );
+#endif
 	Cvar_SetValue( "com_minimized", appState & SDL_WINDOW_MINIMIZED );
 
 	IN_InitJoystick( );

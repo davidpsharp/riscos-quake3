@@ -811,5 +811,11 @@ void UI_InitGameinfo( void ) {
 	UI_LoadArenas();
 	UI_LoadBots();
 
-	uis.demoversion = qfalse;
+	{
+		// The Quake III Arena demo: its own menus, and no CD key
+		char basegame[MAX_QPATH];
+
+		trap_Cvar_VariableStringBuffer( "com_basegame", basegame, sizeof( basegame ) );
+		uis.demoversion = !Q_stricmp( basegame, "demoq3" );
+	}
 }

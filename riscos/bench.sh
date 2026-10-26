@@ -18,6 +18,7 @@ D=$(mktemp -d)
   echo 'set s_initsound 0'
   echo 'set com_maxfps 0'
   echo 'set cg_drawFPS 1'
+  echo 'set r_renderHeight 0'
   while [ $# -ge 2 ]; do echo "set $1 \"$2\""; shift 2; done
   echo 'vid_restart'
   echo 'set timedemo 1'
