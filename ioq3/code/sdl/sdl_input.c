@@ -1242,6 +1242,19 @@ static void IN_ProcessEvents( void )
 					IN_InitJoystick();
 				break;
 
+#ifdef __riscos__
+			case SDL_APP_TERMINATING:
+				// The Wimp's Message_Quit: riscos-mesa's SDL exits at the next
+				// SDL call, which the shutdown makes before it saves the
+				// settings or removes the pid file, so do those now
+				{
+					extern void Com_WriteConfiguration( void );
+					Com_WriteConfiguration();
+					Sys_RemovePIDFile( FS_GetCurrentGameDir() );
+				}
+				break;
+#endif
+
 			case SDL_QUIT:
 				Cbuf_ExecuteText(EXEC_NOW, "quit Closed window\n");
 				break;
