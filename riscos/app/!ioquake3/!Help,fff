@@ -18,7 +18,8 @@ application:
    it (pak1 to pak8 are the free 1.32 point release).
  - OpenArena (free, openarena.ws): put the pk3 files from OpenArena
    0.8.8's baseoa folder in a baseoa folder here. It's slower than
-   Quake III (its maps draw more): about 12 to 20 frames a second.
+   Quake III (its maps draw more): about 10 to 20 frames a second;
+   r_renderHeight 240 helps.
 
 !Run uses baseq3 if it's there, else baseoa, else demoq3.
 

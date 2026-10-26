@@ -79,7 +79,8 @@ bots at 480x300: 5 to 7 fps as OpenArena configures itself (lightmaps), 6 with
 vertex lighting (55% of fragments went down riscos-mesa's general route: its
 two-stage shaders were collapsed onto two texture units), and 12 to 21 fps with
 `r_ext_multitexture 0` as well, everything on the fast route. Both are now
-the RISC OS defaults. `r_ext_multitexture 0` makes no difference to Quake III with
+the RISC OS defaults. A 10 minute soak on oa_dm2, a heavier map, full screen at
+the defaults, averaged 10.9 fps (4 to 16), with no crash. `r_ext_multitexture 0` makes no difference to Quake III with
 vertex lighting, and makes its lightmaps 2.7 times as fast (table above).
 
 Settings measured one at a time at 480x300: `r_fastsky 1` +12%;
