@@ -69,3 +69,11 @@
 01:50 pi4-plato 480x300 vl RGBA OFF: 833 frames 28.9 seconds 28.8 fps 15.0/34.7/60.0/7.4 ms
 01:51 pi4-plato 480x300 vl RGBA ON: 833 frames 33.4 seconds 25.0 fps 18.0/40.0/68.0/8.6 ms
 01:53 pi4-plato FS300 default PROFILED: 833 frames 28.7 seconds 29.0 fps 15.0/34.5/58.0/7.3 ms
+02:01 pi4-socrates devkit mesa 480x300: 833 frames 28.0 seconds 29.7 fps 14.0/33.7/58.0/7.1 ms
+02:02 pi4-socrates local-built mesa 480x300: 833 frames 28.0 seconds 29.8 fps 14.0/33.6/58.0/7.2 ms
+02:04 pi4-socrates PAIRGATHER 480x300: 833 frames 32.1 seconds 26.0 fps 17.0/38.5/65.0/8.3 ms
+02:05 pi4-socrates pairgather OFF (env) 480x300: 833 frames 27.7 seconds 30.0 fps 14.0/33.3/58.0/7.1 ms
+02:06 pi4-socrates PAIRGATHER 480x300 (again): 833 frames 32.0 seconds 26.0 fps 16.0/38.5/64.0/8.3 ms
+02:08 pi4-socrates SPLITCHAIN 480x300: 833 frames 27.9 seconds 29.8 fps 14.0/33.5/59.0/7.1 ms
+02:08 pi4-socrates devkit 480x300: 833 frames 28.0 seconds 29.7 fps 14.0/33.6/58.0/7.2 ms
+02:09 pi4-socrates SPLITCHAIN 480x300 (again): 833 frames 27.9 seconds 29.9 fps 15.0/33.4/58.0/7.1 ms
