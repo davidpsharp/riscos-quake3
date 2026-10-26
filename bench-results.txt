@@ -1,0 +1,30 @@
+00:08 pi4-plato 320x240 defaults: NO RESULT
+00:11 pi4-plato 320x240 defaults: NO RESULT
+00:17 pi4-plato 320x240 defaults: 833 frames 79.5 seconds 10.5 fps 50.0/95.4/150.0/18.9 ms
+00:17 pi4-plato 320x240 vertexlight: 833 frames 20.1 seconds 41.4 fps 10.0/24.2/40.0/6.5 ms
+00:18 pi4-plato 320x240 vl+fastsky+nodlight+picmip2: 833 frames 17.6 seconds 47.5 fps 10.0/21.1/40.0/5.9 ms
+00:19 pi4-plato 640x480 lite: 833 frames 17.6 seconds 47.2 fps 10.0/21.2/40.0/5.9 ms
+00:19 pi4-plato 480x360 lite: 833 frames 17.6 seconds 47.2 fps 10.0/21.2/40.0/6.0 ms
+00:20 pi4-plato 640x480 vl only: 833 frames 42.3 seconds 19.7 fps 30.0/50.7/90.0/10.8 ms
+00:21 pi4-plato 160x120 lite: 833 frames 17.6 seconds 47.2 fps 10.0/21.2/40.0/5.9 ms
+00:21 pi4-plato 640x480 lite fullscreen: 833 frames 17.6 seconds 47.2 fps 10.0/21.2/40.0/5.9 ms
+00:22 pi4-plato 640x480 lite: 833 frames 41.7 seconds 20.0 fps 30.0/50.0/90.0/10.7 ms
+00:23 pi4-plato 480x360 lite: 833 frames 28.3 seconds 29.4 fps 10.0/34.0/60.0/8.0 ms
+00:24 pi4-plato 400x300 lite: 833 frames 22.3 seconds 37.4 fps 10.0/26.8/40.0/6.8 ms
+00:25 pi4-plato 640x480 lite +stats: 833 frames 42.6 seconds 19.6 fps 30.0/51.1/90.0/11.0 ms
+00:26 pi4-plato 400x300 lite glFastest0: 833 frames 71.5 seconds 11.6 fps 50.0/85.8/160.0/17.1 ms
+00:28 pi4-plato 400x300 lite LINEAR_MIPMAP_NEAREST: 833 frames 68.6 seconds 12.1 fps 40.0/82.3/160.0/16.5 ms
+00:29 pi4-plato 400x300 lite NEAREST_MIPMAP_NEAREST: 833 frames 55.3 seconds 15.1 fps 40.0/66.4/130.0/13.6 ms
+00:30 pi4-plato 400x300 lite vm interpreted: 833 frames 55.2 seconds 15.1 fps 40.0/66.3/120.0/13.6 ms
+00:31 pi4-plato 400x300 lite subdiv20 lodbias2: 833 frames 53.7 seconds 15.5 fps 40.0/64.5/120.0/13.0 ms
+00:32 pi4-plato 400x300 lite (recheck): 833 frames 22.5 seconds 37.0 fps 10.0/27.0/50.0/6.9 ms
+00:33 pi4-plato 400x300 lite LINEAR_MIPMAP_NEAREST: 833 frames 22.5 seconds 37.1 fps 10.0/27.0/50.0/6.9 ms
+00:33 pi4-plato 400x300 lite NEAREST_MIPMAP_NEAREST: 833 frames 19.0 seconds 43.9 fps 10.0/22.8/70.0/6.5 ms
+00:34 pi4-plato 400x300 lite vm interpreted: 833 frames 22.6 seconds 36.9 fps 10.0/27.1/60.0/7.0 ms
+00:34 pi4-plato 400x300 lite subdiv20 lodbias2: 833 frames 21.9 seconds 38.0 fps 10.0/26.3/60.0/6.9 ms
+00:36 pi4-plato 400x300 lite PROFILED: NO RESULT
+00:37 pi4-plato fullscreen 1680x1050 render 480x300 overlay: NO RESULT
+00:40 pi4-plato FS 1680x1050 render 480x300 overlay: 833 frames 29.0 seconds 28.7 fps 20.0/34.8/60.0/7.2 ms
+00:41 pi4-plato 160x120 lite: 833 frames 9.9 seconds 84.3 fps 10.0/11.9/20.0/3.9 ms
+00:42 pi4-plato FS render 400x250 overlay: 833 frames 24.8 seconds 33.5 fps 20.0/29.8/50.0/6.3 ms
+00:45 pi4-plato 400x300 lite (us timer): 833 frames 22.5 seconds 37.1 fps 15.0/27.0/72.0/6.0 ms

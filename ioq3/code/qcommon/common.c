@@ -56,6 +56,7 @@ fileHandle_t	com_journalFile;			// events are written here
 fileHandle_t	com_journalDataFile;		// config files are written here
 
 cvar_t	*com_speeds;
+cvar_t	*com_fpsLog;
 cvar_t	*com_developer;
 cvar_t	*com_dedicated;
 cvar_t	*com_timescale;
@@ -2767,6 +2768,7 @@ void Com_Init( char *commandLine ) {
 	com_fixedtime = Cvar_Get ("fixedtime", "0", CVAR_CHEAT);
 	com_showtrace = Cvar_Get ("com_showtrace", "0", CVAR_CHEAT);
 	com_speeds = Cvar_Get ("com_speeds", "0", 0);
+	com_fpsLog = Cvar_Get ("com_fpsLog", "0", 0);
 	com_timedemo = Cvar_Get ("timedemo", "0", CVAR_CHEAT);
 	com_cameraMode = Cvar_Get ("com_cameraMode", "0", CVAR_CHEAT);
 
@@ -3110,7 +3112,7 @@ void Com_Frame( void ) {
 	//
 	// main event loop
 	//
-	if ( com_speeds->integer ) {
+	if ( com_speeds->integer || com_fpsLog->integer ) {
 		timeBeforeFirstEvents = Sys_Milliseconds ();
 	}
 
@@ -3185,7 +3187,7 @@ void Com_Frame( void ) {
 	//
 	// server side
 	//
-	if ( com_speeds->integer ) {
+	if ( com_speeds->integer || com_fpsLog->integer ) {
 		timeBeforeServer = Sys_Milliseconds ();
 	}
 
@@ -3213,7 +3215,7 @@ void Com_Frame( void ) {
 	// run event loop a second time to get server to client packets
 	// without a frame of latency
 	//
-	if ( com_speeds->integer ) {
+	if ( com_speeds->integer || com_fpsLog->integer ) {
 		timeBeforeEvents = Sys_Milliseconds ();
 	}
 	Com_EventLoop();
@@ -3223,17 +3225,17 @@ void Com_Frame( void ) {
 	//
 	// client side
 	//
-	if ( com_speeds->integer ) {
+	if ( com_speeds->integer || com_fpsLog->integer ) {
 		timeBeforeClient = Sys_Milliseconds ();
 	}
 
 	CL_Frame( msec );
 
-	if ( com_speeds->integer ) {
+	if ( com_speeds->integer || com_fpsLog->integer ) {
 		timeAfter = Sys_Milliseconds ();
 	}
 #else
-	if ( com_speeds->integer ) {
+	if ( com_speeds->integer || com_fpsLog->integer ) {
 		timeAfter = Sys_Milliseconds ();
 		timeBeforeEvents = timeAfter;
 		timeBeforeClient = timeAfter;
@@ -3246,6 +3248,31 @@ void Com_Frame( void ) {
 	//
 	// report timing information
 	//
+	if ( com_fpsLog->integer > 0 ) {
+		// Averages over com_fpsLog seconds: frames a second, and the ms a
+		// frame spent in each part.
+		static int logStart, logFrames, logAll, logSv, logGame, logCl, logFront, logBack;
+		int now = Sys_Milliseconds();
+
+		if ( !logStart )
+			logStart = now;
+		logFrames++;
+		logAll += timeAfter - timeBeforeFirstEvents;
+		logSv += timeBeforeEvents - timeBeforeServer - time_game;
+		logGame += time_game;
+		logCl += timeAfter - timeBeforeClient - time_frontend - time_backend;
+		logFront += time_frontend;
+		logBack += time_backend;
+		if ( now - logStart >= com_fpsLog->integer * 1000 ) {
+			float n = logFrames;
+			Com_Printf( "fpslog: %.1f fps, ms/frame all %.1f sv %.1f game %.1f cl %.1f rfront %.1f rback %.1f\n",
+				logFrames * 1000.0f / ( now - logStart ), logAll / n, logSv / n, logGame / n,
+				logCl / n, logFront / n, logBack / n );
+			logStart = now;
+			logFrames = logAll = logSv = logGame = logCl = logFront = logBack = 0;
+		}
+	}
+
 	if ( com_speeds->integer ) {
 		int			all, sv, ev, cl;
 

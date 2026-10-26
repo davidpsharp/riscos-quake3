@@ -5,7 +5,7 @@ set -e
 cd /work
 TYPE=${1:-RelWithDebInfo}
 [ $# -gt 0 ] && shift
-B=build/riscos
+B=${B:-build/riscos}
 if [ ! -f $B/build.ninja ]; then
   cmake -S ioq3 -B $B -G Ninja -DCMAKE_BUILD_TYPE=$TYPE \
     -DCMAKE_TOOLCHAIN_FILE=/work/riscos/toolchain.cmake \

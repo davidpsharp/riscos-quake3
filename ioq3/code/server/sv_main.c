@@ -1128,7 +1128,7 @@ void SV_Frame( int msec ) {
 		cvar_modifiedFlags &= ~CVAR_SYSTEMINFO;
 	}
 
-	if ( com_speeds->integer ) {
+	if ( com_speeds->integer || com_fpsLog->integer ) {
 		startTime = Sys_Milliseconds ();
 	} else {
 		startTime = 0;	// quite a compiler warning
@@ -1149,7 +1149,7 @@ void SV_Frame( int msec ) {
 		VM_Call (gvm, GAME_RUN_FRAME, sv.time);
 	}
 
-	if ( com_speeds->integer ) {
+	if ( com_speeds->integer || com_fpsLog->integer ) {
 		time_game = Sys_Milliseconds () - startTime;
 	}
 

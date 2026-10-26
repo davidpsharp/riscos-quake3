@@ -527,6 +527,58 @@ unsigned long sys_timeBase = 0;
    although timeval:tv_usec is an int, I'm not sure wether it is actually used as an unsigned int
      (which would affect the wrap period) */
 int curtime;
+#ifdef __riscos__
+#include <kernel.h>
+#include <swis.h>
+
+/* UnixLib's gettimeofday counts in centiseconds. The HAL's counter 0 counts
+   down from its period to 0 once a centisecond, so the monotonic centisecond
+   count plus how far the counter has got gives microseconds. */
+static unsigned int riscos_counterRate, riscos_counterPeriod;
+
+static unsigned long long Sys_RISCOS_Microseconds( void )
+{
+	unsigned int cs1, cs2, count;
+
+	if ( !riscos_counterRate )
+	{
+		if ( _swix( OS_Hardware, _IN(0)|_INR(8,9)|_OUT(0), 0, 0, 19, &riscos_counterRate ) ||
+			_swix( OS_Hardware, _IN(0)|_INR(8,9)|_OUT(0), 0, 0, 20, &riscos_counterPeriod ) ||
+			!riscos_counterRate || !riscos_counterPeriod )
+		{
+			riscos_counterRate = 1;
+			riscos_counterPeriod = 0;
+		}
+	}
+
+	do
+	{
+		_swix( OS_ReadMonotonicTime, _OUT(0), &cs1 );
+		count = 0;
+		if ( riscos_counterPeriod )
+			_swix( OS_Hardware, _IN(0)|_INR(8,9)|_OUT(0), 0, 0, 21, &count );
+		_swix( OS_ReadMonotonicTime, _OUT(0), &cs2 );
+	} while ( cs1 != cs2 );
+
+	if ( !riscos_counterPeriod || count > riscos_counterPeriod )
+		return (unsigned long long)cs1 * 10000;
+
+	return (unsigned long long)cs1 * 10000 +
+		(unsigned long long)( riscos_counterPeriod - count ) * 1000000 / riscos_counterRate;
+}
+
+int Sys_Milliseconds (void)
+{
+	static unsigned long long base;
+	unsigned long long now = Sys_RISCOS_Microseconds();
+
+	if ( !base )
+		base = now;
+
+	curtime = (int)( ( now - base ) / 1000 );
+	return curtime;
+}
+#else
 int Sys_Milliseconds (void)
 {
 	struct timeval tp;
@@ -543,6 +595,7 @@ int Sys_Milliseconds (void)
 
 	return curtime;
 }
+#endif
 
 /*
 ==================

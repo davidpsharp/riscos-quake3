@@ -6,7 +6,8 @@ endif()
 
 list(APPEND SYSTEM_PLATFORM_SOURCES ${SOURCE_DIR}/sys/sys_unix.c)
 
-if(EMSCRIPTEN)
+if(EMSCRIPTEN OR RISCOS)
+    # RISC OS: a desktop program has no terminal on stdin
     list(APPEND SYSTEM_PLATFORM_SOURCES ${SOURCE_DIR}/sys/con_passive.c)
 else()
     list(APPEND SYSTEM_PLATFORM_SOURCES ${SOURCE_DIR}/sys/con_tty.c)

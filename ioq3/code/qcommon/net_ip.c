@@ -1430,8 +1430,9 @@ NET_GetCvars
 static qboolean NET_GetCvars( void ) {
 	int modified;
 
-#ifdef DEDICATED
+#if defined(DEDICATED) || defined(__riscos__)
 	// I want server owners to explicitly turn on ipv6 support.
+	// (RISC OS's stack has no IPv6.)
 	net_enabled = Cvar_Get( "net_enabled", "1", CVAR_LATCH | CVAR_ARCHIVE );
 #else
 	/* End users have it enabled so they can connect to ipv6-only hosts, but ipv4 will be

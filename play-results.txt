@@ -1,0 +1,18 @@
+== 00:47 pi4-plato live q3dm1 4 bots 400x300 lite
+fpslog: 119.1 fps, ms/frame all 8.2 sv 0.0 game 0.0 cl 8.0 rfront 0.0 rback 0.0
+fpslog: 121.3 fps, ms/frame all 8.2 sv 0.0 game 0.0 cl 8.1 rfront 0.0 rback 0.0
+fpslog: 118.8 fps, ms/frame all 8.2 sv 0.0 game 0.0 cl 8.1 rfront 0.0 rback 0.0
+fpslog: 121.3 fps, ms/frame all 8.2 sv 0.0 game 0.0 cl 8.0 rfront 0.0 rback 0.0
+fpslog: 121.3 fps, ms/frame all 8.2 sv 0.0 game 0.0 cl 8.0 rfront 0.0 rback 0.0
+fpslog: 121.3 fps, ms/frame all 8.2 sv 0.0 game 0.0 cl 8.1 rfront 0.0 rback 0.0
+fpslog: 119.0 fps, ms/frame all 8.2 sv 0.0 game 0.0 cl 8.0 rfront 0.0 rback 0.0
+fpslog: 121.3 fps, ms/frame all 8.2 sv 0.0 game 0.0 cl 8.0 rfront 0.0 rback 0.0
+== 00:48 pi4-plato live q3dm1 4 bots 400x300 lite
+fpslog: 37.6 fps, ms/frame all 26.1 sv 0.7 game 0.8 cl 23.5 rfront 0.0 rback 0.0
+fpslog: 38.6 fps, ms/frame all 25.9 sv 0.9 game 0.2 cl 23.7 rfront 0.0 rback 0.0
+fpslog: 34.7 fps, ms/frame all 28.8 sv 0.9 game 0.2 cl 26.4 rfront 0.0 rback 0.0
+fpslog: 37.3 fps, ms/frame all 26.8 sv 0.8 game 0.2 cl 24.6 rfront 0.0 rback 0.0
+fpslog: 29.4 fps, ms/frame all 33.4 sv 0.9 game 0.9 cl 30.0 rfront 0.0 rback 0.0
+fpslog: 33.7 fps, ms/frame all 29.7 sv 0.9 game 0.2 cl 27.3 rfront 0.0 rback 0.0
+fpslog: 31.5 fps, ms/frame all 31.7 sv 0.9 game 0.2 cl 29.2 rfront 0.0 rback 0.0
+fpslog: 33.1 fps, ms/frame all 30.2 sv 0.9 game 0.3 cl 27.7 rfront 0.0 rback 0.0

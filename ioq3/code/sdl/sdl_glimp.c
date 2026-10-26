@@ -483,6 +483,26 @@ static int GLimp_SetMode(int mode, qboolean fullscreen, qboolean noborder, qbool
 	}
 	ri.Printf( PRINT_ALL, " %d %d\n", glConfig.vidWidth, glConfig.vidHeight);
 
+#ifdef __riscos__
+	// riscos-mesa's SDL can draw at a smaller size and have the display
+	// (the Raspberry Pi's hardware overlay) or the plot scale it up.
+	{
+		int renderWidth = ri.Cvar_Get( "r_renderWidth", "0", CVAR_ARCHIVE | CVAR_LATCH )->integer;
+		int renderHeight = ri.Cvar_Get( "r_renderHeight", "0", CVAR_ARCHIVE | CVAR_LATCH )->integer;
+		int overlay = ri.Cvar_Get( "r_overlay", "1", CVAR_ARCHIVE | CVAR_LATCH )->integer;
+
+		if ( renderWidth > 0 && renderHeight > 0 && renderWidth * renderHeight < glConfig.vidWidth * glConfig.vidHeight )
+		{
+			SDL_SetHint( "SDL_RISCOS_GL_RENDER_SIZE", va( "%dx%d", renderWidth, renderHeight ) );
+			SDL_SetHint( "SDL_RISCOS_GL_OVERLAY", overlay ? "1" : "0" );
+		}
+		else if ( !getenv( "SDL_RISCOS_GL_RENDER_SIZE" ) )
+		{
+			SDL_SetHint( "SDL_RISCOS_GL_RENDER_SIZE", "" );
+		}
+	}
+#endif
+
 	// Center window
 	if( r_centerWindow->integer && !fullscreen )
 	{
@@ -813,6 +833,22 @@ static int GLimp_SetMode(int mode, qboolean fullscreen, qboolean noborder, qbool
 
 		ri.Printf( PRINT_ALL, "Using %d color bits, %d depth, %d stencil display.\n",
 				glConfig.colorBits, glConfig.depthBits, glConfig.stencilBits );
+
+		// The GL drawable can be smaller than the window (riscos-mesa's
+		// render size, scaled up by the display): draw at the drawable's size.
+		{
+			int drawableWidth, drawableHeight;
+
+			SDL_GL_GetDrawableSize( SDL_window, &drawableWidth, &drawableHeight );
+			if ( drawableWidth > 0 && drawableHeight > 0 &&
+				( drawableWidth != glConfig.vidWidth || drawableHeight != glConfig.vidHeight ) )
+			{
+				ri.Printf( PRINT_ALL, "Rendering at %d x %d, shown at %d x %d\n",
+						drawableWidth, drawableHeight, glConfig.vidWidth, glConfig.vidHeight );
+				glConfig.vidWidth = drawableWidth;
+				glConfig.vidHeight = drawableHeight;
+			}
+		}
 		break;
 	}
 
