@@ -16,3 +16,12 @@ fpslog: 29.4 fps, ms/frame all 33.4 sv 0.9 game 0.9 cl 30.0 rfront 0.0 rback 0.0
 fpslog: 33.7 fps, ms/frame all 29.7 sv 0.9 game 0.2 cl 27.3 rfront 0.0 rback 0.0
 fpslog: 31.5 fps, ms/frame all 31.7 sv 0.9 game 0.2 cl 29.2 rfront 0.0 rback 0.0
 fpslog: 33.1 fps, ms/frame all 30.2 sv 0.9 game 0.3 cl 27.7 rfront 0.0 rback 0.0
+== 01:17 pi4-socrates live q3dm1 4 bots FULLSCREEN defaults (render 300 lines)
+fpslog: 26.2 fps, ms/frame all 38.2 sv 0.8 game 0.3 cl 36.9 rfront 0.0 rback 0.0
+fpslog: 26.8 fps, ms/frame all 36.0 sv 0.8 game 1.6 cl 33.5 rfront 0.0 rback 0.0
+fpslog: 23.4 fps, ms/frame all 42.8 sv 1.0 game 0.3 cl 41.4 rfront 0.0 rback 0.0
+fpslog: 24.6 fps, ms/frame all 40.6 sv 0.9 game 0.3 cl 39.3 rfront 0.0 rback 0.0
+fpslog: 30.6 fps, ms/frame all 31.6 sv 0.8 game 0.2 cl 30.4 rfront 0.0 rback 0.0
+fpslog: 32.5 fps, ms/frame all 30.8 sv 0.8 game 0.2 cl 29.7 rfront 0.0 rback 0.0
+fpslog: 35.2 fps, ms/frame all 27.4 sv 0.7 game 1.2 cl 25.5 rfront 0.0 rback 0.0
+fpslog: 31.5 fps, ms/frame all 31.7 sv 0.8 game 0.3 cl 30.5 rfront 0.0 rback 0.0

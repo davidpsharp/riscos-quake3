@@ -34,7 +34,12 @@ $RO -t $T rm "$APP.demoq3.q3config/cfg" >/dev/null 2>&1 || true
 $RO -t $T launch "Run $APP +set logfile 2 +set com_basegame demoq3 +set sv_pure 0 +exec play.cfg" >/dev/null 2>&1 || true
 sleep $SECS
 $RO -t $T get "$APP.demoq3.qconsole/log" $D/qconsole.log >/dev/null 2>&1 || true
-$RO -t $T quit '!RunImage' >/dev/null 2>&1 || true
+# A full screen game has the machine to itself: restart to end it
+if grep -q 'r_fullscreen "1"' $D/play.cfg; then
+  $RO -t $T reboot >/dev/null 2>&1 || true
+else
+  $RO -t $T quit '!RunImage' >/dev/null 2>&1 || true
+fi
 cp $D/qconsole.log "build/last-play-$T.log"
 echo "== $(date '+%H:%M') $T $L" | tee -a play-results.txt
 grep fpslog $D/qconsole.log | tail -8 | tee -a play-results.txt

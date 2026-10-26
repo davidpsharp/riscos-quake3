@@ -849,6 +849,7 @@ typedef struct {
 
 typedef struct {
 	int		c_surfaces, c_shaders, c_vertexes, c_indexes, c_totalIndexes;
+	int		c_drawCalls, c_textureBinds;
 	float	c_overDraw;
 	
 	int		c_dlightVertexes;

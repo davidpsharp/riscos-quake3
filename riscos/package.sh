@@ -10,4 +10,9 @@ cp -r riscos/app/!ioquake3 $B/app/
 arm-riscos-gnueabihf-strip -o $B/ioquake3.stripped $B/RelWithDebInfo/ioquake3
 elf2aif -e $B/ioquake3.stripped "$A/!RunImage,ff8" >/dev/null
 cp $RISCOS_TOOLCHAIN/riscos/PThrTicker,ffa $A/ 2>/dev/null || cp $RISCOS_DEVKIT/riscos/PThrTicker,ffa $A/
-ls -l $A
+mkdir -p $A/demoq3
+[ -f data/qbase/demoq3/zz-ioq3-vm.pk3 ] && cp data/qbase/demoq3/zz-ioq3-vm.pk3 $A/demoq3/
+cp $RISCOS_DEVKIT/LICENCES.txt "$A/Licences,fff" 2>/dev/null || true
+cp ioq3/COPYING.txt "$A/COPYING,fff"
+python3 $RCD_DIR/package/rozip.py $B/ioquake3-riscos.zip -C $B/app "!ioquake3"
+ls -l $A $B/ioquake3-riscos.zip
