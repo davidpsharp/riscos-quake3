@@ -68,3 +68,4 @@
 01:50 pi4-plato 480x300 vl RGBA ON: 833 frames 33.4 seconds 25.0 fps 18.0/40.1/68.0/8.6 ms
 01:50 pi4-plato 480x300 vl RGBA OFF: 833 frames 28.9 seconds 28.8 fps 15.0/34.7/60.0/7.4 ms
 01:51 pi4-plato 480x300 vl RGBA ON: 833 frames 33.4 seconds 25.0 fps 18.0/40.0/68.0/8.6 ms
+01:53 pi4-plato FS300 default PROFILED: 833 frames 28.7 seconds 29.0 fps 15.0/34.5/58.0/7.3 ms
