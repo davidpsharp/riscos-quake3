@@ -78,3 +78,6 @@
 02:08 pi4-socrates devkit 480x300: 833 frames 28.0 seconds 29.7 fps 14.0/33.6/58.0/7.2 ms
 02:09 pi4-socrates SPLITCHAIN 480x300 (again): 833 frames 27.9 seconds 29.9 fps 15.0/33.4/58.0/7.1 ms
 02:24 pi4-plato new defaults (multitexture 0) 480x300: 833 frames 28.5 seconds 29.2 fps 14.0/34.3/58.0/7.3 ms
+02:35 pi4-socrates lightmaps, multitexture 0, 480x300: 833 frames 50.4 seconds 16.5 fps 26.0/60.5/110.0/14.3 ms
+02:38 pi4-socrates lightmaps, multitexture 1, 480x300: 833 frames 136.3 seconds 6.1 fps 76.0/163.7/405.0/35.6 ms
+02:39 pi4-socrates vertexlight (default), 480x300: 833 frames 27.8 seconds 30.0 fps 14.0/33.4/58.0/7.1 ms

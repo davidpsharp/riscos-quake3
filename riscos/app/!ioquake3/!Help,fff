@@ -38,15 +38,17 @@ Settings that matter for speed (in the console, or q3config.cfg):
                        0 draws at the full screen size: very slow)
   r_renderWidth 0      0: as wide as the screen's shape needs
   r_overlay 1          scale with the display hardware (VideoOverlay)
-  r_vertexLight 1      one pass per surface: about 4 times as fast as
-                       lightmaps on riscos-mesa
+  r_vertexLight 1      lighting from the map's vertices, one pass per
+                       surface. 0 gives Quake's lightmaps (better
+                       looking, about half as fast)
   r_fastsky 1          a plain sky: about 12% faster
   r_textureMode GL_NEAREST_MIPMAP_NEAREST
                        blockier textures: about 18% faster
   r_glFastest 1        keeps mipmapped textures on riscos-mesa's fast
                        path (3 times as fast as 0)
   r_ext_multitexture 0 two passes instead of two texture units, which
-                       riscos-mesa does slowly (OpenArena: twice as fast)
+                       riscos-mesa does slowly (lightmaps and
+                       OpenArena: 2 to 3 times as fast)
 
 Each of these needs vid_restart (or a restart) to take effect.
 

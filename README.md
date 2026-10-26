@@ -62,6 +62,8 @@ q3dm1, recorded spectating a bot (made headless with a Linux build under Xvfb).
 | 400x300, vertex lighting, `r_glFastest 0` (no hint) | 11.6 |
 | 400x300, vertex lighting, `r_glFastest 1` | 37.0 |
 | 480x300 window, vertex lighting | 29.4 |
+| 480x300 window, lightmaps, `r_ext_multitexture 1` (two texture units: general route) | 6.1 |
+| 480x300 window, lightmaps, `r_ext_multitexture 0` (two passes, both fast route) | 16.5 |
 | Full screen 1680x1050, drawn at 480x300, screen mode change (CPU stretches) | 25.4 |
 | Full screen 1680x1050, drawn at 480x300, full screen window + overlay (**default**) | 28.8 |
 | Same, drawn at 384x240 (`r_renderHeight 240`) | 38.5 |
@@ -76,12 +78,14 @@ bots at 480x300: 5 to 7 fps as OpenArena configures itself (lightmaps), 6 with
 vertex lighting (55% of fragments went down riscos-mesa's general route: its
 two-stage shaders were collapsed onto two texture units), and 12 to 21 fps with
 `r_ext_multitexture 0` as well, everything on the fast route. Both are now
-the RISC OS defaults; `r_ext_multitexture 0` makes no difference to Quake III.
+the RISC OS defaults. `r_ext_multitexture 0` makes no difference to Quake III with
+vertex lighting, and makes its lightmaps 2.7 times as fast (table above).
 
 Settings measured one at a time at 480x300: `r_fastsky 1` +12%;
 `r_textureMode GL_NEAREST_MIPMAP_NEAREST` +18%; `cg_drawGun 0` +4%;
 `r_znear 8` +2%; `r_picmip`, `cg_marks`, `cg_shadows`, `r_flares`,
-`r_dynamiclight`, `r_detailtextures`, `r_ext_multitexture` (on Quake III) and `-O3` made no
+`r_dynamiclight`, `r_detailtextures`, `r_ext_multitexture` (on Quake III with
+vertex lighting) and `-O3` made no
 measurable difference; `r_textureRGBA 1` (four-byte texels) was 13% slower.
 
 ### Where the time goes
