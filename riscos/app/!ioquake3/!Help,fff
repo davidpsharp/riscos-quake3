@@ -15,8 +15,12 @@ application:
    demoq3 folder. demoq3.zz-ioq3-vm/pk3, already there, holds
    ioquake3's game code, which the demo's own is too old for.
  - The full game: make a baseq3 folder and put pak0/pk3 to pak8/pk3 in
-   it (pak1 to pak8 are the free 1.32 point release). !Run uses baseq3 when
-   it's there.
+   it (pak1 to pak8 are the free 1.32 point release).
+ - OpenArena (free, openarena.ws): put the pk3 files from OpenArena
+   0.8.8's baseoa folder in a baseoa folder here. It's slower than
+   Quake III (its maps draw more): about 12 to 20 frames a second.
+
+!Run uses baseq3 if it's there, else baseoa, else demoq3.
 
 You need SharedUnixLibrary and ARMEABISupport (from PackMan). For sound,
 SharedSoundBuffer and StreamManager, or DigitalRenderer, in !System.
@@ -41,6 +45,8 @@ Settings that matter for speed (in the console, or q3config.cfg):
                        blockier textures: about 18% faster
   r_glFastest 1        keeps mipmapped textures on riscos-mesa's fast
                        path (3 times as fast as 0)
+  r_ext_multitexture 0 two passes instead of two texture units, which
+                       riscos-mesa does slowly (OpenArena: twice as fast)
 
 Each of these needs vid_restart (or a restart) to take effect.
 
@@ -49,7 +55,7 @@ Windowed: r_fullscreen 0, r_mode -1, r_customwidth/r_customheight.
 Files
 -----
 The console log, settings and screenshots go in the game's folder
-(demoq3 or baseq3). stdout and stderr are in this application.
+(demoq3, baseoa or baseq3). stdout and stderr are in this application.
 
 Source and licence
 ------------------

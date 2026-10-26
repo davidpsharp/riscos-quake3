@@ -23,17 +23,18 @@ W=$((SECS * 2))   # waits of 30 frames at about 60 fps: rough; the timer ends it
 
   while [ $# -ge 2 ]; do echo "set $1 \"$2\""; shift 2; done
   echo 'vid_restart'
-  echo 'set s1 "addbot sarge 3; addbot grunt 3; addbot daemia 3; addbot major 3; wait 100; team spectator; wait 30; follow 1"'
+  B=${BOTS:-"addbot sarge 3; addbot grunt 3; addbot daemia 3; addbot major 3"}
+  echo "set s1 \"$B; wait 100; team spectator; wait 30; follow 1\""
   echo "devmap ${MAP:-q3dm1}"
   echo 'wait 100'
   echo 'vstr s1'
 } > $D/play.cfg
-$RO -t $T put $D/play.cfg "$APP.demoq3.play/cfg" >/dev/null
-$RO -t $T rm "$APP.demoq3.qconsole/log" >/dev/null 2>&1 || true
-$RO -t $T rm "$APP.demoq3.q3config/cfg" >/dev/null 2>&1 || true
-$RO -t $T launch "Run $APP +set logfile 2 +set com_basegame demoq3 +set sv_pure 0 +exec play.cfg" >/dev/null 2>&1 || true
+$RO -t $T put $D/play.cfg "$APP.${GAME:-demoq3}.play/cfg" >/dev/null
+$RO -t $T rm "$APP.${GAME:-demoq3}.qconsole/log" >/dev/null 2>&1 || true
+$RO -t $T rm "$APP.${GAME:-demoq3}.q3config/cfg" >/dev/null 2>&1 || true
+$RO -t $T launch "Run $APP +set logfile 2 +set com_basegame ${GAME:-demoq3} +set sv_pure 0 +exec play.cfg" >/dev/null 2>&1 || true
 sleep $SECS
-$RO -t $T get "$APP.demoq3.qconsole/log" $D/qconsole.log >/dev/null 2>&1 || true
+$RO -t $T get "$APP.${GAME:-demoq3}.qconsole/log" $D/qconsole.log >/dev/null 2>&1 || true
 # A full screen game has the machine to itself: restart to end it
 if grep -q 'r_fullscreen "1"' $D/play.cfg; then
   $RO -t $T reboot >/dev/null 2>&1 || true

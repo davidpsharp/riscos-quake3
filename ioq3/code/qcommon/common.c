@@ -2372,6 +2372,13 @@ void Com_ExecuteCfg(void)
 {
 	Cbuf_ExecuteText(EXEC_NOW, "exec default.cfg\n");
 	Cbuf_Execute(); // Always execute after exec to prevent text buffer overflowing
+#ifdef __riscos__
+	// riscos-mesa's fast path wants one texture unit and no lightmaps (see
+	// renderergl1/tr_init.c); a game's default.cfg (OpenArena's sets
+	// r_vertexLight 0) mustn't undo that. q3config.cfg still can.
+	Cvar_Set("r_vertexLight", "1");
+	Cvar_Set("r_ext_multitexture", "0");
+#endif
 
 	if(!Com_SafeMode())
 	{

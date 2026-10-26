@@ -20,5 +20,6 @@ RMEnsure VideoOverlay 0.00 IfThere System:Modules.VideoOverlay Then RMLoad Syste
 | The heap is a dynamic area, so the slot only holds the program.
 WimpSlot -min 24000K -max 24000K
 Dir <ioquake3$Dir>
-| The full game (baseq3) if it's here, else the free demo (demoq3).
-IfThere <ioquake3$Dir>.baseq3.pak0/pk3 Then Run <ioquake3$Dir>.!RunImage +set fs_basepath . +set fs_homepath . %*0 >/<ioquake3$Dir>/stdout 2>/<ioquake3$Dir>/stderr Else Run <ioquake3$Dir>.!RunImage +set fs_basepath . +set fs_homepath . +set com_basegame demoq3 %*0 >/<ioquake3$Dir>/stdout 2>/<ioquake3$Dir>/stderr
+| Quake III Arena (baseq3) if it's here, else OpenArena (baseoa), else
+| the free Quake III Arena demo (demoq3).
+IfThere <ioquake3$Dir>.baseq3.pak0/pk3 Then Run <ioquake3$Dir>.!RunImage +set fs_basepath . +set fs_homepath . %*0 >/<ioquake3$Dir>/stdout 2>/<ioquake3$Dir>/stderr Else IfThere <ioquake3$Dir>.baseoa.pak0/pk3 Then Run <ioquake3$Dir>.!RunImage +set fs_basepath . +set fs_homepath . +set com_basegame baseoa %*0 >/<ioquake3$Dir>/stdout 2>/<ioquake3$Dir>/stderr Else Run <ioquake3$Dir>.!RunImage +set fs_basepath . +set fs_homepath . +set com_basegame demoq3 %*0 >/<ioquake3$Dir>/stdout 2>/<ioquake3$Dir>/stderr

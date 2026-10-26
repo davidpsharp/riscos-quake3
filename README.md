@@ -31,7 +31,8 @@ build of ioquake3 (`-DBUILD_GAME_QVMS=ON`, which builds q3lcc and q3asm) and zip
 ## Playing
 
 Put the game data in `!ioquake3`: the free demo's `pak0.pk3` in `demoq3`, or the
-full game's `pak0`-`pak8` in `baseq3`. `!Run` uses `baseq3` when it's there.
+full game's `pak0`-`pak8` in `baseq3`, or OpenArena 0.8.8's `baseoa` pk3s in
+`baseoa`. `!Run` uses `baseq3`, else `baseoa`, else `demoq3`.
 `!ioquake3.!Help` has the details and the speed settings.
 
 ## The RISC OS changes
@@ -42,7 +43,7 @@ full game's `pak0`-`pak8` in `baseq3`. `!Run` uses `baseq3` when it's there.
 | VM | The ARM JIT compiles into `malloc`'d memory and calls `OS_SynchroniseCodeAreas` (no `mmap`/`mprotect`) |
 | Network | IPv4 only by default (RISC OS has no IPv6); no `ifaddrs` |
 | Timer | `Sys_Milliseconds` from `OS_ReadMonotonicTime` plus HAL counter 0: UnixLib's `gettimeofday` counts in centiseconds, which made frame timing jump in 10 ms steps |
-| Renderer | `r_glFastest` (`GL_PERSPECTIVE_CORRECTION_HINT`, `GL_FASTEST`) keeps mipmapped textures on riscos-mesa's NEON route; vertex lighting by default |
+| Renderer | `r_glFastest` (`GL_PERSPECTIVE_CORRECTION_HINT`, `GL_FASTEST`) keeps mipmapped textures on riscos-mesa's NEON route; vertex lighting and no multitexture by default, put back after a game's `default.cfg` (OpenArena's turns vertex lighting off) |
 | Display | `r_renderHeight`/`r_renderWidth`/`r_overlay` set riscos-mesa SDL's render size and overlay; full screen is SDL's multitasking full screen window, which the overlay needs; the renderer takes the GL drawable's size |
 | Input | riscos-mesa's SDL has no relative mouse mode or warp: full screen, the game reads the mouse (`OS_Word 21,4`) and puts it back in the middle (`21,3`, `21,5`). A full screen window counts as focused (SDL never gives input focus) |
 | UI | `q3_ui` recognises the demo (`com_basegame demoq3`): demo menus, no CD key. Error dialogs are Wimp error boxes |
@@ -69,10 +70,18 @@ Live play (`riscos/play.sh`, 4 bots, `com_fpsLog`): q3dm1 at the defaults about
 29 fps (23 to 35); a 10 minute soak on q3dm17 averaged 35.7 fps, with no crash.
 The server, game code and bots take about 1.7 ms a frame.
 
+OpenArena 0.8.8 (`baseoa`, its own QVMs, standalone) plays too, slower: its
+maps draw about 4 layers a pixel against Quake III's 2.4. Live on oa_dm1 with 4
+bots at 480x300: 5 to 7 fps as OpenArena configures itself (lightmaps), 6 with
+vertex lighting (55% of fragments went down riscos-mesa's general route: its
+two-stage shaders were collapsed onto two texture units), and 12 to 21 fps with
+`r_ext_multitexture 0` as well, everything on the fast route. Both are now
+the RISC OS defaults; `r_ext_multitexture 0` makes no difference to Quake III.
+
 Settings measured one at a time at 480x300: `r_fastsky 1` +12%;
 `r_textureMode GL_NEAREST_MIPMAP_NEAREST` +18%; `cg_drawGun 0` +4%;
 `r_znear 8` +2%; `r_picmip`, `cg_marks`, `cg_shadows`, `r_flares`,
-`r_dynamiclight`, `r_detailtextures`, `r_ext_multitexture` and `-O3` made no
+`r_dynamiclight`, `r_detailtextures`, `r_ext_multitexture` (on Quake III) and `-O3` made no
 measurable difference; `r_textureRGBA 1` (four-byte texels) was 13% slower.
 
 ### Where the time goes

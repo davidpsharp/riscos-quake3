@@ -70,3 +70,73 @@ fpslog: 32.7 fps, ms/frame all 29.6 sv 0.9 game 0.3 cl 27.1 rfront 0.0 rback 0.0
 fpslog: 30.0 fps, ms/frame all 33.3 sv 1.1 game 0.3 cl 30.6 rfront 0.0 rback 0.0
 fpslog: 32.5 fps, ms/frame all 30.7 sv 0.9 game 1.3 cl 27.3 rfront 0.0 rback 0.0
 fpslog: 40.1 fps, ms/frame all 24.9 sv 0.8 game 0.2 cl 22.8 rfront 0.0 rback 0.0
+== 02:15 pi4-socrates OpenArena oa_dm1 480x300 window
+fpslog: 7.1 fps, ms/frame all 141.1 sv 1.9 game 0.8 cl 132.8 rfront 0.0 rback 0.0
+fpslog: 5.8 fps, ms/frame all 172.2 sv 1.5 game 0.8 cl 158.6 rfront 0.0 rback 0.0
+fpslog: 5.5 fps, ms/frame all 182.6 sv 1.6 game 0.8 cl 174.4 rfront 0.0 rback 0.0
+fpslog: 4.8 fps, ms/frame all 201.5 sv 1.6 game 1.0 cl 193.0 rfront 0.0 rback 0.0
+fpslog: 5.7 fps, ms/frame all 176.2 sv 1.7 game 1.0 cl 167.6 rfront 0.0 rback 0.0
+fpslog: 7.1 fps, ms/frame all 140.2 sv 1.4 game 0.9 cl 132.4 rfront 0.0 rback 0.0
+fpslog: 6.8 fps, ms/frame all 146.5 sv 1.6 game 0.9 cl 138.7 rfront 0.0 rback 0.0
+fpslog: 6.1 fps, ms/frame all 164.6 sv 1.6 game 6.3 cl 150.9 rfront 0.0 rback 0.0
+== 02:16 pi4-socrates OpenArena oa_dm1 480x300 window vertexlight
+fpslog: 6.5 fps, ms/frame all 153.2 sv 1.8 game 5.9 cl 139.4 rfront 0.0 rback 0.0
+fpslog: 6.1 fps, ms/frame all 164.2 sv 1.8 game 1.1 cl 155.6 rfront 0.0 rback 0.0
+fpslog: 5.9 fps, ms/frame all 169.8 sv 1.6 game 6.7 cl 155.3 rfront 0.0 rback 0.0
+fpslog: 5.3 fps, ms/frame all 189.6 sv 1.9 game 0.9 cl 180.8 rfront 0.0 rback 0.0
+fpslog: 6.9 fps, ms/frame all 145.7 sv 1.7 game 0.9 cl 137.6 rfront 0.0 rback 0.0
+fpslog: 7.1 fps, ms/frame all 141.7 sv 1.6 game 0.7 cl 134.1 rfront 0.0 rback 0.0
+fpslog: 5.4 fps, ms/frame all 179.4 sv 1.5 game 7.0 cl 165.0 rfront 0.0 rback 0.0
+fpslog: 6.4 fps, ms/frame all 152.2 sv 1.7 game 5.8 cl 139.3 rfront 0.0 rback 0.0
+== 02:17 pi4-socrates OA stats
+fpslog: 2.7 fps, ms/frame all 826.5 sv 0.2 game 0.0 cl 1.1 rfront 0.0 rback 0.0
+fpslog: 5.0 fps, ms/frame all 197.4 sv 0.5 game 0.5 cl 189.9 rfront 0.0 rback 0.0
+fpslog: 3.8 fps, ms/frame all 266.6 sv 1.1 game 0.9 cl 237.9 rfront 0.0 rback 0.0
+fpslog: 4.9 fps, ms/frame all 198.1 sv 1.8 game 1.0 cl 189.0 rfront 0.0 rback 0.0
+fpslog: 5.1 fps, ms/frame all 197.3 sv 2.0 game 0.9 cl 181.4 rfront 0.0 rback 0.0
+fpslog: 8.4 fps, ms/frame all 119.3 sv 1.6 game 0.7 cl 111.9 rfront 0.0 rback 0.0
+== 02:19 pi4-socrates OA oa_dm1 480x300 vertexlight spectating
+fpslog: 2.6 fps, ms/frame all 870.4 sv 0.1 game 0.1 cl 1.2 rfront 0.0 rback 0.0
+fpslog: 5.1 fps, ms/frame all 196.2 sv 0.7 game 0.3 cl 188.9 rfront 0.0 rback 0.0
+fpslog: 2.7 fps, ms/frame all 367.6 sv 1.8 game 1.2 cl 317.3 rfront 0.0 rback 0.0
+fpslog: 4.6 fps, ms/frame all 209.1 sv 3.0 game 8.5 cl 191.0 rfront 0.0 rback 0.0
+fpslog: 4.6 fps, ms/frame all 216.0 sv 2.7 game 1.4 cl 198.2 rfront 0.0 rback 0.0
+fpslog: 5.3 fps, ms/frame all 187.8 sv 2.7 game 1.6 cl 177.4 rfront 0.0 rback 0.0
+fpslog: 4.9 fps, ms/frame all 203.2 sv 2.5 game 8.4 cl 186.1 rfront 0.0 rback 0.0
+fpslog: 4.5 fps, ms/frame all 214.0 sv 3.0 game 1.7 cl 203.0 rfront 0.0 rback 0.0
+== 02:20 pi4-socrates OA profile
+fpslog: 3.2 fps, ms/frame all 316.9 sv 2.4 game 1.2 cl 271.5 rfront 0.0 rback 0.0
+fpslog: 5.5 fps, ms/frame all 174.6 sv 2.8 game 1.5 cl 164.1 rfront 0.0 rback 0.0
+fpslog: 5.3 fps, ms/frame all 190.4 sv 2.6 game 1.3 cl 174.1 rfront 0.0 rback 0.0
+fpslog: 5.4 fps, ms/frame all 185.4 sv 2.6 game 7.4 cl 169.4 rfront 0.0 rback 0.0
+fpslog: 6.5 fps, ms/frame all 153.2 sv 2.5 game 1.3 cl 144.0 rfront 0.0 rback 0.0
+fpslog: 6.7 fps, ms/frame all 144.6 sv 2.8 game 6.0 cl 130.1 rfront 0.0 rback 0.0
+fpslog: 5.5 fps, ms/frame all 180.8 sv 2.3 game 1.5 cl 170.9 rfront 0.0 rback 0.0
+fpslog: 5.3 fps, ms/frame all 187.4 sv 2.8 game 1.4 cl 177.1 rfront 0.0 rback 0.0
+== 02:22 pi4-socrates OA oa_dm1 480x300 vl, r_ext_multitexture 0
+fpslog: 2.7 fps, ms/frame all 820.8 sv 0.2 game 0.0 cl 1.1 rfront 0.0 rback 0.0
+fpslog: 12.4 fps, ms/frame all 80.0 sv 0.8 game 0.3 cl 67.1 rfront 0.0 rback 0.0
+fpslog: 14.3 fps, ms/frame all 67.4 sv 1.8 game 3.1 cl 59.6 rfront 0.0 rback 0.0
+fpslog: 13.5 fps, ms/frame all 74.1 sv 2.1 game 2.8 cl 66.2 rfront 0.0 rback 0.0
+fpslog: 12.7 fps, ms/frame all 78.6 sv 2.0 game 0.7 cl 72.8 rfront 0.0 rback 0.0
+fpslog: 11.7 fps, ms/frame all 82.6 sv 2.1 game 0.8 cl 76.4 rfront 0.0 rback 0.0
+fpslog: 11.0 fps, ms/frame all 87.9 sv 1.9 game 0.8 cl 81.3 rfront 0.0 rback 0.0
+fpslog: 11.3 fps, ms/frame all 88.4 sv 2.2 game 3.9 cl 78.6 rfront 0.0 rback 0.0
+== 02:24 pi4-socrates OA oa_dm1 480x300 window, new defaults, no overrides
+fpslog: 17.7 fps, ms/frame all 56.3 sv 1.5 game 0.5 cl 51.7 rfront 0.0 rback 0.0
+fpslog: 12.9 fps, ms/frame all 74.7 sv 2.0 game 3.3 cl 66.3 rfront 0.0 rback 0.0
+fpslog: 18.0 fps, ms/frame all 55.6 sv 1.7 game 0.5 cl 50.7 rfront 0.0 rback 0.0
+fpslog: 15.8 fps, ms/frame all 63.4 sv 1.7 game 2.8 cl 56.1 rfront 0.0 rback 0.0
+fpslog: 18.8 fps, ms/frame all 53.2 sv 1.3 game 0.6 cl 48.8 rfront 0.0 rback 0.0
+fpslog: 20.7 fps, ms/frame all 48.3 sv 1.3 game 2.1 cl 42.5 rfront 0.0 rback 0.0
+fpslog: 15.3 fps, ms/frame all 65.6 sv 1.8 game 0.7 cl 60.2 rfront 0.0 rback 0.0
+fpslog: 19.5 fps, ms/frame all 51.3 sv 1.4 game 2.3 cl 45.3 rfront 0.0 rback 0.0
+== 02:26 pi4-socrates OA oa_dm1 live FS defaults (300 lines)
+fpslog: 13.4 fps, ms/frame all 74.8 sv 2.0 game 0.7 cl 68.7 rfront 0.0 rback 0.0
+fpslog: 13.8 fps, ms/frame all 72.5 sv 2.0 game 0.6 cl 66.6 rfront 0.0 rback 0.0
+fpslog: 13.2 fps, ms/frame all 76.0 sv 1.9 game 3.2 cl 67.7 rfront 0.0 rback 0.0
+fpslog: 15.9 fps, ms/frame all 60.7 sv 1.5 game 2.7 cl 53.7 rfront 0.0 rback 0.0
+fpslog: 14.6 fps, ms/frame all 68.7 sv 1.8 game 0.7 cl 63.2 rfront 0.0 rback 0.0
+fpslog: 15.8 fps, ms/frame all 63.4 sv 1.8 game 0.7 cl 58.2 rfront 0.0 rback 0.0
+fpslog: 12.7 fps, ms/frame all 79.0 sv 2.0 game 3.3 cl 70.1 rfront 0.0 rback 0.0
+fpslog: 12.3 fps, ms/frame all 81.0 sv 2.1 game 3.5 cl 71.8 rfront 0.0 rback 0.0
