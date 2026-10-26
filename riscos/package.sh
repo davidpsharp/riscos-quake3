@@ -1,0 +1,13 @@
+#!/bin/sh
+# Makes build/riscos/app/!ioquake3 from the build: run in the q3-riscos image after build.sh.
+#   riscos/sdk.sh riscos/package.sh
+set -e
+cd /work
+B=build/riscos
+A=$B/app/!ioquake3
+rm -rf $B/app && mkdir -p $B/app
+cp -r riscos/app/!ioquake3 $B/app/
+arm-riscos-gnueabihf-strip -o $B/ioquake3.stripped $B/RelWithDebInfo/ioquake3
+elf2aif -e $B/ioquake3.stripped "$A/!RunImage,ff8" >/dev/null
+cp $RISCOS_TOOLCHAIN/riscos/PThrTicker,ffa $A/ 2>/dev/null || cp $RISCOS_DEVKIT/riscos/PThrTicker,ffa $A/
+ls -l $A

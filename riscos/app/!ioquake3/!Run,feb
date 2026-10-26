@@ -1,0 +1,23 @@
+| !Run for ioquake3 on RISC OS
+| The game data goes beside !RunImage: baseq3 (Quake III Arena), demoq3
+| (the free demo) or another game's folder.
+Set ioquake3$Dir <Obey$Dir>
+IfThere <ioquake3$Dir>.!Sprites Then IconSprites <ioquake3$Dir>.!Sprites
+
+| --- Runtime support ----
+RMEnsure SharedUnixLibrary 1.16 IfThere System:Modules.SharedULib Then RMLoad System:Modules.SharedULib
+RMEnsure SharedUnixLibrary 1.16 Error ioquake3 needs SharedUnixLibrary 1.16 or later (from PackMan)
+RMEnsure ARMEABISupport 1.03 IfThere System:Modules.ARMEABISupport Then RMLoad System:Modules.ARMEABISupport
+RMEnsure ARMEABISupport 1.03 Error ioquake3 needs ARMEABISupport 1.03 or later (from PackMan)
+RMEnsure PThreadTicker 0.03 RMLoad <ioquake3$Dir>.PThrTicker
+
+| --- Sound: SharedSoundBuffer if it's in !System, else DigitalRenderer.
+RMEnsure StreamManager 0.03 IfThere System:Modules.StreamMan Then RMLoad System:Modules.StreamMan
+RMEnsure SharedSoundBuffer 0.07 IfThere System:Modules.SSBuffer Then RMLoad System:Modules.SSBuffer
+RMEnsure DigitalRenderer 0.55 IfThere System:Modules.DRenderer Then RMLoad System:Modules.DRenderer
+RMEnsure VideoOverlay 0.00 IfThere System:Modules.VideoOverlay Then RMLoad System:Modules.VideoOverlay
+
+| The heap is a dynamic area, so the slot only holds the program.
+WimpSlot -min 24000K -max 24000K
+Dir <ioquake3$Dir>
+Run <ioquake3$Dir>.!RunImage +set fs_basepath . +set fs_homepath . %*0 >/<ioquake3$Dir>/stdout 2>/<ioquake3$Dir>/stderr
