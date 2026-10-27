@@ -280,6 +280,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define Q3_LITTLE_ENDIAN
 #define DLL_EXT ".so"
 
+// The RISC OS port's own version and date: the icon bar Info window shows
+// them (sdl/sdl_glimp.c), and riscos/package.sh checks !Help says the same
+#define RISCOS_PORT_VERSION "0.1.0"
+#define RISCOS_PORT_DATE "27 Oct 2026"
+
 #endif
 
 //================================================================= SUNOS ===

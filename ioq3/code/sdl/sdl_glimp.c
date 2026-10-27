@@ -392,6 +392,32 @@ static void GLimp_ClearProcAddresses( void ) {
 GLimp_SetMode
 ===============
 */
+#ifdef __riscos__
+/*
+===============
+GLimp_RISCOS_FastCPU
+
+Whether the processor is a Cortex-A72 or later (a Pi 4 or 400), from its
+main ID register, which only privileged modes can read: OS_EnterOS, read
+it, and straight back to user mode.
+===============
+*/
+static qboolean GLimp_RISCOS_FastCPU( void )
+{
+	register unsigned id __asm__( "r0" );
+	unsigned part;
+
+	__asm__ volatile (
+		"swi	0x20016\n\t"			// XOS_EnterOS
+		"mrc	p15, 0, r0, c0, c0, 0\n\t"	// MIDR
+		"msr	cpsr_c, #0x10"			// back to USR32, interrupts on
+		: "=r" ( id ) : : "lr", "cc", "memory" );
+	part = ( id >> 4 ) & 0xFFF;
+	// ARM's Cortex-A part numbers: A53 0xD03, A72 0xD08, A73 0xD09, A76 0xD0B...
+	return ( id >> 24 ) == 0x41 && part >= 0xD08 && part <= 0xDFF;
+}
+#endif
+
 static int GLimp_SetMode(int mode, qboolean fullscreen, qboolean noborder, qboolean fixedFunction)
 {
 	struct GLimp_ContextType {
@@ -487,10 +513,12 @@ static int GLimp_SetMode(int mode, qboolean fullscreen, qboolean noborder, qbool
 	// riscos-mesa's SDL can draw at a smaller size and have the display
 	// (the Raspberry Pi's hardware overlay) or the plot scale it up.
 	{
-		// Every pixel is drawn by the CPU: by default draw 300 lines, as
-		// wide as the window's shape needs (r_renderWidth 0), and scale up.
+		// Every pixel is drawn by the CPU: by default draw 300 lines on a
+		// Cortex-A72 or later (Pi 4), 200 on anything slower (a Pi 3 does
+		// about 20 fps there), as wide as the window's shape needs
+		// (r_renderWidth 0), and scale up.
 		int renderWidth = ri.Cvar_Get( "r_renderWidth", "0", CVAR_ARCHIVE | CVAR_LATCH )->integer;
-		int renderHeight = ri.Cvar_Get( "r_renderHeight", "300", CVAR_ARCHIVE | CVAR_LATCH )->integer;
+		int renderHeight = ri.Cvar_Get( "r_renderHeight", GLimp_RISCOS_FastCPU() ? "300" : "200", CVAR_ARCHIVE | CVAR_LATCH )->integer;
 		int overlay = ri.Cvar_Get( "r_overlay", "1", CVAR_ARCHIVE | CVAR_LATCH )->integer;
 
 		if ( renderWidth <= 0 && renderHeight > 0 )
@@ -891,6 +919,14 @@ static qboolean GLimp_StartDriverAndSetMode(int mode, qboolean fullscreen, qbool
 	if (!SDL_WasInit(SDL_INIT_VIDEO))
 	{
 		const char *driverName;
+
+#ifdef __riscos__
+		// "About this program", from the icon bar menu (riscos/sdl2's SDL)
+		SDL_SetHint("SDL_RISCOS_APP_PURPOSE", "Quake III Arena engine");
+		SDL_SetHint("SDL_RISCOS_APP_AUTHOR", "id Software; ioquake3 contributors");
+		SDL_SetHint("SDL_RISCOS_APP_PORTED_BY", "David Sharp");
+		SDL_SetHint("SDL_RISCOS_APP_VERSION", RISCOS_PORT_VERSION " (" RISCOS_PORT_DATE ")");
+#endif
 
 		if (SDL_Init(SDL_INIT_VIDEO) != 0)
 		{

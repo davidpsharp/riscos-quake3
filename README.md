@@ -1,5 +1,7 @@
 # ioquake3 for RISC OS
 
+Version 0.1.0 (27 Oct 2026).
+
 A port of [ioquake3](https://github.com/ioquake/ioq3) (Quake III Arena's engine)
 to RISC OS 5 on ARMv7 (Raspberry Pi 2 and later; tuned for the Pi 4), drawing with
 [riscos-mesa](https://github.com/adyoull/riscos-mesa)'s software OpenGL through SDL2.
@@ -18,8 +20,9 @@ screen by the Pi's display hardware.
 
 ```sh
 docker build --platform linux/amd64 -t q3-riscos riscos/docker
+riscos/sdk.sh riscos/sdl2/build.sh # SDL with the icon bar menu (build/riscos-sdl2)
 riscos/sdk.sh riscos/build.sh      # build/riscos/RelWithDebInfo/ioquake3 (ELF, with symbols)
-riscos/sdk.sh riscos/package.sh    # build/riscos/app/!ioquake3 and build/riscos/ioquake3-riscos.zip
+riscos/sdk.sh riscos/package.sh    # build/riscos/app/!ioquake3 and build/riscos/ioquake3-riscos-VERSION.zip
 ```
 
 The game code runs as QVM bytecode (through ioquake3's ARM JIT). The demo's own
@@ -27,6 +30,25 @@ QVMs (1999) are too old for ioquake3, so the package carries ioquake3's, in
 `demoq3/zz-ioq3-vm.pk3`. They're platform independent; build them with a host
 build of ioquake3 (`-DBUILD_GAME_QVMS=ON`, which builds q3lcc and q3asm) and zip
 `baseq3/vm` into `data/qbase/demoq3/zz-ioq3-vm.pk3` before packaging.
+
+## Getting the game data
+
+ioquake3 is only the engine. The data:
+
+- **The Quake III Arena demo** (free, four maps): `pak0.pk3` from id's Linux
+  demo installer, `linuxq3ademo-1.11-6.x86.gz.sh` (a shell script with a tar
+  archive inside: `demoq3/pak0.pk3`), on id's FTP mirrors, e.g.
+  <https://ftp.gwdg.de/pub/misc/ftp.idsoftware.com/idstuff/quake3/linux/linuxq3ademo-1.11-6.x86.gz.sh>.
+- **The full game**: Quake III Arena (with Team Arena) from Steam or GOG
+  (<https://ioquake3.org/buy/> keeps the links), for `baseq3/pak0.pk3`, plus
+  id's point release data, `pak1.pk3` to `pak8.pk3`, free from
+  <https://ioquake3.org/extras/patch-data/> (`quake3-latest-pk3s.zip`).
+- **OpenArena** (free, GPL and CC licensed): 0.8.8's `baseoa` pk3 files, from
+  <https://openarena.ws> or its mirror,
+  <https://download.tuxfamily.org/openarena/rel/088/openarena-0.8.8.zip>.
+
+id's data can't be put in this package: its licence allows only
+non-commercial copies of the demo, with the licence, labelled as a demo.
 
 ## Playing
 
@@ -47,6 +69,7 @@ full game's `pak0`-`pak8` in `baseq3`, or OpenArena 0.8.8's `baseoa` pk3s in
 | Display | `r_renderHeight`/`r_renderWidth`/`r_overlay` set riscos-mesa SDL's render size and overlay; full screen is SDL's multitasking full screen window, which the overlay needs; the renderer takes the GL drawable's size |
 | Input | riscos-mesa's SDL has no relative mouse mode or warp: full screen, the game reads the mouse (`OS_Word 21,4`) and puts it back in the middle (`21,3`, `21,5`). A full screen window counts as focused (SDL never gives input focus) |
 | UI | `q3_ui` recognises the demo (`com_basegame demoq3`): demo menus, no CD key. Error dialogs are Wimp error boxes |
+| Desktop | Icon (`!Sprites`, `!Sprites22`; drawn by `riscos/tools/make_icon.py`); the icon bar menu has Info (version, authors), Help and Quit, from the SDL in `riscos/sdl2` (riscos-mesa's, with DevilutionX's menu patch and a fix for the task's name) |
 | Tools | `com_fpsLog N` (averaged fps and per-part times every N seconds); `r_speeds 1` counts draw calls and texture binds; `Q3Prof` sampling profiler (below) |
 
 ## Performance (Raspberry Pi 4, RISC OS 5.30, riscos-mesa 20.3.5-16)
@@ -68,6 +91,11 @@ q3dm1, recorded spectating a bot (made headless with a Linux build under Xvfb).
 | Full screen 1680x1050, drawn at 480x300, screen mode change (CPU stretches) | 25.4 |
 | Full screen 1680x1050, drawn at 480x300, full screen window + overlay (**default**) | 28.8 |
 | Same, drawn at 384x240 (`r_renderHeight 240`) | 38.5 |
+
+On a **Raspberry Pi 3** (Cortex-A53), which defaults to 200 lines (the game
+reads the CPU's ID register: a Cortex-A72 or later gets 300): 480x300 window
+12.5 fps, 384x240 16.2, 320x200 19.7 (23.7 with `r_fastsky 1` and nearest
+filtering), full screen 1680x1050 at 320x200 19.7.
 
 Live play (`riscos/play.sh`, 4 bots, `com_fpsLog`): q3dm1 at the defaults about
 29 fps (23 to 35); a 10 minute soak on q3dm17 averaged 35.7 fps, with no crash.
