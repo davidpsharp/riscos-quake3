@@ -460,6 +460,25 @@ int Q_isnan(float x);
   extern long (QDECL *Q_ftol)(float f);
   extern int (QDECL *Q_VMftol)(void);
   extern void (QDECL *Q_SnapVector)(vec3_t vec);
+#elif defined(__riscos__) && defined(__ARM_FP)
+  // UnixLib's lrintf is a C function; one VFP instruction does the same
+  // (the current rounding mode, which is to nearest). A function, as below.
+  static ID_INLINE long Q_ftol(float f) {
+	float r;
+	int i;
+	__asm__ ("vcvtr.s32.f32 %0, %1" : "=t" (r) : "t" (f));
+	memcpy(&i, &r, sizeof(i));
+	return i;
+  }
+  #define Q_SnapVector(vec)\
+	do\
+	{\
+		vec3_t *temp = (vec);\
+		\
+		(*temp)[0] = round((*temp)[0]);\
+		(*temp)[1] = round((*temp)[1]);\
+		(*temp)[2] = round((*temp)[2]);\
+	} while(0)
 #else
   // Q_ftol must expand to a function name so the pluggable renderer can take
   // its address

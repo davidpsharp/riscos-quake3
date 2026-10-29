@@ -1,6 +1,6 @@
 # ioquake3 for RISC OS
 
-Version 0.1.0 (27 Oct 2026).
+Version 0.1.1 (27 Oct 2026).
 
 A port of [ioquake3](https://github.com/ioquake/ioq3) (Quake III Arena's engine)
 to RISC OS 5 on ARMv7 (Raspberry Pi 2 and later; tuned for the Pi 4), drawing with
@@ -21,6 +21,7 @@ screen by the Pi's display hardware.
 ```sh
 docker build --platform linux/amd64 -t q3-riscos riscos/docker
 riscos/sdk.sh riscos/sdl2/build.sh # SDL with the icon bar menu (build/riscos-sdl2)
+riscos/mesa/build.sh               # riscos-mesa from source with this port's patches (build/mesa-src-a53/stage)
 riscos/sdk.sh riscos/build.sh      # build/riscos/RelWithDebInfo/ioquake3 (ELF, with symbols)
 riscos/sdk.sh riscos/package.sh    # build/riscos/app/!ioquake3 and build/riscos/ioquake3-riscos-VERSION.zip
 ```
@@ -95,7 +96,8 @@ q3dm1, recorded spectating a bot (made headless with a Linux build under Xvfb).
 On a **Raspberry Pi 3** (Cortex-A53), which defaults to 200 lines (the game
 reads the CPU's ID register: a Cortex-A72 or later gets 300): 480x300 window
 12.5 fps, 384x240 16.2, 320x200 19.7 (23.7 with `r_fastsky 1` and nearest
-filtering), full screen 1680x1050 at 320x200 19.7.
+filtering), full screen 1680x1050 at 320x200 19.7. With v0.1.1 (below) full
+screen at 320x200 is 23.5; the Pi 4's full screen default is 36.1 (was 28.8).
 
 Live play (`riscos/play.sh`, 4 bots, `com_fpsLog`): q3dm1 at the defaults about
 29 fps (23 to 35); a 10 minute soak on q3dm17 averaged 35.7 fps, with no crash.
@@ -135,6 +137,80 @@ measurable difference; `r_textureRGBA 1` (four-byte texels) was 13% slower.
 So what remains is riscos-mesa's per-span and per-texel work. The 3-byte texel
 gather (16 `vld3` lane loads per four pixels) and per-span overheads such as
 `_mesa_get_format_bytes` are the places to look there.
+
+### Second round: draw order, rounding, tuning (v0.1.1)
+
+riscos-mesa tests depth before it textures (its `zfirst` route), so the order
+things are drawn in decides how much texturing is wasted on fragments that
+end up hidden. Measured on the 480x300 window benchmark, Pi 4 (plato) and the
+320x200 one on the Pi 3, each change on top of the last:
+
+| Change | Pi 4 fps | Pi 3 fps |
+| --- | --- | --- |
+| v0.1.0 | 28.9 | 19.7 |
+| `r_skyLast 1`: the sky after the opaque world (it was drawn first; now the world hides most of it). Fragments passing the depth test 83% → 65% | 30.5 | 20.2 |
+| `r_sortDepth 32`: opaque surfaces nearest first, each shader placed by its nearest surface (same texture binds). Passing fragments → 57% with per-surface order, but that costs 60 more texture binds a frame (`r_sortDepthSurfaces 1`: 30.9), about 20 µs each in Mesa | 31.1 | 20.4 |
+| `Q_ftol` as one VFP instruction (`vcvtr`) instead of UnixLib's C `lrintf` | (in the above) | (in the above) |
+| riscos-mesa built from source with `fast_tex_image`'s mip level from the float exponent (no `sqrtf`/`log2f` a triangle) and `_mesa_lroundevenf` as `vcvtr` (`riscos/mesa/apply-lodbits.py`, `apply-vfpround.py`) | 31.3 | — |
+| The same Mesa built `-mtune=cortex-a53` (`riscos/mesa/build.sh`'s default: faster on the Pi 4 too, 31.7 twice against 31.4, so one build serves both) | 31.7 | 21.3 (20.7 from the tuning alone) |
+| `r_subdivisions 8` (curves in fewer triangles, so fewer spans; 12 and 20 gain no more, so the least visible is the default) | 32.3 | — |
+| Mesa's `FloatToFixed` in the triangle setup (100,000 UnixLib `lroundf` calls a frame, 2%) as one `vcvtr` (`apply-fixedsetup.py`, `apply-fixedvfp.py`; ties round to even) | 33.2 | 22.3 |
+| `r_textureMode GL_NEAREST_MIPMAP_NEAREST_LINEAR` (new mode: one texel instead of four for minified textures, bilinear kept for magnified; no visible change at 480x300. All nearest is 37.6 but blocky up close, and on the Pi 3 no faster: 23.7) | 36.3 | 23.6 |
+
+No measurable change: 16-bit depth buffer (`r_depthbits 16`), the depth-first
+route engaging at a 5% failure share instead of 20% (`RO_ZF_SHARE`), a NEON
+64-byte-store copy of the frame into the overlay in riscos-mesa's EGL (the
+overlay's uncached memory takes `memcpy` just as fast: full screen 30.8 and
+31.4 fps either way; not kept). `r_depthbits 32` is
+refused by OSMesa (GLimp_Init fails). Slower: `r_primitives 1` and `3`
+(strips through `glArrayElement` or immediate mode: 17.7 and 18.3 on the Pi
+3 against 20.4), and in Mesa's spans, copying the pixels with NEON loads and
+stores instead of UnixLib's `memcpy` (30.9 against 33.2) or filling the mask
+with a word loop instead of its `memset` (31.4 against 33.3): the library
+calls are the quick way. A NEON version of the nearest-texel span
+(`SPAN_NEAREST`, 4.8% of a frame once it was the minifying filter) ran at
+the same speed: its cost is the scattered texel loads, not the arithmetic. The Pi 3's
+profile (`riscos/prof.sh`, four demo loops) has the same shape as the Pi
+4's: the nearest span 5.3%, Mesa's span writer 3.0%, the triangle setup
+2.2%, the depth test about 4%, the rest spread thinly through Mesa.
+
+Game-side settings measured at 480x300 on the Pi 4 against a 36.0 control:
+`r_dynamiclight 0` 36.3, `cg_shadows 0` 36.6, `cg_marks 0` 36.9,
+`cg_simpleItems 1` 36.4, `cg_brassTime 0` 35.9, and the first three together
+36.3. Each is at most a frame a second for something visible (muzzle light,
+blob shadows, bullet marks), so none is a default. `r_picmip 1` and `2`
+(textures at half and quarter size) are 36.0 and 35.7: the texel loads that
+the profile shows aren't cache misses. The Pi 3 at 320x200 agrees: 23.6
+control, 23.6 and 23.7 with picmip, 24.1 with the three settings together.
+
+OpenArena, live on oa_dm2 full screen for two minutes with v0.1.1: 11.9 fps
+average (4 to 17), against the 10.9 (4 to 16) of the ten minute v0.1.0 soak;
+its maps' overdraw is what the depth ordering is for, but live play is a
+rough measure.
+
+The engine's draw calls can't usefully go below one per visible shader
+(about 90 a frame), and each costs Mesa about 20 µs of state validation and
+setup, so what the finer depth order saves in texturing it loses in binds.
+
+Also looked at, afternoon of the same day:
+
+- Sound off (`s_initsound 0`, so no OpenAL mixer thread): 36.2 against 35.9
+  and 36.1 with it. The mixer and the main thread's yields to it cost nothing
+  measurable. (70% of the Q3Prof samples sit at UnixLib's yield return point:
+  the sampler takes one each time the main thread yields voluntarily, about 13
+  a frame, so that line counts events, not time. The active samples are the
+  profile.)
+- Profile-guided optimisation of Mesa: not possible with this toolchain. Its
+  `libgcov.a` is stubs (every routine a single return, no `__gcov_exit`), so
+  an instrumented build doesn't link and would write nothing if it did.
+- Mesa compiled `-mfpu=neon-vfpv4` throughout (`MESA_FPU=neon-vfpv4
+  riscos/mesa/build.sh`), so GCC may vectorise everywhere rather than only in
+  riscos-mesa's hand-written NEON files: 34.7 and 34.9 against 35.8 and 36.1
+  for the default `vfpv3` build, alternated on the Pi 4. Slower; not kept.
+- riscos-mesa's span writer already has a fused fast route
+  (`ro_write_rgba_span_fast`, 99% of spans) and a depth-first one, so the
+  "one loop for depth, texel, modulate and write" idea is largely done
+  upstream; what remains per pixel is the texel gather and the depth test.
 
 ## Known issues
 

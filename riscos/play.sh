@@ -5,8 +5,11 @@
 set -e
 RO=${RO:-$HOME/code/RORTH/tools/ro-run}
 T=$1; L=$2; SECS=$3; shift 3
-APP=q3.!ioquake3
+APP=${APP:-q3.!ioquake3}
 D=$(mktemp -d)
+# cvar settings come in pairs; an odd count (a quoted pair, or zsh's unsplit
+# $VAR) silently set nothing once
+[ $(($# % 2)) -eq 0 ] || { echo "play: cvar settings must be name value pairs, got: $*" >&2; exit 2; }
 W=$((SECS * 2))   # waits of 30 frames at about 60 fps: rough; the timer ends it
 {
   echo 'set r_fullscreen 0'
@@ -35,11 +38,12 @@ $RO -t $T rm "$APP.${GAME:-demoq3}.q3config/cfg" >/dev/null 2>&1 || true
 $RO -t $T launch "Run $APP +set logfile 2 +set com_basegame ${GAME:-demoq3} +set sv_pure 0 +exec play.cfg" >/dev/null 2>&1 || true
 sleep $SECS
 $RO -t $T get "$APP.${GAME:-demoq3}.qconsole/log" $D/qconsole.log >/dev/null 2>&1 || true
-# A full screen game has the machine to itself: restart to end it
-if grep -q 'r_fullscreen "1"' $D/play.cfg; then
+# Message_Quit ends it, full screen too (the game saves its settings on
+# it); a restart only if it is still there
+$RO -t $T quit '!RunImage' >/dev/null 2>&1 || $RO -t $T quit ioquake3 >/dev/null 2>&1 || true
+sleep 8
+if $RO -t $T tasks 2>/dev/null | grep -q ioquake3; then
   $RO -t $T reboot >/dev/null 2>&1 || true
-else
-  $RO -t $T quit '!RunImage' >/dev/null 2>&1 || true
 fi
 cp $D/qconsole.log "build/last-play-$T.log"
 echo "== $(date '+%H:%M') $T $L" | tee -a play-results.txt

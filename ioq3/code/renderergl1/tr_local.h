@@ -326,6 +326,8 @@ typedef struct shader_s {
 
 	int			index;					// this shader == tr.shaders[index]
 	int			sortedIndex;			// this shader == tr.sortedShaders[sortedIndex]
+	int			bucketView;				// tr.viewCount minBucket is for
+	int			minBucket;				// the nearest depth bucket of its surfaces in that view (r_sortDepth)
 
 	float		sort;					// lower numbered shaders draw before higher numbered
 
@@ -498,6 +500,7 @@ typedef enum {
 
 typedef struct drawSurf_s {
 	unsigned			sort;			// bit combination for fast compares
+	unsigned			order;			// sorted on before sort: (class << 8) | depth bucket (r_sortDepth, r_skyLast)
 	surfaceType_t		*surface;		// any of surface*_t
 } drawSurf_t;
 
@@ -925,6 +928,7 @@ typedef struct {
 	trRefEntity_t			worldEntity;		// point currentEntity at this when rendering world
 	int						currentEntityNum;
 	int						shiftedEntityNum;	// currentEntityNum << QSORT_REFENTITYNUM_SHIFT
+	int						depthBucket;		// of the leaf or entity being added (r_sortDepth): 0 nearest
 	model_t					*currentModel;
 
 	viewParms_t				viewParms;
@@ -1040,8 +1044,11 @@ extern	cvar_t	*r_offsetUnits;
 
 extern	cvar_t	*r_fullbright;					// avoid lightmap pass
 extern	cvar_t	*r_lightmap;					// render lightmaps only
-extern	cvar_t	*r_glFastest;
-extern	cvar_t	*r_textureRGBA;					// upload opaque textures with four bytes a texel					// GL_FASTEST perspective hint (software GL: one mip level per triangle)
+extern	cvar_t	*r_glFastest;					// GL_FASTEST perspective hint (software GL: one mip level per triangle)
+extern	cvar_t	*r_textureRGBA;					// upload opaque textures with four bytes a texel
+extern	cvar_t	*r_sortDepth;					// draw opaque surfaces nearest first, in buckets this many units deep (0: by shader only)
+extern	cvar_t	*r_skyLast;
+extern	cvar_t	*r_sortDepthSurfaces;			// r_sortDepth orders each surface (more texture binds) rather than each shader by its nearest surface						// draw the sky after the opaque surfaces, which hide most of it
 extern	cvar_t	*r_vertexLight;					// vertex lighting mode for better performance
 extern	cvar_t	*r_uiFullScreen;				// ui is running fullscreen
 
@@ -1101,6 +1108,7 @@ void R_DecomposeSort( unsigned sort, int *entityNum, shader_t **shader,
 					 int *fogNum, int *dlightMap );
 
 void R_AddDrawSurf( surfaceType_t *surface, shader_t *shader, int fogIndex, int dlightMap );
+int R_DepthBucket( const vec3_t mins, const vec3_t maxs );
 
 
 #define	CULL_IN		0		// completely unclipped

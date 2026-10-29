@@ -1,6 +1,6 @@
 ioquake3 for RISC OS
 ====================
-Version 0.1.0 (27 Oct 2026)
+Version 0.1.1 (27 Oct 2026)
 
 Quake III Arena's engine (ioquake3), for RISC OS 5 on a Raspberry Pi 2 or
 later (best on a Pi 4). The 3D is drawn by the processor, with riscos-mesa's
@@ -56,8 +56,20 @@ Settings that matter for speed (in the console, or q3config.cfg):
   r_ext_multitexture 0 two passes instead of two texture units, which
                        riscos-mesa does slowly (lightmaps and
                        OpenArena: 2 to 3 times as fast)
+  r_skyLast 1          the sky drawn after the world, which hides most
+                       of it (about 5% faster; 0 draws it first)
+  r_sortDepth 32       the world drawn nearest first, in steps this many
+                       units deep, so riscos-mesa skips texturing what
+                       is hidden (about 2% faster; 0: by texture only)
+  r_textureMode GL_NEAREST_MIPMAP_NEAREST_LINEAR
+                       distant textures from one texel, close ones
+                       smoothed (about 9% faster than
+                       GL_LINEAR_MIPMAP_NEAREST, which blends four;
+                       GL_NEAREST_MIPMAP_NEAREST is a further 4% but
+                       blocky up close)
 
-Each of these needs vid_restart (or a restart) to take effect.
+Each of these but the last three needs vid_restart (or a restart) to take
+effect.
 
 Windowed: r_fullscreen 0, r_mode -1, r_customwidth/r_customheight.
 

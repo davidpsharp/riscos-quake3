@@ -88,3 +88,137 @@
 00:47 pi3 Pi 3: 320x200 window: 833 frames 42.3 seconds 19.7 fps 21.0/50.8/85.0/11.2 ms
 00:48 pi3 Pi 3: 320x200 window, fastsky + nearest: 833 frames 35.1 seconds 23.7 fps 19.0/42.2/69.0/9.1 ms
 01:04 pi3 Pi 3: full screen, 200 lines (new Pi 3 default): 833 frames 42.3 seconds 19.7 fps 20.0/50.7/84.0/11.2 ms
+07:48 pi4-plato v0.1.0 baseline 480x300: 833 frames 28.9 seconds 28.9 fps 15.0/34.7/59.0/7.4 ms
+07:48 pi3 v0.1.0 baseline 320x200: 833 frames 42.3 seconds 19.7 fps 19.0/50.8/83.0/11.1 ms
+07:51 pi4-plato sortDepth 32 skyLast 1 480x300: 833 frames 27.4 seconds 30.4 fps 14.0/32.9/57.0/6.6 ms
+07:51 pi3 sortDepth 32 skyLast 1 320x200: 833 frames 41.7 seconds 20.0 fps 19.0/50.1/80.0/10.7 ms
+07:51 pi4-plato sortDepth 0 skyLast 1 480x300: 833 frames 27.3 seconds 30.5 fps 15.0/32.8/55.0/6.7 ms
+07:52 pi3 sortDepth 0 skyLast 1 320x200: 833 frames 41.2 seconds 20.2 fps 21.0/49.4/80.0/10.7 ms
+07:52 pi4-plato sortDepth 0 skyLast 0 480x300: 833 frames 28.6 seconds 29.1 fps 15.0/34.4/60.0/7.3 ms
+07:53 pi4-plato sortDepth 64 skyLast 1 480x300: 833 frames 27.1 seconds 30.8 fps 15.0/32.5/57.0/6.6 ms
+07:54 pi4-plato sortDepth 16 skyLast 1 480x300: 833 frames 27.5 seconds 30.3 fps 15.0/33.0/55.0/6.7 ms
+07:54 pi3 sortDepth 32 skyLast 1 stencil 0 320x200: 833 frames 41.8 seconds 19.9 fps 20.0/50.1/81.0/10.7 ms
+07:56 pi4-plato stats sort0 sky0: 833 frames 29.4 seconds 28.3 fps 16.0/35.3/84.0/7.7 ms
+07:57 pi4-plato stats sort0 sky1: 833 frames 28.2 seconds 29.6 fps 15.0/33.8/83.0/7.2 ms
+07:57 pi3 sort32 sky1 depthbits 16 320x200: 833 frames 41.8 seconds 19.9 fps 19.0/50.1/90.0/10.7 ms
+07:57 pi4-plato stats sort32 sky1: 833 frames 28.1 seconds 29.6 fps 15.0/33.7/82.0/7.0 ms
+07:58 pi4-plato speeds sort0 sky1: 833 frames 31.5 seconds 26.4 fps 19.0/37.8/78.0/7.5 ms
+07:59 pi4-plato speeds sort32 sky1: 833 frames 31.3 seconds 26.6 fps 19.0/37.5/81.0/7.4 ms
+08:00 pi4-plato zf20 mesa, sort32 sky1 480x300: 833 frames 27.7 seconds 30.0 fps 15.0/33.3/56.0/6.8 ms
+08:01 pi4-plato zf20 mesa, sort0 sky1 480x300: 833 frames 27.4 seconds 30.5 fps 15.0/32.8/56.0/6.7 ms
+08:02 pi4-plato zf20 mesa, sort0 sky0 480x300: 833 frames 29.0 seconds 28.7 fps 15.0/34.9/60.0/7.4 ms
+08:04 pi4-plato ftol, shader-sort32 sky1 480x300: 833 frames 26.8 seconds 31.1 fps 15.0/32.1/54.0/6.5 ms
+08:04 pi4-plato ftol, surface-sort32 sky1 480x300: 833 frames 27.0 seconds 30.9 fps 14.0/32.4/55.0/6.5 ms
+08:05 pi4-plato ftol, sort0 sky1 480x300: 833 frames 27.2 seconds 30.6 fps 14.0/32.7/56.0/6.7 ms
+08:06 pi4-plato prof surface-sort32: 833 frames 27.2 seconds 30.6 fps 15.0/32.6/54.0/6.6 ms
+08:06 pi3 a53 mesa, sort32 sky1 320x200: 833 frames 40.2 seconds 20.7 fps 21.0/48.3/85.0/10.4 ms
+08:07 pi4-plato prof shader-sort32: 833 frames 26.7 seconds 31.2 fps 15.0/32.0/53.0/6.5 ms
+08:07 pi3 a53 mesa again 320x200: 833 frames 40.2 seconds 20.7 fps 19.0/48.3/77.0/10.3 ms
+08:09 pi4-plato lodbits mesa, shader-sort32 sky1 480x300: 833 frames 26.6 seconds 31.3 fps 15.0/31.9/52.0/6.5 ms
+08:09 pi4-plato lodbits mesa again: 833 frames 26.6 seconds 31.3 fps 15.0/31.9/55.0/6.5 ms
+08:14 pi4-plato vfpround+lodbits mesa, shader-sort32 sky1 480x300: 833 frames 26.6 seconds 31.3 fps 15.0/32.0/54.0/6.5 ms
+08:14 pi4-plato vfpround+lodbits again: 833 frames 26.6 seconds 31.4 fps 15.0/31.9/54.0/6.5 ms
+08:15 pi3 a53+vfpround+lodbits+ftol, sort32 sky1 320x200: 833 frames 39.1 seconds 21.3 fps 20.0/46.9/86.0/10.2 ms
+08:16 pi3 a53+vfpround+lodbits+ftol again: 833 frames 39.0 seconds 21.3 fps 20.0/46.8/78.0/10.1 ms
+08:16 pi4-plato neon overlay copy, shader-sort32 sky1 480x300: 833 frames 26.7 seconds 31.2 fps 14.0/32.1/54.0/6.5 ms
+08:17 pi4-plato neon overlay copy again: 833 frames 26.6 seconds 31.3 fps 15.0/32.0/55.0/6.5 ms
+08:17 pi3 devkit mesa + ftol, shader-sort32 sky1 320x200: 833 frames 40.9 seconds 20.4 fps 21.0/49.1/81.0/10.5 ms
+08:18 pi4-plato neon overlay copy, FULL SCREEN 300 lines: 833 frames 44.1 seconds 18.9 fps 28.0/53.0/94.0/10.0 ms
+08:18 pi3 devkit mesa + ftol, sort0 sky1 320x200: 833 frames 41.1 seconds 20.3 fps 20.0/49.3/80.0/10.7 ms
+08:20 pi3 devkit+ftol r_primitives 1 (strips, glArrayElement) 320x200: 833 frames 47.1 seconds 17.7 fps 23.0/56.5/92.0/12.2 ms
+08:20 pi4-plato neon overlay copy, full screen mode -2, 300 lines: 833 frames 27.1 seconds 30.8 fps 15.0/32.5/65.0/6.6 ms
+08:21 pi3 devkit+ftol r_primitives 3 (strips, immediate) 320x200: 833 frames 45.5 seconds 18.3 fps 23.0/54.6/93.0/11.7 ms
+08:21 pi4-plato neon overlay copy, full screen again: 833 frames 26.8 seconds 31.0 fps 15.0/32.2/53.0/6.5 ms
+08:22 pi4-plato memcpy overlay, full screen mode -2, 300 lines: 833 frames 27.0 seconds 30.8 fps 15.0/32.4/58.0/6.6 ms
+08:23 pi4-plato memcpy overlay, full screen again: 833 frames 26.5 seconds 31.4 fps 15.0/31.8/54.0/6.4 ms
+08:24 pi4-plato two-tier near 8, 480x300: 833 frames 26.5 seconds 31.5 fps 14.0/31.8/55.0/6.4 ms
+08:25 pi4-plato two-tier near 4, 480x300: 833 frames 26.5 seconds 31.4 fps 15.0/31.8/55.0/6.5 ms
+08:25 pi3 a53 two-tier near 8, 320x200: 833 frames 39.0 seconds 21.3 fps 18.0/46.9/79.0/10.2 ms
+08:25 pi4-plato two-tier near 16, 480x300: 833 frames 26.6 seconds 31.3 fps 14.0/31.9/54.0/6.4 ms
+08:26 pi4-plato per-shader control, 480x300: 833 frames 26.6 seconds 31.3 fps 15.0/31.9/53.0/6.5 ms
+08:26 pi3 a53 per-shader control, 320x200: 833 frames 39.1 seconds 21.3 fps 20.0/46.9/78.0/10.2 ms
+08:28 pi4-plato A53-tuned Mesa on the Pi 4, 480x300: 833 frames 26.3 seconds 31.7 fps 15.0/31.6/55.0/6.5 ms
+08:29 pi3 v0.1.1 candidate (A53 Mesa), full screen 200 lines: 833 frames 39.0 seconds 21.3 fps 19.0/46.9/74.0/10.1 ms
+08:29 pi4-plato v0.1.1 candidate (A72 Mesa), 480x300: 833 frames 26.5 seconds 31.4 fps 14.0/31.8/52.0/6.4 ms
+08:30 pi3 v0.1.1 candidate (A53 Mesa), 320x200 window: 833 frames 39.0 seconds 21.3 fps 19.0/46.8/77.0/10.1 ms
+08:30 pi4-plato v0.1.1 candidate, full screen mode -2: 833 frames 26.5 seconds 31.4 fps 15.0/31.8/53.0/6.5 ms
+08:31 pi4-plato A53-tuned Mesa on the Pi 4 again, 480x300: 833 frames 26.3 seconds 31.7 fps 15.0/31.6/54.0/6.4 ms
+08:32 pi4-plato A53-tuned Mesa on the Pi 4, full screen mode -2: 833 frames 26.3 seconds 31.6 fps 14.0/31.6/54.0/6.5 ms
+08:33 pi4-plato A72 Mesa again, 480x300: 833 frames 26.5 seconds 31.4 fps 14.0/31.8/53.0/6.5 ms
+08:34 pi4-plato v0.1.1 packaged, 480x300 window, no overlay (screenshot run): 833 frames 26.3 seconds 31.7 fps 15.0/31.6/54.0/6.5 ms
+08:34 pi4-plato v0.1.1 packaged, full screen mode -2: 833 frames 26.4 seconds 31.6 fps 15.0/31.7/52.0/6.4 ms
+08:35 pi4-plato v0.1.1 screenshot run 2, no overlay: 833 frames 26.7 seconds 31.2 fps 14.0/32.1/60.0/6.8 ms
+08:39 pi4-plato v0.1.1 r_subdivisions 20 (fewer curve triangles): 833 frames 25.8 seconds 32.3 fps 15.0/30.9/52.0/6.2 ms
+08:40 pi4-plato v0.1.1 r_lodbias 2 (coarser models): 833 frames 26.1 seconds 31.9 fps 14.0/31.4/54.0/6.4 ms
+08:41 pi4-plato v0.1.1 control: 833 frames 26.4 seconds 31.6 fps 15.0/31.6/53.0/6.5 ms
+08:42 pi4-plato v0.1.1 r_subdivisions 8: 833 frames 25.8 seconds 32.3 fps 15.0/31.0/53.0/6.2 ms
+08:42 pi4-plato v0.1.1 r_subdivisions 12: 833 frames 25.7 seconds 32.4 fps 14.0/30.9/52.0/6.1 ms
+08:43 pi4-plato v0.1.1 r_subdivisions 20 again: 833 frames 25.7 seconds 32.4 fps 15.0/30.9/51.0/6.1 ms
+08:44 pi4-plato fmtbytes mesa, 480x300: 833 frames 26.4 seconds 31.6 fps 14.0/31.7/53.0/6.5 ms
+08:45 pi4-plato fmtbytes mesa again: 833 frames 26.2 seconds 31.8 fps 15.0/31.5/55.0/6.5 ms
+08:46 pi4-plato fmtbytes, r_lodbias 1: 833 frames 26.6 seconds 31.3 fps 15.0/31.9/53.0/6.5 ms
+08:46 pi4-plato fmtbytes, r_subdivisions 8 r_lodbias 1: 833 frames 25.5 seconds 32.6 fps 14.0/30.6/52.0/6.1 ms
+08:48 pi4-plato v0.1.1 final package, full screen mode -2: 833 frames 25.8 seconds 32.2 fps 15.0/31.0/52.0/6.2 ms
+08:50 pi3 v0.1.1 final package, full screen 200 lines: 833 frames 38.1 seconds 21.9 fps 20.0/45.8/75.0/9.7 ms
+08:50 pi4-plato v0.1.1 final package, 480x300 window: 833 frames 25.8 seconds 32.3 fps 15.0/30.9/52.0/6.1 ms
+08:52 pi4-plato prof x4 per-surface: 833 frames 26.5 seconds 31.4 fps 15.0/31.8/60.0/6.4 ms
+08:55 pi4-plato prof x4 per-shader: 833 frames 26.6 seconds 31.3 fps 15.0/31.9/54.0/6.5 ms
+08:58 pi4-plato fixedsetup mesa, 480x300: 833 frames 25.8 seconds 32.3 fps 14.0/31.0/49.0/6.2 ms
+08:59 pi4-plato fixedsetup mesa again: 833 frames 25.8 seconds 32.3 fps 14.0/31.0/51.0/6.2 ms
+09:00 pi4-plato fixedvfp mesa, 480x300: 833 frames 25.1 seconds 33.2 fps 14.0/30.1/51.0/6.0 ms
+09:01 pi4-plato fixedvfp mesa again: 833 frames 25.1 seconds 33.2 fps 14.0/30.1/50.0/6.0 ms
+09:02 pi3 fixedvfp, full screen 200 lines: 833 frames 37.4 seconds 22.2 fps 20.0/45.0/75.0/9.5 ms
+09:03 pi3 fixedvfp, 320x200 window: 833 frames 37.4 seconds 22.3 fps 19.0/44.9/74.0/9.4 ms
+09:03 pi4-plato prof x4 fixedvfp: 833 frames 25.5 seconds 32.7 fps 14.0/30.6/54.0/6.1 ms
+09:06 pi4-plato spancopy mesa, 480x300: 833 frames 26.9 seconds 31.0 fps 15.0/32.3/55.0/6.3 ms
+09:07 pi4-plato spancopy mesa again: 833 frames 27.1 seconds 30.8 fps 16.0/32.5/58.0/6.4 ms
+09:08 pi4-plato maskfill mesa, 480x300: 833 frames 26.7 seconds 31.2 fps 15.0/32.0/54.0/6.3 ms
+09:09 pi4-plato maskfill mesa again: 833 frames 26.5 seconds 31.4 fps 15.0/31.8/53.0/6.3 ms
+09:14 pi4-plato maskfill mesa after 4 min idle: 833 frames 26.5 seconds 31.4 fps 15.0/31.8/55.0/6.3 ms
+09:15 pi4-plato A/B fixedvfp (no maskfill): 833 frames 25.0 seconds 33.3 fps 14.0/30.1/51.0/6.0 ms
+09:16 pi4-plato A/B maskfill: 833 frames 26.5 seconds 31.4 fps 15.0/31.8/53.0/6.3 ms
+09:16 pi4-plato A/B fixedvfp (no maskfill) again: 833 frames 25.1 seconds 33.2 fps 14.0/30.2/50.0/6.0 ms
+09:18 pi4-plato v0.1.1 package 2, full screen mode -2: 833 frames 25.1 seconds 33.2 fps 15.0/30.1/51.0/6.0 ms
+09:19 pi3 v0.1.1 package 2, full screen 200 lines: 833 frames 37.5 seconds 22.2 fps 19.0/45.0/75.0/9.5 ms
+09:27 pi4-plato textureMode NEAREST_MIPMAP_NEAREST_LINEAR (near bilinear, far nearest): 833 frames 22.9 seconds 36.3 fps 14.0/27.5/49.0/5.6 ms
+09:27 pi4-plato textureMode NEAREST_MIPMAP_NEAREST (all nearest): 833 frames 22.2 seconds 37.6 fps 13.0/26.6/46.0/5.3 ms
+09:28 pi4-plato textureMode default (bilinear): 833 frames 25.1 seconds 33.2 fps 14.0/30.1/51.0/6.0 ms
+09:34 pi4-plato v0.1.1 package 3 (texmode default), 480x300: 833 frames 23.4 seconds 35.6 fps 14.0/28.1/48.0/5.7 ms
+09:35 pi4-plato v0.1.1 package 3, full screen mode -2: 833 frames 23.1 seconds 36.1 fps 13.0/27.7/49.0/5.6 ms
+09:36 pi3 v0.1.1 package 3, full screen 200 lines: 833 frames 35.4 seconds 23.5 fps 19.0/42.5/67.0/8.8 ms
+09:37 pi3 package 3, 320x200 window: 833 frames 35.3 seconds 23.6 fps 17.0/42.4/73.0/8.8 ms
+09:38 pi3 package 3, all nearest, 320x200: 833 frames 35.1 seconds 23.7 fps 18.0/42.2/71.0/8.8 ms
+09:40 pi4-plato prof x4 texmode: 833 frames 23.6 seconds 35.3 fps 14.0/28.3/51.0/5.8 ms
+09:43 pi4-plato (unchanged build, patch had not applied): 833 frames 22.8 seconds 36.5 fps 13.0/27.4/49.0/5.6 ms
+09:45 pi4-plato neonnearest mesa, 480x300: 833 frames 23.6 seconds 35.3 fps 14.0/28.3/47.0/5.8 ms
+09:45 pi4-plato neonnearest mesa again: 833 frames 23.6 seconds 35.3 fps 14.0/28.3/51.0/5.8 ms
+09:48 pi4-plato prof x4 neonnearest: 833 frames 24.3 seconds 34.2 fps 14.0/29.2/52.0/6.0 ms
+09:49 pi4-plato INVALID (args lost: ran at 320x240 or 480x240 without the cvar) pkg3 control: 833 frames 16.4 seconds 50.9 fps 10.0/19.7/45.0/4.0 ms
+09:50 pi4-plato INVALID (args lost: ran at 320x240 or 480x240 without the cvar) pkg3 r_dynamiclight 0: 833 frames 19.4 seconds 43.0 fps 11.0/23.3/42.0/5.0 ms
+09:50 pi4-plato INVALID (args lost: ran at 320x240 or 480x240 without the cvar) pkg3 cg_shadows 0: 833 frames 19.4 seconds 43.0 fps 11.0/23.2/41.0/4.9 ms
+09:51 pi4-plato INVALID (args lost: ran at 320x240 or 480x240 without the cvar) pkg3 cg_marks 0: 833 frames 19.3 seconds 43.1 fps 11.0/23.2/37.0/4.9 ms
+09:52 pi4-plato INVALID (args lost: ran at 320x240 or 480x240 without the cvar) pkg3 cg_simpleItems 1: 833 frames 19.4 seconds 42.9 fps 11.0/23.3/40.0/4.9 ms
+09:52 pi4-plato INVALID (args lost: ran at 320x240 or 480x240 without the cvar) pkg3 cg_brassTime 0: 833 frames 19.5 seconds 42.8 fps 11.0/23.4/38.0/5.0 ms
+09:53 pi4-plato INVALID (args lost: ran at 320x240 or 480x240 without the cvar) pkg3 r_lodbias 1: 833 frames 19.6 seconds 42.5 fps 10.0/23.5/43.0/5.0 ms
+09:54 pi4-plato INVALID (args lost: ran at 320x240 or 480x240 without the cvar) pkg3 control again: 833 frames 16.4 seconds 50.6 fps 10.0/19.7/33.0/3.9 ms
+09:59 pi4-plato pkg3 control 480x300: 833 frames 23.1 seconds 36.0 fps 14.0/27.7/49.0/5.6 ms
+09:59 pi4-plato pkg3 r_dynamiclight 0: 833 frames 23.0 seconds 36.3 fps 14.0/27.6/47.0/5.6 ms
+10:00 pi4-plato pkg3 cg_shadows 0: 833 frames 22.7 seconds 36.6 fps 12.0/27.3/50.0/5.5 ms
+10:01 pi4-plato pkg3 cg_marks 0: 833 frames 22.6 seconds 36.9 fps 13.0/27.1/48.0/5.3 ms
+10:01 pi4-plato pkg3 cg_simpleItems 1: 833 frames 22.9 seconds 36.4 fps 14.0/27.5/49.0/5.6 ms
+10:02 pi4-plato pkg3 cg_brassTime 0: 833 frames 23.2 seconds 35.9 fps 14.0/27.8/51.0/5.7 ms
+10:03 pi4-plato pkg3 r_picmip 1: 833 frames 23.2 seconds 36.0 fps 13.0/27.8/47.0/5.6 ms
+10:03 pi3 pkg3 control 320x200: 833 frames 35.3 seconds 23.6 fps 19.0/42.4/69.0/8.8 ms
+10:04 pi4-plato pkg3 r_picmip 2: 833 frames 23.3 seconds 35.7 fps 15.0/28.0/50.0/5.6 ms
+10:04 pi4-plato pkg3 cg_marks 0 cg_shadows 0 r_dynamiclight 0: 833 frames 22.9 seconds 36.3 fps 14.0/27.5/53.0/5.5 ms
+10:04 pi3 pkg3 r_picmip 1: 833 frames 35.3 seconds 23.6 fps 19.0/42.4/69.0/8.8 ms
+10:05 pi3 pkg3 r_picmip 2: 833 frames 35.1 seconds 23.7 fps 19.0/42.2/73.0/8.8 ms
+10:06 pi3 pkg3 cg_marks 0 cg_shadows 0 r_dynamiclight 0: 833 frames 34.5 seconds 24.1 fps 17.0/41.4/66.0/8.4 ms
+10:10 pi3 prof pi3 x4 texmode: 833 frames 35.8 seconds 23.3 fps 19.0/42.9/70.0/8.9 ms
+12:29 pi4-plato sound on control: 833 frames 23.2 seconds 35.9 fps 14.0/27.9/49.0/5.6 ms
+12:30 pi4-plato s_initsound 0: 833 frames 23.0 seconds 36.2 fps 14.0/27.6/46.0/5.6 ms
+12:31 pi4-plato sound on control 2: 833 frames 23.1 seconds 36.1 fps 14.0/27.7/46.0/5.6 ms
+22:46 pi4-plato mesa v011: 833 frames 23.3 seconds 35.8 fps 14.0/28.0/75.0/6.0 ms
+22:47 pi4-plato mesa neon: 833 frames 24.0 seconds 34.7 fps 15.0/28.8/52.0/5.8 ms
+22:48 pi4-plato mesa v011: 833 frames 23.1 seconds 36.1 fps 13.0/27.7/50.0/5.6 ms
+22:49 pi4-plato mesa neon: 833 frames 23.9 seconds 34.9 fps 14.0/28.7/50.0/5.8 ms

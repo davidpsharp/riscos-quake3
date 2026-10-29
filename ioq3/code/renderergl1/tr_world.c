@@ -443,11 +443,19 @@ static void R_RecursiveWorldNode( mnode_t *node, unsigned int planeBits, unsigne
 		}
 
 		// recurse down the children, front side first
-		R_RecursiveWorldNode (node->children[0], planeBits, newDlights[0] );
+		// (with r_sortDepth, the view's side first: a surface in several
+		// leafs is added, and so bucketed, from the nearest)
+		{
+			int side = 0;
+			if ( r_sortDepth->value > 0 && DotProduct( tr.viewParms.or.origin, node->plane->normal ) < node->plane->dist ) {
+				side = 1;
+			}
+			R_RecursiveWorldNode (node->children[side], planeBits, newDlights[side] );
 
-		// tail recurse
-		node = node->children[1];
-		dlightBits = newDlights[1];
+			// tail recurse
+			node = node->children[side ^ 1];
+			dlightBits = newDlights[side ^ 1];
+		}
 	} while ( 1 );
 
 	{
@@ -479,6 +487,7 @@ static void R_RecursiveWorldNode( mnode_t *node, unsigned int planeBits, unsigne
 		}
 
 		// add the individual surfaces
+		tr.depthBucket = R_DepthBucket( node->mins, node->maxs );
 		mark = node->firstmarksurface;
 		c = node->nummarksurfaces;
 		while (c--) {

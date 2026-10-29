@@ -158,3 +158,30 @@ fpslog: 10.2 fps, ms/frame all 98.1 sv 2.4 game 0.9 cl 90.5 rfront 0.0 rback 0.0
 fpslog: 10.6 fps, ms/frame all 94.6 sv 2.2 game 4.2 cl 84.1 rfront 0.0 rback 0.0
 fpslog: 14.7 fps, ms/frame all 65.6 sv 1.8 game 0.7 cl 60.1 rfront 0.0 rback 0.0
 fpslog: 12.7 fps, ms/frame all 75.8 sv 2.3 game 3.5 cl 66.8 rfront 0.0 rback 0.0
+== 09:22 pi4-socrates v0.1.1 OpenArena oa_dm2 full screen
+fpslog: 13.4 fps, ms/frame all 74.7 sv 1.7 game 0.8 cl 69.0 rfront 0.0 rback 0.0
+fpslog: 11.9 fps, ms/frame all 81.0 sv 1.8 game 0.7 cl 74.8 rfront 0.0 rback 0.0
+fpslog: 11.8 fps, ms/frame all 84.7 sv 1.9 game 0.7 cl 78.4 rfront 0.0 rback 0.0
+fpslog: 16.9 fps, ms/frame all 59.0 sv 1.5 game 0.6 cl 54.4 rfront 0.0 rback 0.0
+fpslog: 13.7 fps, ms/frame all 73.0 sv 1.6 game 3.1 cl 64.9 rfront 0.0 rback 0.0
+fpslog: 12.1 fps, ms/frame all 79.9 sv 1.7 game 0.7 cl 73.5 rfront 0.0 rback 0.0
+fpslog: 16.3 fps, ms/frame all 61.2 sv 1.4 game 0.7 cl 56.2 rfront 0.0 rback 0.0
+fpslog: 12.2 fps, ms/frame all 79.0 sv 1.6 game 3.5 cl 70.7 rfront 0.0 rback 0.0
+== 09:25 pi4-plato v0.1.1 soak q3dm1 full screen
+fpslog: 27.4 fps, ms/frame all 36.5 sv 1.0 game 1.0 cl 32.9 rfront 0.0 rback 0.0
+fpslog: 27.1 fps, ms/frame all 36.9 sv 1.0 game 0.3 cl 33.9 rfront 0.0 rback 0.0
+fpslog: 30.5 fps, ms/frame all 32.7 sv 0.9 game 0.3 cl 30.1 rfront 0.0 rback 0.0
+fpslog: 31.4 fps, ms/frame all 31.2 sv 0.9 game 0.9 cl 28.1 rfront 0.0 rback 0.0
+fpslog: 33.4 fps, ms/frame all 30.0 sv 0.9 game 0.3 cl 27.4 rfront 0.0 rback 0.0
+fpslog: 34.0 fps, ms/frame all 29.4 sv 0.9 game 0.3 cl 26.9 rfront 0.0 rback 0.0
+fpslog: 23.0 fps, ms/frame all 42.8 sv 1.1 game 0.3 cl 39.4 rfront 0.0 rback 0.0
+fpslog: 22.1 fps, ms/frame all 44.6 sv 1.2 game 1.1 cl 40.1 rfront 0.0 rback 0.0
+== 09:41 pi4-socrates v0.1.1 pkg 3 (texmode) OpenArena oa_dm2 full screen
+fpslog: 11.2 fps, ms/frame all 89.3 sv 1.8 game 0.9 cl 82.5 rfront 0.0 rback 0.0
+fpslog: 13.0 fps, ms/frame all 74.4 sv 1.6 game 0.6 cl 68.4 rfront 0.0 rback 0.0
+fpslog: 11.9 fps, ms/frame all 81.2 sv 1.7 game 3.5 cl 72.3 rfront 0.0 rback 0.0
+fpslog: 11.4 fps, ms/frame all 88.0 sv 1.8 game 0.8 cl 81.4 rfront 0.0 rback 0.0
+fpslog: 11.0 fps, ms/frame all 90.9 sv 1.8 game 0.9 cl 84.3 rfront 0.0 rback 0.0
+fpslog: 16.0 fps, ms/frame all 62.5 sv 1.5 game 0.6 cl 57.3 rfront 0.0 rback 0.0
+fpslog: 10.5 fps, ms/frame all 91.9 sv 1.8 game 0.9 cl 84.7 rfront 0.0 rback 0.0
+fpslog: 12.4 fps, ms/frame all 78.0 sv 1.7 game 3.4 cl 69.1 rfront 0.0 rback 0.0

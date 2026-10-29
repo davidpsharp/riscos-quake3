@@ -1077,17 +1077,74 @@ Radix sort with 4 byte size buckets
 static void R_RadixSort( drawSurf_t *source, int size )
 {
   static drawSurf_t scratch[ MAX_DRAWSURFS ];
+  // the two low bytes of order after the four of sort: order is the primary key
+  const int order = offsetof( drawSurf_t, order ) - offsetof( drawSurf_t, sort );
 #ifdef Q3_LITTLE_ENDIAN
   R_Radix( 0, size, source, scratch );
   R_Radix( 1, size, scratch, source );
   R_Radix( 2, size, source, scratch );
   R_Radix( 3, size, scratch, source );
+  R_Radix( order + 0, size, source, scratch );
+  R_Radix( order + 1, size, scratch, source );
 #else
   R_Radix( 3, size, source, scratch );
   R_Radix( 2, size, scratch, source );
   R_Radix( 1, size, source, scratch );
   R_Radix( 0, size, scratch, source );
+  R_Radix( order + 3, size, source, scratch );
+  R_Radix( order + 2, size, scratch, source );
 #endif //Q3_LITTLE_ENDIAN
+}
+
+/*
+=================
+R_DepthBucket
+
+The bucket (r_sortDepth units deep, 0 the nearest, 255 the farthest) of
+the box's nearest point to the view, for the drawing order of opaque
+surfaces: nearest first, so a software rasterizer's depth test rejects
+most of the fragments hidden behind them before texturing them.
+=================
+*/
+int R_DepthBucket( const vec3_t mins, const vec3_t maxs ) {
+	vec3_t	d;
+	int		i;
+
+	if ( r_sortDepth->value <= 0 ) {
+		return 0;
+	}
+	for ( i = 0 ; i < 3 ; i++ ) {
+		float o = tr.viewParms.or.origin[i];
+		d[i] = o < mins[i] ? mins[i] - o : ( o > maxs[i] ? o - maxs[i] : 0 );
+	}
+	i = (int)( VectorLength( d ) / r_sortDepth->value );
+	return i > 255 ? 255 : i;
+}
+
+/*
+=================
+R_DrawOrder
+
+Sorted on before the sort key: portals, then opaque surfaces by depth
+bucket (r_sortDepth), then the sky (r_skyLast; otherwise it is drawn
+first, as sorted), then the rest in their shaders' order.
+=================
+*/
+static ID_INLINE unsigned R_DrawOrder( shader_t *shader ) {
+	if ( shader->sort < SS_OPAQUE ) {
+		return ( shader->isSky && r_skyLast->integer ) ? 2 << 8 : 0;
+	}
+	if ( shader->sort == SS_OPAQUE ) {
+		// the shader's nearest bucket this view, for R_SortDrawSurfs
+		if ( shader->bucketView != tr.viewCount ) {
+			shader->bucketView = tr.viewCount;
+			shader->minBucket = tr.depthBucket;
+		} else if ( tr.depthBucket < shader->minBucket ) {
+			shader->minBucket = tr.depthBucket;
+		}
+		return ( 1 << 8 ) | tr.depthBucket;
+	}
+	return 3 << 8;
 }
 
 //==========================================================================================
@@ -1106,8 +1163,9 @@ void R_AddDrawSurf( surfaceType_t *surface, shader_t *shader,
 	index = tr.refdef.numDrawSurfs & DRAWSURF_MASK;
 	// the sort data is packed into a single 32 bit value so it can be
 	// compared quickly during the qsorting process
-	tr.refdef.drawSurfs[index].sort = (shader->sortedIndex << QSORT_SHADERNUM_SHIFT) 
+	tr.refdef.drawSurfs[index].sort = (shader->sortedIndex << QSORT_SHADERNUM_SHIFT)
 		| tr.shiftedEntityNum | ( fogIndex << QSORT_FOGNUM_SHIFT ) | (int)dlightMap;
+	tr.refdef.drawSurfs[index].order = R_DrawOrder( shader );
 	tr.refdef.drawSurfs[index].surface = surface;
 	tr.refdef.numDrawSurfs++;
 }
@@ -1142,6 +1200,18 @@ void R_SortDrawSurfs( drawSurf_t *drawSurfs, int numDrawSurfs ) {
 		// we still need to add it for hyperspace cases
 		R_AddDrawSurfCmd( drawSurfs, numDrawSurfs );
 		return;
+	}
+
+	// r_sortDepth by shader: all of a shader's opaque surfaces where its
+	// nearest one goes, so the texture binds stay as they were
+	// (splitting each shader into a near and a far part was tried: no gain)
+	if ( r_sortDepth->value > 0 && !r_sortDepthSurfaces->integer ) {
+		for ( i = 0 ; i < numDrawSurfs ; i++ ) {
+			if ( ( drawSurfs[i].order >> 8 ) == 1 ) {
+				shader = tr.sortedShaders[ ( drawSurfs[i].sort >> QSORT_SHADERNUM_SHIFT ) & (MAX_SHADERS-1) ];
+				drawSurfs[i].order = ( 1 << 8 ) | shader->minBucket;
+			}
+		}
 	}
 
 	// sort the drawsurfs by sort type, then orientation, then shader
@@ -1196,6 +1266,7 @@ void R_AddEntitySurfaces (void) {
 
 		// preshift the value we are going to OR into the drawsurf sort
 		tr.shiftedEntityNum = tr.currentEntityNum << QSORT_REFENTITYNUM_SHIFT;
+		tr.depthBucket = R_DepthBucket( ent->e.origin, ent->e.origin );
 
 		//
 		// the weapon model must be handled special --
