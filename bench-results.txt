@@ -222,3 +222,4 @@
 22:47 pi4-plato mesa neon: 833 frames 24.0 seconds 34.7 fps 15.0/28.8/52.0/5.8 ms
 22:48 pi4-plato mesa v011: 833 frames 23.1 seconds 36.1 fps 13.0/27.7/50.0/5.6 ms
 22:49 pi4-plato mesa neon: 833 frames 23.9 seconds 34.9 fps 14.0/28.7/50.0/5.8 ms
+23:28 pi4-plato v0.1.2 package, 480x300: 833 frames 23.6 seconds 35.2 fps 14.0/28.4/49.0/5.8 ms

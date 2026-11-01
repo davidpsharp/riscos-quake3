@@ -2385,6 +2385,21 @@ void Com_ExecuteCfg(void)
 		// skip the q3config.cfg and autoexec.cfg if "safe" is on the command line
 		Cbuf_ExecuteText(EXEC_NOW, "exec " Q3CONFIG_CFG "\n");
 		Cbuf_Execute();
+#ifdef __riscos__
+		// q3config.cfg keeps every archived cvar, so one saved by 0.1.0
+		// holds that version's defaults and would hide 0.1.1's quicker
+		// ones. Once (com_riscosConfig records it), move those two
+		// settings on if they still have the old default values.
+		if(Cvar_VariableIntegerValue("com_riscosConfig") < 2)
+		{
+			if(!Q_stricmp(Cvar_VariableString("r_textureMode"), "GL_LINEAR_MIPMAP_LINEAR"))
+				Cvar_Set("r_textureMode", "GL_NEAREST_MIPMAP_NEAREST_LINEAR");
+			if(Cvar_VariableIntegerValue("r_subdivisions") == 4)
+				Cvar_Set("r_subdivisions", "8");
+		}
+		Cvar_Get("com_riscosConfig", "2", CVAR_ARCHIVE);
+		Cvar_Set("com_riscosConfig", "2");
+#endif
 		Cbuf_ExecuteText(EXEC_NOW, "exec autoexec.cfg\n");
 		Cbuf_Execute();
 	}

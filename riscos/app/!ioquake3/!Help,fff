@@ -1,6 +1,6 @@
 ioquake3 for RISC OS
 ====================
-Version 0.1.1 (27 Oct 2026)
+Version 0.1.2 (1 Nov 2026)
 
 Quake III Arena's engine (ioquake3), for RISC OS 5 on a Raspberry Pi 2 or
 later (best on a Pi 4). The 3D is drawn by the processor, with riscos-mesa's

@@ -1,6 +1,7 @@
 # ioquake3 for RISC OS
 
-Version 0.1.1 (27 Oct 2026).
+Version 0.1.2 (1 Nov 2026). New since 0.1.1: settings saved by 0.1.0 are moved on
+to the quicker texture and curve defaults once, and LAN play has been tested.
 
 A port of [ioquake3](https://github.com/ioquake/ioq3) (Quake III Arena's engine)
 to RISC OS 5 on ARMv7 (Raspberry Pi 2 and later; tuned for the Pi 4), drawing with
@@ -213,6 +214,24 @@ Also looked at, afternoon of the same day:
   upstream; what remains per pixel is the texel gather and the depth test.
 
 ## Known issues
+
+- LAN play works, but has failed twice, both times with plato (one of the
+  two Pi 4s) as the client and soon after it had been restarted or power
+  cycled. Once it entered the game, then stopped receiving (the server logged
+  thousands of "Delta request from out of date packet") and plato stopped
+  answering ping and Rorth until it was power cycled. Once, after that power
+  cycle, its client failed while loading the map with "Couldn't open
+  ./demoq3/pak0.pk3" (the file was there and fine): the game reopens pak0 for
+  each streamed file, and that open failed. Cause not yet known. Since then,
+  all clean: plato as the client for 16 minutes (about 32 fps, Rorth polling
+  it every 8 s for part of that made no difference), 5 quit-and-rejoin
+  cycles, and the Pi 3 (about 16 fps) and plato in the same game together.
+  Socrates as the client against plato hosting: 3 minutes at about 33 fps.
+  The LAN browser's broadcast and connecting worked every time.
+- The game finds its own address from the hostname. Both test Pis are called
+  RISCOSpi, which resolves to another machine (192.168.1.85 for one at
+  .140). It only matters for deciding what is LAN, and private addresses
+  count as LAN anyway.
 
 - Sound: OpenAL initialises, but the test Pis have neither SharedSoundBuffer nor
   DigitalRenderer, so it hasn't been heard.
