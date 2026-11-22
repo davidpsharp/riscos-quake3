@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // tr_init.c -- functions that are not called every frame
 
 #include "tr_local.h"
+#include "../qcommon/riscos_gpu.h"
 
 glconfig_t  glConfig;
 qboolean    textureFilterAnisotropic = qfalse;
@@ -1032,7 +1033,8 @@ void R_Register( void )
 	r_ext_compressed_textures = ri.Cvar_Get( "r_ext_compressed_textures", "0", CVAR_ARCHIVE | CVAR_LATCH );
 #ifdef __riscos__
 	// Two texture units take riscos-mesa's general path: two passes are quicker
-	r_ext_multitexture = ri.Cvar_Get( "r_ext_multitexture", "0", CVAR_ARCHIVE | CVAR_LATCH );
+	// (in software; a GPU has them: see qcommon/riscos_gpu.h)
+	r_ext_multitexture = ri.Cvar_Get( "r_ext_multitexture", RISCOS_HaveGPU() ? "1" : "0", CVAR_ARCHIVE | CVAR_LATCH );
 #else
 	r_ext_multitexture = ri.Cvar_Get( "r_ext_multitexture", "1", CVAR_ARCHIVE | CVAR_LATCH );
 #endif
@@ -1065,12 +1067,12 @@ void R_Register( void )
 	r_simpleMipMaps = ri.Cvar_Get( "r_simpleMipMaps", "1", CVAR_ARCHIVE | CVAR_LATCH );
 #ifdef __riscos__
 	// Lightmaps cost a second pass over every pixel, off riscos-mesa's fast path
-	r_vertexLight = ri.Cvar_Get( "r_vertexLight", "1", CVAR_ARCHIVE | CVAR_LATCH );
+	r_vertexLight = ri.Cvar_Get( "r_vertexLight", RISCOS_HaveGPU() ? "0" : "1", CVAR_ARCHIVE | CVAR_LATCH );
 #else
 	r_vertexLight = ri.Cvar_Get( "r_vertexLight", "0", CVAR_ARCHIVE | CVAR_LATCH );
 #endif
 #ifdef __riscos__
-	r_glFastest = ri.Cvar_Get( "r_glFastest", "1", CVAR_ARCHIVE | CVAR_LATCH );
+	r_glFastest = ri.Cvar_Get( "r_glFastest", RISCOS_HaveGPU() ? "0" : "1", CVAR_ARCHIVE | CVAR_LATCH );
 	// 1 measured slower on riscos-mesa 20.3.5-16 (25.0 against 28.8 fps)
 	r_textureRGBA = ri.Cvar_Get( "r_textureRGBA", "0", CVAR_ARCHIVE | CVAR_LATCH );
 	// riscos-mesa tests depth before texturing: nearest first saves the texturing of what is hidden
@@ -1087,7 +1089,7 @@ void R_Register( void )
 	r_uiFullScreen = ri.Cvar_Get( "r_uifullscreen", "0", 0);
 #ifdef __riscos__
 	// Curves in fewer triangles, so fewer spans for the software rasterizer: 8 measured +2% (20 no more)
-	r_subdivisions = ri.Cvar_Get ("r_subdivisions", "8", CVAR_ARCHIVE | CVAR_LATCH);
+	r_subdivisions = ri.Cvar_Get ("r_subdivisions", RISCOS_HaveGPU() ? "4" : "8", CVAR_ARCHIVE | CVAR_LATCH);
 #else
 	r_subdivisions = ri.Cvar_Get ("r_subdivisions", "4", CVAR_ARCHIVE | CVAR_LATCH);
 #endif
@@ -1127,7 +1129,7 @@ void R_Register( void )
 	// One texel instead of four for minified (distant) textures, which the software
 	// rasterizer samples at under a pixel anyway: +9% on a Pi 4, no visible change at
 	// 480x300. Magnified textures stay bilinear (all nearest is +13% but blocky up close).
-	r_textureMode = ri.Cvar_Get( "r_textureMode", "GL_NEAREST_MIPMAP_NEAREST_LINEAR", CVAR_ARCHIVE );
+	r_textureMode = ri.Cvar_Get( "r_textureMode", RISCOS_HaveGPU() ? "GL_LINEAR_MIPMAP_LINEAR" : "GL_NEAREST_MIPMAP_NEAREST_LINEAR", CVAR_ARCHIVE );
 #else
 	r_textureMode = ri.Cvar_Get( "r_textureMode", "GL_LINEAR_MIPMAP_LINEAR", CVAR_ARCHIVE );
 #endif

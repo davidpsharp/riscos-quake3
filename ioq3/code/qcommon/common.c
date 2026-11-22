@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "q_shared.h"
 #include "qcommon.h"
+#include "riscos_gpu.h"
 #include <setjmp.h>
 #ifndef _WIN32
 #include <netinet/in.h>
@@ -2360,6 +2361,61 @@ void Com_Setenv_f(void)
         }
 }
 
+#ifdef __riscos__
+/*
+==================
+Com_RISCOS_DrawingDefaults
+
+The renderer's defaults differ in software and on a GPU (riscos_gpu.h), and
+q3config.cfg keeps every archived cvar, so a config saved for one would keep
+the other's defaults. com_riscosDrawing records which it was saved for
+(none: software, as before 0.1.3); when that changes, each setting still at
+the other's default goes back to this one's. Ones the user chose stay.
+==================
+*/
+static void Com_RISCOS_DrawingDefaults(void)
+{
+	static const struct {
+		const char *name;
+		const char *software, *software2, *gpu;	// software2: another software default
+	} settings[] = {
+		{ "r_ext_multitexture", "0", NULL, "1" },
+		{ "r_vertexLight", "1", NULL, "0" },
+		{ "r_glFastest", "1", NULL, "0" },
+		{ "r_subdivisions", "8", NULL, "4" },
+		{ "r_textureMode", "GL_NEAREST_MIPMAP_NEAREST_LINEAR", NULL, "GL_LINEAR_MIPMAP_LINEAR" },
+		{ "r_renderHeight", "300", "200", "0" },	// (300 on a Pi 4, 200 slower)
+	};
+	const char *now = RISCOS_HaveGPU() ? "gpu" : "software";
+	const char *saved = Cvar_VariableString("com_riscosDrawing");
+	qboolean wasGPU = !Q_stricmp(saved, "gpu");
+	int i;
+
+	if(Q_stricmp(saved, now) && (saved[0] || RISCOS_HaveGPU()))
+	{
+		for(i = 0; i < ARRAY_LEN(settings); i++)
+		{
+			const char *value = Cvar_VariableString(settings[i].name);
+			const char *old = wasGPU ? settings[i].gpu : settings[i].software;
+			qboolean stale = !Q_stricmp(value, old) ||
+				(!wasGPU && settings[i].software2 && !Q_stricmp(value, settings[i].software2));
+
+			if(!stale)
+				continue;
+			// not yet registered (from q3config.cfg): unset, and the
+			// renderer gives it this way's default; registered: reset
+			if(Cvar_Flags(settings[i].name) & CVAR_USER_CREATED)
+				Cmd_ExecuteString(va("unset %s", settings[i].name));
+			else
+				Cvar_Reset(settings[i].name);
+			Com_Printf("%s: %s's default (was %s)\n", settings[i].name, now, value);
+		}
+	}
+	Cvar_Get("com_riscosDrawing", now, CVAR_ARCHIVE);
+	Cvar_Set("com_riscosDrawing", now);
+}
+#endif
+
 /*
 ==================
 Com_ExecuteCfg
@@ -2375,9 +2431,13 @@ void Com_ExecuteCfg(void)
 #ifdef __riscos__
 	// riscos-mesa's fast path wants one texture unit and no lightmaps (see
 	// renderergl1/tr_init.c); a game's default.cfg (OpenArena's sets
-	// r_vertexLight 0) mustn't undo that. q3config.cfg still can.
-	Cvar_Set("r_vertexLight", "1");
-	Cvar_Set("r_ext_multitexture", "0");
+	// r_vertexLight 0) mustn't undo that. q3config.cfg still can. A GPU
+	// (riscos_gpu.h) wants neither.
+	if(!RISCOS_HaveGPU())
+	{
+		Cvar_Set("r_vertexLight", "1");
+		Cvar_Set("r_ext_multitexture", "0");
+	}
 #endif
 
 	if(!Com_SafeMode())
@@ -2399,6 +2459,7 @@ void Com_ExecuteCfg(void)
 		}
 		Cvar_Get("com_riscosConfig", "2", CVAR_ARCHIVE);
 		Cvar_Set("com_riscosConfig", "2");
+		Com_RISCOS_DrawingDefaults();
 #endif
 		Cbuf_ExecuteText(EXEC_NOW, "exec autoexec.cfg\n");
 		Cbuf_Execute();

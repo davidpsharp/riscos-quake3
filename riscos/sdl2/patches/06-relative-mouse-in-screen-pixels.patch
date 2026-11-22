@@ -1,0 +1,50 @@
+--- a/src/video/riscos/SDL_riscosevents.c
++++ b/src/video/riscos/SDL_riscosevents.c
+@@ -517,9 +517,8 @@
+ 
+ /* 2026: relative mouse mode (mouse look in first person games): the
+    pointer is kept in the middle of the window. Each poll reports how far
+-   it has moved from there, in window pixels (fractions carried over to
+-   the next poll, so slow movements over a stretched picture aren't lost),
+-   and puts it back. Not while another task has the input focus: the
++   it has moved from there, in screen pixels (fractions carried over),
++   and puts it back. Not while another task has the input focus: the
+    pointer is the desktop's then. Returns SDL_TRUE if it took the motion. */
+ static SDL_bool
+ RISCOS_PollRelativeMotion(_THIS, SDL_Window *window, int osx, int osy)
+@@ -554,14 +553,16 @@
+         vdata->rel_have_last = SDL_TRUE;
+     } else
+         RISCOS_WindowToScreen(_this, window, &m, window->w / 2, window->h / 2, &cx, &cy);
+-    /* screen pixels moved (y up on the screen, down in SDL) times the
+-       window's size, divided by the screen pixels it covers */
+-    vdata->rel_rest_x += ((osx - cx) / (1 << vdata->xeig)) * window->w;
+-    vdata->rel_rest_y += ((cy - osy) / (1 << vdata->yeig)) * window->h;
+-    dx = vdata->rel_rest_x / m.sw;
+-    dy = vdata->rel_rest_y / m.sh;
+-    vdata->rel_rest_x -= dx * m.sw;
+-    vdata->rel_rest_y -= dy * m.sh;
++    /* 2026: screen pixels moved (y up on the screen, down in SDL), as a
++       mouse's own counts are elsewhere: not scaled to the window's pixels,
++       so a game turns as fast at any render size or window scale (full
++       screen, a 300 line render size slowed it to under half) */
++    vdata->rel_rest_x += osx - cx;
++    vdata->rel_rest_y += cy - osy;
++    dx = vdata->rel_rest_x / (1 << vdata->xeig);
++    dy = vdata->rel_rest_y / (1 << vdata->yeig);
++    vdata->rel_rest_x -= dx << vdata->xeig;
++    vdata->rel_rest_y -= dy << vdata->yeig;
+     if (dx != 0 || dy != 0)
+         SDL_SendMouseMotion(window, SDL_GetMouse()->mouseID, 1, dx, dy);
+     if (!vdata->abs_pointer && (osx != cx || osy != cy))
+--- a/src/video/riscos/SDL_riscosvideo.h
++++ b/src/video/riscos/SDL_riscosvideo.h
+@@ -50,7 +50,7 @@
+     SDL_bool cursor_hidden;     /* SDL asked for the pointer to be hidden */
+     SDL_bool relative_mouse;    /* 2026: SDL's relative mouse mode (mouse look) is on */
+     int rel_rest_x, rel_rest_y; /* 2026: its movement not yet reported (fractions of
+-                                   a window pixel, in screen pixels x window size) */
++                                   a screen pixel, in OS units) */
+     SDL_bool abs_pointer;       /* 2026: the pointer goes where the host's is (RoMac) */
+     SDL_bool rel_have_last;     /* 2026: rel_last_x, y hold the last reading (OS units) */
+     SDL_bool rel_discard;       /* 2026: the mode changed: the next reading isn't a move */

@@ -34,6 +34,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "../renderercommon/tr_common.h"
 #include "../sys/sys_local.h"
 #include "sdl_icon.h"
+#include "../qcommon/riscos_gpu.h"
 
 typedef enum
 {
@@ -513,12 +514,14 @@ static int GLimp_SetMode(int mode, qboolean fullscreen, qboolean noborder, qbool
 	// riscos-mesa's SDL can draw at a smaller size and have the display
 	// (the Raspberry Pi's hardware overlay) or the plot scale it up.
 	{
-		// Every pixel is drawn by the CPU: by default draw 300 lines on a
-		// Cortex-A72 or later (Pi 4), 200 on anything slower (a Pi 3 does
-		// about 20 fps there), as wide as the window's shape needs
-		// (r_renderWidth 0), and scale up.
+		// In software every pixel is drawn by the CPU: by default draw 300
+		// lines on a Cortex-A72 or later (Pi 4), 200 on anything slower (a
+		// Pi 3 does about 20 fps there), as wide as the window's shape
+		// needs (r_renderWidth 0), and scale up. A GPU (RISC3D) draws at
+		// the window's size (r_renderHeight 0).
+		const char *defaultHeight = RISCOS_HaveGPU() ? "0" : GLimp_RISCOS_FastCPU() ? "300" : "200";
 		int renderWidth = ri.Cvar_Get( "r_renderWidth", "0", CVAR_ARCHIVE | CVAR_LATCH )->integer;
-		int renderHeight = ri.Cvar_Get( "r_renderHeight", GLimp_RISCOS_FastCPU() ? "300" : "200", CVAR_ARCHIVE | CVAR_LATCH )->integer;
+		int renderHeight = ri.Cvar_Get( "r_renderHeight", defaultHeight, CVAR_ARCHIVE | CVAR_LATCH )->integer;
 		int overlay = ri.Cvar_Get( "r_overlay", "1", CVAR_ARCHIVE | CVAR_LATCH )->integer;
 
 		if ( renderWidth <= 0 && renderHeight > 0 )

@@ -42,6 +42,12 @@ Double-click !ioquake3. It starts full screen at the desktop's
 resolution, drawing 300 lines on a Pi 4 (about 25 to 35 frames a second
 with bots) or 200 on a slower Pi (a Pi 3: about 20), scaled up by the
 Pi's display hardware (VideoOverlay).
+
+With a GPU (!RISC3D with a driver: RoMac on a Mac, or a Pi 4's
+V3DRender) it draws at the full size instead, with Quake's lightmaps
+and smooth textures. The speed settings below are for drawing without
+one; settings saved for one way move to the other's defaults when that
+changes, except ones you've changed yourself.
 The mouse turns; the keys are Quake's (Setup > Controls to change them).
 
 Settings that matter for speed (in the console, or q3config.cfg):
