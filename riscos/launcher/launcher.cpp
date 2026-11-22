@@ -1237,7 +1237,8 @@ void Install_Finished(void)
 		Tell("The demo's data was unpacked but isn't where it should be (!ioquake3.demoq3.pak0/pk3).", true);
 		return;
 	}
-	Show_Message("The Quake III Arena demo is installed. Starting the game...", false, {{"OK", ACT_CLOSE}});
+	Show_Message("The Quake III Arena demo is installed. Starting the game: it takes a few seconds to load...", false,
+		{{"OK", ACT_CLOSE}});
 	Start_Game();
 }
 
