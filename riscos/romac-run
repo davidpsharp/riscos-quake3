@@ -1,0 +1,43 @@
+#!/bin/sh
+# This port's own RoMac (RoMac's risc3d build: RISC3D on the Mac's GPU), for
+# testing through Rorth (target romac-q3, port 7220).
+#
+#   riscos/romac-run start [--window]   boot it in the background (no window unless --window)
+#   riscos/romac-run stop               stop it (and its romac-3d player)
+#   riscos/romac-run status | log [n]
+#
+# The app is a private copy in build/romac/RoMac.app (from ~/code/rol-run/build-mac, 0.1.230
+# or later: RISC3D is in RoMac's main line now), and its writable data folder is build/romac/data (HardDisc4 with !RISC3D, !MesaLibs,
+# !SharedLibs and !Rorth). Both are git-ignored. Screenshots come from Rorth, so no
+# window is needed: RUNWAY_NO_WINDOW keeps the run off David's screen.
+set -e
+top=$(cd "$(dirname "$0")/.." && pwd)
+app=$top/build/romac/RoMac.app/Contents
+data=$top/build/romac/data
+log=$top/build/romac/romac.log
+pidf=$top/build/romac/romac.pid
+running() { [ -f "$pidf" ] && kill -0 "$(cat "$pidf")" 2>/dev/null; }
+case "${1:-status}" in
+start)
+	if running; then echo "already running (pid $(cat "$pidf"))"; exit 0; fi
+	[ "$2" = --window ] || export RUNWAY_NO_WINDOW=1
+	export ROMAC_RESOURCES="$app/Resources" ROMAC_DATA="$data" ROMAC_BIN="$app/MacOS/RoMac"
+	export RUNWAY_PROTECT=on
+	nohup "$app/Resources/romac" >"$log" 2>&1 &
+	echo $! > "$pidf"
+	echo "started (pid $!), log $log"
+	;;
+stop)
+	if running; then
+		kill "$(cat "$pidf")"
+		for i in 1 2 3 4 5 6 7 8 9 10; do running || break; sleep 1; done
+		running && kill -9 "$(cat "$pidf")"
+	fi
+	rm -f "$pidf"
+	pkill -f "$app/Resources/romac-3d" 2>/dev/null || true
+	echo stopped
+	;;
+status) if running; then echo "running (pid $(cat "$pidf"))"; else echo "not running"; fi ;;
+log) tail -n "${2:-40}" "$log" ;;
+*) echo "usage: $0 start [--window] | stop | status | log [n]" >&2; exit 2 ;;
+esac

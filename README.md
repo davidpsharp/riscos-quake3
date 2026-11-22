@@ -233,8 +233,15 @@ Also looked at, afternoon of the same day:
   .140). It only matters for deciding what is LAN, and private addresses
   count as LAN anyway.
 
-- Sound: OpenAL initialises, but the test Pis have neither SharedSoundBuffer nor
-  DigitalRenderer, so it hasn't been heard.
+- Sound plays, but no one has listened to it yet. By default OpenAL Soft
+  mixes and sends it to UnixLib's `/dev/dsp`, which plays through
+  DigitalRenderer (in !System on the test Pis). In a bot match DigitalRenderer
+  played 16-bit stereo at 44.1 kHz, about 90 buffers a second, with the game
+  at 31 fps on a Pi 4 and 23 to 26 on a Pi 3 (full screen). With
+  `s_useOpenAL 0` and SharedSoundBuffer and StreamManager loaded, SDL's
+  `riscos` driver plays it instead (22 kHz), also at 31 fps. Whether OpenAL
+  gives way to SDL when only SharedSoundBuffer is installed hasn't been
+  tried.
 - Rorth's "in use by a remote testing agent" notice appears when a remote agent
   moves the mouse while the game has it (the game moves the pointer back), and
   covers the overlay while it's up. Rorth's screenshots can't see the overlay

@@ -1,0 +1,83 @@
+--- a/src/video/riscos/SDL_riscosevents.c
++++ b/src/video/riscos/SDL_riscosevents.c
+@@ -527,9 +527,19 @@
+     int cx, cy, dx, dy;
+ 
+     if (!vdata->relative_mouse || !window || (RISCOS_IsWindowed(vdata) && !vdata->has_caret) ||
+-        !RISCOS_GetPointerMap(_this, window, &m))
++        !RISCOS_GetPointerMap(_this, window, &m)) {
++        vdata->rel_have_last = SDL_FALSE;
+         return SDL_FALSE;
+-    RISCOS_WindowToScreen(_this, window, &m, window->w / 2, window->h / 2, &cx, &cy);
++    }
++    if (vdata->abs_pointer) {
++        /* RoMac: from the last reading (see RISCOS_PointerIsAbsolute) */
++        cx = vdata->rel_have_last ? vdata->rel_last_x : osx;
++        cy = vdata->rel_have_last ? vdata->rel_last_y : osy;
++        vdata->rel_last_x = osx;
++        vdata->rel_last_y = osy;
++        vdata->rel_have_last = SDL_TRUE;
++    } else
++        RISCOS_WindowToScreen(_this, window, &m, window->w / 2, window->h / 2, &cx, &cy);
+     /* screen pixels moved (y up on the screen, down in SDL) times the
+        window's size, divided by the screen pixels it covers */
+     vdata->rel_rest_x += ((osx - cx) / (1 << vdata->xeig)) * window->w;
+@@ -540,7 +550,7 @@
+     vdata->rel_rest_y -= dy * m.sh;
+     if (dx != 0 || dy != 0)
+         SDL_SendMouseMotion(window, SDL_GetMouse()->mouseID, 1, dx, dy);
+-    if (osx != cx || osy != cy)
++    if (!vdata->abs_pointer && (osx != cx || osy != cy))
+         RISCOS_SetPointerPosition(cx, cy);
+     return SDL_TRUE;
+ }
+--- a/src/video/riscos/SDL_riscosmouse.c
++++ b/src/video/riscos/SDL_riscosmouse.c
+@@ -88,6 +88,24 @@
+         RISCOS_WarpPointer(_this, window, x, y);
+ }
+ 
++/* 2026: RoMac before 0.1.228 moves RISC OS's pointer to wherever the
++   Mac's is, each time the Mac's moves, so a pointer put back in the middle
++   doesn't stay there and every reading would count all the way from the
++   middle again. There relative mode counts from the last reading instead
++   (and the pointer isn't moved). Later RoMacs capture the mouse while the
++   pointer is off and set HostIntegration$PointerCapture to 1: then it's as
++   on hardware. SDL$RISCOS_AbsolutePointer 1 or 0 says which to use. */
++static int
++RISCOS_PointerIsAbsolute(void)
++{
++    char buf[256];
++    if (!_kernel_getenv("SDL$RISCOS_AbsolutePointer", buf, sizeof buf))
++        return buf[0] == '1';
++    if (!_kernel_getenv("HostIntegration$PointerCapture", buf, sizeof buf) && buf[0] == '1')
++        return 0;
++    return !_kernel_getenv("ix$ROMAC_BIN", buf, sizeof buf);
++}
++
+ /* 2026: relative mouse mode (SDL_SetRelativeMouseMode): the pointer is
+    held in the middle of the window and each poll reports how far it moved
+    (RISCOS_PollRelativeMotion in SDL_riscosevents.c). SDL hides the pointer
+@@ -101,7 +119,9 @@
+         return SDL_Unsupported();
+     vdata->relative_mouse = enabled;
+     vdata->rel_rest_x = vdata->rel_rest_y = 0;
+-    if (enabled)
++    vdata->rel_have_last = SDL_FALSE;
++    vdata->abs_pointer = RISCOS_PointerIsAbsolute();
++    if (enabled && !vdata->abs_pointer)
+         RISCOS_CentrePointer(_this, vdata->wimp_sdl_window ? vdata->wimp_sdl_window : _this->windows);
+     return 0;
+ }
+--- a/src/video/riscos/SDL_riscosvideo.h
++++ b/src/video/riscos/SDL_riscosvideo.h
+@@ -51,6 +51,9 @@
+     SDL_bool relative_mouse;    /* 2026: SDL's relative mouse mode (mouse look) is on */
+     int rel_rest_x, rel_rest_y; /* 2026: its movement not yet reported (fractions of
+                                    a window pixel, in screen pixels x window size) */
++    SDL_bool abs_pointer;       /* 2026: the pointer goes where the host's is (RoMac) */
++    SDL_bool rel_have_last;     /* 2026: rel_last_x, y hold the last reading (OS units) */
++    int rel_last_x, rel_last_y;
+     int buttons_inside;         /* buttons pressed while over our window */
+     int pending_clicks;         /* Mouse_Click buttons not yet reported (short clicks) */
+     int pending_click_x, pending_click_y;   /* where the last of them happened (OS units) */

@@ -1,0 +1,121 @@
+--- a/src/video/riscos/SDL_riscosevents.c
++++ b/src/video/riscos/SDL_riscosevents.c
+@@ -113,6 +113,8 @@
+         break;
+     case 0x400C1: /* Message_ModeChange: the desktop's screen mode changed */
+         RISCOS_UpdateEigs(_this);                /* OS units per pixel may have too */
++        ((SDL_VideoData *)_this->driverdata)->rel_discard = SDL_TRUE;  /* the window
++                                                    and the pointer moved: not a move */
+         RISCOS_PointerBoxReset();                /* the mouse's box is the new screen now;
+                                                     the next poll raises its bottom again */
+         RISCOS_DesktopModeChanged(_this);        /* SDL's desktop display mode */
+@@ -531,6 +533,18 @@
+         vdata->rel_have_last = SDL_FALSE;
+         return SDL_FALSE;
+     }
++    if (vdata->rel_discard) {
++        /* 2026: after a mode change the pointer is somewhere else in OS
++           units and so is the window: start again from the middle */
++        vdata->rel_discard = SDL_FALSE;
++        vdata->rel_rest_x = vdata->rel_rest_y = 0;
++        vdata->rel_have_last = SDL_FALSE;
++        if (!vdata->abs_pointer) {
++            RISCOS_WindowToScreen(_this, window, &m, window->w / 2, window->h / 2, &cx, &cy);
++            RISCOS_SetPointerPosition(cx, cy);
++        }
++        return SDL_TRUE;
++    }
+     if (vdata->abs_pointer) {
+         /* RoMac: from the last reading (see RISCOS_PointerIsAbsolute) */
+         cx = vdata->rel_have_last ? vdata->rel_last_x : osx;
+@@ -969,6 +983,10 @@
+ 
+     switch (reason) {
+     case 0:  /* Null */
++        if (driverdata->keep_on_screen) {
++            driverdata->keep_on_screen = SDL_FALSE;
++            RISCOS_WimpKeepOnScreen(_this);
++        }
+         return 0;
+     case 13: /* Pollword_NonZero: SDL_SendWakeupEvent from another thread */
+         if (driverdata->wakeup_pollword)
+--- a/src/video/riscos/SDL_riscosvideo.h
++++ b/src/video/riscos/SDL_riscosvideo.h
+@@ -53,6 +53,8 @@
+                                    a window pixel, in screen pixels x window size) */
+     SDL_bool abs_pointer;       /* 2026: the pointer goes where the host's is (RoMac) */
+     SDL_bool rel_have_last;     /* 2026: rel_last_x, y hold the last reading (OS units) */
++    SDL_bool rel_discard;       /* 2026: the mode changed: the next reading isn't a move */
++    SDL_bool keep_on_screen;    /* 2026: the mode changed: see RISCOS_WimpKeepOnScreen */
+     int rel_last_x, rel_last_y;
+     int buttons_inside;         /* buttons pressed while over our window */
+     int pending_clicks;         /* Mouse_Click buttons not yet reported (short clicks) */
+--- a/src/video/riscos/SDL_riscoswindow.c
++++ b/src/video/riscos/SDL_riscoswindow.c
+@@ -768,6 +768,47 @@
+     return (d && d->render_w) ? SDL_TRUE : SDL_FALSE;
+ }
+ 
++/* 2026: after a mode change, move the desktop window back onto the
++   screen if any of it (title bar and all) is now off it, the top left
++   first: going from a big desktop (RoMac full screen) to a small one left
++   it out of reach. At the first null event after the change (from
++   SDL_riscosevents.c): the Wimp's own Open_Window_Requests for the new
++   mode come after Message_ModeChange and would put it back. */
++void
++RISCOS_WimpKeepOnScreen(_THIS)
++{
++    SDL_VideoData *vdata = (SDL_VideoData *) _this->driverdata;
++    int xeig = RISCOS_WimpReadEig(4), yeig = RISCOS_WimpReadEig(5);
++    int scr_w = RISCOS_WimpScreenSize(11) << xeig, scr_h = RISCOS_WimpScreenSize(12) << yeig;
++    RISCOS_WindowState state;
++    struct { int window; RISCOS_Box box; } outline;
++    _kernel_swi_regs regs;
++    int dx = 0, dy = 0;
++
++    state.open.window = vdata->wimp_window;
++    regs.r[1] = (int)&state;
++    if (_kernel_swi(Wimp_GetWindowState, &regs, &regs) != NULL)
++        return;
++    outline.window = vdata->wimp_window;
++    regs.r[1] = (int)&outline;
++    if (_kernel_swi(Wimp_GetWindowOutline, &regs, &regs) != NULL)
++        return;
++    if (outline.box.x1 > scr_w)
++        dx = scr_w - outline.box.x1;
++    if (outline.box.x0 + dx < 0)
++        dx = -outline.box.x0;
++    if (outline.box.y0 < 0)
++        dy = -outline.box.y0;
++    if (outline.box.y1 + dy > scr_h)
++        dy = scr_h - outline.box.y1;
++    if (dx || dy) {
++        RISCOS_WimpOpenAt(vdata->wimp_window, state.open.visible.x0 + dx, state.open.visible.y1 + dy,
++                          state.open.visible.x1 - state.open.visible.x0,
++                          state.open.visible.y1 - state.open.visible.y0);
++        vdata->rel_discard = SDL_TRUE;     /* the middle moved: not a move */
++    }
++}
++
+ /* 2026: see SDL_riscoswindow.h. A desktop window is fitted to the new
+    mode's OS units per pixel (and window scale), so the picture and the
+    mouse stay right across a change between 90 and 180 dpi. A full window
+@@ -788,6 +829,8 @@
+         return;
+     if (!vdata->full_window) {
+         RISCOS_WimpFitWindow(_this, window);
++        if (!(window->flags & SDL_WINDOW_HIDDEN))
++            vdata->keep_on_screen = SDL_TRUE;
+         return;
+     }
+     d = (SDL_WindowData *) window->driverdata;
+--- a/src/video/riscos/SDL_riscoswindow.h
++++ b/src/video/riscos/SDL_riscoswindow.h
+@@ -85,6 +85,7 @@
+ /* 2026: the desktop's mode changed: the desktop window is fitted to it (a
+    full window to the new screen size) */
+ extern void RISCOS_WindowModeChanged(_THIS);
++extern void RISCOS_WimpKeepOnScreen(_THIS);
+ /* 2026: keep the pointer off the screen's bottom edge while it is over a
+    full window (so the icon bar's "bring to front automatically" doesn't
+    fire over the game), or give it the whole screen again; and how many

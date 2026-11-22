@@ -1,19 +1,19 @@
 #!/bin/sh
-# Builds SDL 2.26.0 for RISC OS: upstream's source, riscos-mesa's RISC OS overlay
+# Builds SDL 2.32.10 for RISC OS: upstream's source, riscos-mesa's RISC OS overlay
 # (overlay/, a copy: see overlay/SOURCE) and then this port's own fixes (patches/,
 # which should go to riscos-mesa in time). Run inside the q3-riscos image:
 #   riscos/sdk.sh riscos/sdl2/build.sh
-# The library and headers go in build/riscos-sdl2/stage, which
+# The library and headers go in build/riscos-sdl2-r3d/stage, which
 # riscos/cmake/SDL2 uses instead of the devkit's libSDL2.a when it's there.
 # Configured as riscos-mesa's build/build-sdl2.sh does it (with GL through OSMesa and
 # EGL, from the devkit), so that SDL_RISCOS_FB_OVERLAY works.
 set -e
 cd /work
-SDL_V=2.26.0
-SDL_SHA256=f38367892a6f243e8b4010e9e3d9714dc848e11b1a3f69c4af514dc6e7aca7f0
+SDL_V=2.32.10
+SDL_SHA256=03f9d7c191a837525c9cda6406af2f2e48be02b5e7eb03d949cc9f1e9ca41c8b
 HERE=riscos/sdl2
 DEVKIT=$RISCOS_DEVKIT
-B=build/riscos-sdl2
+B=build/riscos-sdl2-r3d
 STAGE=/work/$B/stage
 mkdir -p $B
 if [ ! -f $B/SDL-$SDL_V.tgz ]; then
