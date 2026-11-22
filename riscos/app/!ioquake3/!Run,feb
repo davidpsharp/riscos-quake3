@@ -31,5 +31,5 @@ If "<ioquake3$Game>"="baseoa" Then Run <ioquake3$Dir>.!RunImage +set fs_basepath
 If "<ioquake3$Game>"="demoq3" Then Run <ioquake3$Dir>.!RunImage +set fs_basepath . +set fs_homepath . +set com_basegame demoq3 %*0 >/<ioquake3$Dir>/stdout 2>/<ioquake3$Dir>/stderr
 | No game data: the launcher offers to download the free demo, then starts
 | the game through this file again. (Last, so nothing here runs after it.)
-If "<ioquake3$Game>"="" Then WimpSlot -min 4096K -max 4096K
+If "<ioquake3$Game>"="" Then WimpSlot -min 6144K -max 6144K
 If "<ioquake3$Game>"="" Then Run <ioquake3$Dir>.Launcher %*0 2>/<ioquake3$Dir>/launcherlog
