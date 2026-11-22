@@ -87,9 +87,36 @@ QGL_EXT_direct_state_access_PROCS;
 GLimp_Shutdown
 ===============
 */
+#ifdef __riscos__
+static void GLimp_ClearProcAddresses( void );
+
+// Where the window was when the video shut down, for the next one
+static int riscos_windowX = SDL_WINDOWPOS_UNDEFINED, riscos_windowY = SDL_WINDOWPOS_UNDEFINED;
+#endif
+
 void GLimp_Shutdown( void )
 {
 	ri.IN_Shutdown();
+
+#ifdef __riscos__
+	// On a GPU riscos-mesa draws into the window's own memory, so the
+	// context must go before the window. Left to the next GLimp_SetMode,
+	// deleting it finishes a frame in freed memory and Mesa aborts ("wait
+	// failed: -9", every vid_restart on a Pi 4).
+	if( SDL_glContext != NULL )
+	{
+		GLimp_ClearProcAddresses();
+		SDL_GL_DeleteContext( SDL_glContext );
+		SDL_glContext = NULL;
+	}
+
+	if( SDL_window != NULL )
+	{
+		SDL_GetWindowPosition( SDL_window, &riscos_windowX, &riscos_windowY );
+		SDL_DestroyWindow( SDL_window );
+		SDL_window = NULL;
+	}
+#endif
 
 	SDL_QuitSubSystem( SDL_INIT_VIDEO );
 }
@@ -565,6 +592,14 @@ static int GLimp_SetMode(int mode, qboolean fullscreen, qboolean noborder, qbool
 		SDL_DestroyWindow( SDL_window );
 		SDL_window = NULL;
 	}
+#ifdef __riscos__
+	else if( riscos_windowX != SDL_WINDOWPOS_UNDEFINED )
+	{
+		// GLimp_Shutdown destroyed it: the new one goes where it was
+		x = riscos_windowX;
+		y = riscos_windowY;
+	}
+#endif
 
 	if( fullscreen )
 	{

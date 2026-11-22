@@ -1,0 +1,27 @@
+--- a/src/video/riscos/SDL_riscosevents.c
++++ b/src/video/riscos/SDL_riscosevents.c
+@@ -544,6 +544,8 @@
+         vdata->rel_have_last = SDL_FALSE;
+         if (!vdata->abs_pointer) {
+             RISCOS_WindowToScreen(_this, window, &m, window->w / 2, window->h / 2, &cx, &cy);
++            cx &= ~((1 << vdata->xeig) - 1);    /* 2026: a whole pixel (below) */
++            cy &= ~((1 << vdata->yeig) - 1);
+             RISCOS_SetPointerPosition(cx, cy);
+         }
+         return SDL_TRUE;
+@@ -555,8 +557,14 @@
+         vdata->rel_last_x = osx;
+         vdata->rel_last_y = osy;
+         vdata->rel_have_last = SDL_TRUE;
+-    } else
++    } else {
+         RISCOS_WindowToScreen(_this, window, &m, window->w / 2, window->h / 2, &cx, &cy);
++        /* 2026: on a whole screen pixel, where OS_Word 21 actually puts the
++           pointer; otherwise every poll reads the half pixel between as a move
++           (a steady drift: one pixel down every poll in dhewm3 on a Pi 4) */
++        cx &= ~((1 << vdata->xeig) - 1);
++        cy &= ~((1 << vdata->yeig) - 1);
++    }
+     /* 2026: screen pixels moved (y up on the screen, down in SDL), as a
+        mouse's own counts are elsewhere: not scaled to the window's pixels,
+        so a game turns as fast at any render size or window scale (full

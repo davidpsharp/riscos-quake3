@@ -226,3 +226,7 @@
 08:01 romac-q3 r3d branch RoMac M3 GPU, 480x300 window, sw defaults: 833 frames 17.2 seconds 48.5 fps 5.0/20.6/109.0/13.1 ms
 08:02 romac-q3 r3d RoMac M3 GPU, 960x720 window, GPU quality: 833 frames 13.5 seconds 61.8 fps 7.0/16.2/104.0/6.0 ms
 08:02 romac-q3 r3d RoMac M3 GPU, 480x300 window, GPU quality: 833 frames 11.8 seconds 70.7 fps 4.0/14.1/144.0/11.0 ms
+16:40 pi4-plato r3d V3D GPU (doom3 V3DTest), 480x300 window, GPU defaults: 833 frames 6.0 seconds 138.4 fps 4.0/7.2/30.0/1.9 ms
+16:41 pi4-plato r3d V3D GPU (doom3 V3DTest), 1024x768 window, GPU defaults: 833 frames 11.6 seconds 71.7 fps 9.0/13.9/34.0/2.2 ms
+16:42 pi4-plato r3d V3D GPU (doom3 V3DTest), 1680x1050 full screen, GPU defaults: 833 frames 18.7 seconds 44.6 fps 18.0/22.4/37.0/2.6 ms
+16:50 pi4-plato r3d V3D GPU, vid_restart fix, 1024x768 window: 833 frames 11.6 seconds 71.6 fps 10.0/14.0/34.0/2.2 ms

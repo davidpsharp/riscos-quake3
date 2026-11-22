@@ -1,0 +1,23 @@
+--- a/src/video/riscos/SDL_riscosevents.c
++++ b/src/video/riscos/SDL_riscosevents.c
+@@ -529,6 +529,10 @@
+ 
+     if (!vdata->relative_mouse || !window || (RISCOS_IsWindowed(vdata) && !vdata->has_caret) ||
+         !RISCOS_GetPointerMap(_this, window, &m)) {
++        /* 2026: the pointer goes where it likes meanwhile (a menu, the
++           desktop): where it is when relative motion is read again isn't a
++           move (it turned the view at the start of play) */
++        vdata->rel_discard = SDL_TRUE;
+         vdata->rel_have_last = SDL_FALSE;
+         return SDL_FALSE;
+     }
+--- a/src/video/riscos/SDL_riscosmouse.c
++++ b/src/video/riscos/SDL_riscosmouse.c
+@@ -120,6 +120,7 @@
+     vdata->relative_mouse = enabled;
+     vdata->rel_rest_x = vdata->rel_rest_y = 0;
+     vdata->rel_have_last = SDL_FALSE;
++    vdata->rel_discard = enabled;       /* 2026: the first reading isn't a move */
+     vdata->abs_pointer = RISCOS_PointerIsAbsolute();
+     if (enabled && !vdata->abs_pointer)
+         RISCOS_CentrePointer(_this, vdata->wimp_sdl_window ? vdata->wimp_sdl_window : _this->windows);
