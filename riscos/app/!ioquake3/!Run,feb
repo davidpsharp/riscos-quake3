@@ -17,9 +17,19 @@ RMEnsure SharedSoundBuffer 0.07 IfThere System:Modules.SSBuffer Then RMLoad Syst
 RMEnsure DigitalRenderer 0.55 IfThere System:Modules.DRenderer Then RMLoad System:Modules.DRenderer
 RMEnsure VideoOverlay 0.00 IfThere System:Modules.VideoOverlay Then RMLoad System:Modules.VideoOverlay
 
-| The heap is a dynamic area, so the slot only holds the program.
-WimpSlot -min 24000K -max 24000K
+| The game: Quake III Arena (baseq3) if it's here, else OpenArena (baseoa),
+| else the free Quake III Arena demo (demoq3).
+Set ioquake3$Game ""
+IfThere <ioquake3$Dir>.demoq3.pak0/pk3 Then Set ioquake3$Game demoq3
+IfThere <ioquake3$Dir>.baseoa.pak0/pk3 Then Set ioquake3$Game baseoa
+IfThere <ioquake3$Dir>.baseq3.pak0/pk3 Then Set ioquake3$Game baseq3
 Dir <ioquake3$Dir>
-| Quake III Arena (baseq3) if it's here, else OpenArena (baseoa), else
-| the free Quake III Arena demo (demoq3).
-IfThere <ioquake3$Dir>.baseq3.pak0/pk3 Then Run <ioquake3$Dir>.!RunImage +set fs_basepath . +set fs_homepath . %*0 >/<ioquake3$Dir>/stdout 2>/<ioquake3$Dir>/stderr Else IfThere <ioquake3$Dir>.baseoa.pak0/pk3 Then Run <ioquake3$Dir>.!RunImage +set fs_basepath . +set fs_homepath . +set com_basegame baseoa %*0 >/<ioquake3$Dir>/stdout 2>/<ioquake3$Dir>/stderr Else Run <ioquake3$Dir>.!RunImage +set fs_basepath . +set fs_homepath . +set com_basegame demoq3 %*0 >/<ioquake3$Dir>/stdout 2>/<ioquake3$Dir>/stderr
+| The heap is a dynamic area, so the slot only holds the program.
+If "<ioquake3$Game>"<>"" Then WimpSlot -min 24000K -max 24000K
+If "<ioquake3$Game>"="baseq3" Then Run <ioquake3$Dir>.!RunImage +set fs_basepath . +set fs_homepath . %*0 >/<ioquake3$Dir>/stdout 2>/<ioquake3$Dir>/stderr
+If "<ioquake3$Game>"="baseoa" Then Run <ioquake3$Dir>.!RunImage +set fs_basepath . +set fs_homepath . +set com_basegame baseoa %*0 >/<ioquake3$Dir>/stdout 2>/<ioquake3$Dir>/stderr
+If "<ioquake3$Game>"="demoq3" Then Run <ioquake3$Dir>.!RunImage +set fs_basepath . +set fs_homepath . +set com_basegame demoq3 %*0 >/<ioquake3$Dir>/stdout 2>/<ioquake3$Dir>/stderr
+| No game data: the launcher offers to download the free demo, then starts
+| the game through this file again. (Last, so nothing here runs after it.)
+If "<ioquake3$Game>"="" Then WimpSlot -min 4096K -max 4096K
+If "<ioquake3$Game>"="" Then Run <ioquake3$Dir>.Launcher %*0 2>/<ioquake3$Dir>/launcherlog

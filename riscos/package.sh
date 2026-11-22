@@ -14,6 +14,9 @@ cp -r riscos/app/!ioquake3 $B/app/
 arm-riscos-gnueabihf-strip -o $B/ioquake3.stripped $B/RelWithDebInfo/ioquake3
 elf2aif -e $B/ioquake3.stripped "$A/!RunImage,ff8" >/dev/null
 cp $RISCOS_TOOLCHAIN/riscos/PThrTicker,ffa $A/ 2>/dev/null || cp $RISCOS_DEVKIT/riscos/PThrTicker,ffa $A/
+# the launcher, which !Run uses to fetch the free demo when there's no game data
+sh riscos/launcher/build.sh >/dev/null
+cp build/launcher/Launcher,ff8 $A/
 mkdir -p $A/demoq3
 [ -f data/qbase/demoq3/zz-ioq3-vm.pk3 ] && cp data/qbase/demoq3/zz-ioq3-vm.pk3 $A/demoq3/
 cp $RISCOS_DEVKIT/LICENCES.txt "$A/Licences,fff" 2>/dev/null || true

@@ -11,11 +11,17 @@ Game data
 ioquake3 is the engine only. Put game data beside !RunImage, in this
 application:
 
- - The free Quake III Arena demo: put demoq3.pak0/pk3 from the demo
-   (in linuxq3ademo-1.11-6.x86.gz.sh, on id's old FTP mirrors such as
-   ftp.gwdg.de/pub/misc/ftp.idsoftware.com/idstuff/quake3/linux) in the
-   demoq3 folder. demoq3.zz-ioq3-vm/pk3, already there, holds
-   ioquake3's game code, which the demo's own is too old for.
+ - The free Quake III Arena demo: run !ioquake3 without any game data
+   and it offers to download it. It fetches id's Linux demo installer
+   (49 MB) from a mirror of id's FTP site, checks it, shows id's
+   licence (kept as demoq3.Q3A_EULA/txt) and installs the demo's data
+   (demoq3.pak0/pk3, 47 MB) only if you accept it, then starts the
+   game. It needs about 100 MB free while it works. If the download
+   fails, fetch linuxq3ademo-1.11-6.x86.gz.sh yourself (from
+   ftp.gwdg.de/pub/misc/ftp.idsoftware.com/idstuff/quake3/linux) and
+   drop it on the icon bar icon; or put pak0/pk3 from it in demoq3 by
+   hand. demoq3.zz-ioq3-vm/pk3, already there, holds ioquake3's game
+   code, which the demo's own is too old for.
  - The full game: make a baseq3 folder and put pak0/pk3 to pak8/pk3 in
    it. pak0 is on the CD, or buy the game from Steam or GOG (see
    ioquake3.org/buy); pak1 to pak8 are id's free point release data,

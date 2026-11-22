@@ -57,6 +57,13 @@ non-commercial copies of the demo, with the licence, labelled as a demo.
 Put the game data in `!ioquake3`: the free demo's `pak0.pk3` in `demoq3`, or the
 full game's `pak0`-`pak8` in `baseq3`, or OpenArena 0.8.8's `baseoa` pk3s in
 `baseoa`. `!Run` uses `baseq3`, else `baseoa`, else `demoq3`.
+
+With none of them, `!Run` starts the launcher (`riscos/launcher`, adapted from
+riscos-doom3's). It offers to fetch the demo: id's Linux installer from a mirror
+of id's FTP site over HTTP, checked by SHA-256; id's licence is unpacked and
+shown, and `demoq3/pak0.pk3` (also checked) is installed only if the user
+accepts it. Then it starts the game through `!Run` and quits. Dropping the
+installer on its icon does the same without the download.
 `!ioquake3.!Help` has the details and the speed settings.
 
 ## The RISC OS changes
