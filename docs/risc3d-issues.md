@@ -1,20 +1,6 @@
 # ioquake3 on RISC3D: results and issues
 
-From the riscos-quake3 port (branch `risc3d`), 23 November 2026. David passes these on; nobody
-here contacts Andy directly.
-
-**Read riscos-doom3's documents first.** They cover the issues both ports hit, and this file
-doesn't repeat them:
-
-- `riscos-dhewm3/docs/RISC3D-0.17-report.md` is the report for Andy.
-- `riscos-dhewm3/docs/risc3d-issues.md` has the details.
-
-Two of their items were found here first:
-
-- **V3DRender refuses every buffer of 64 KB or more.** This is their item 2, the 128 MB
-  dynamic-area cap. With !MesaLibs in `!Boot.Resources`, or DAClamp run before V3DRender
-  loads, the buffers are fine.
-- **riscos-mesa's SDL fails in a numbered screen mode.** This is their item 4.
+Summary for RISC3D's author, all three ports: [RISC3D-for-Andy.md](https://github.com/davidpsharp/riscos-dhewm3/blob/main/docs/RISC3D-for-Andy.md). This file is the Quake 3 evidence.
 
 ## Results
 
@@ -27,28 +13,17 @@ made with crossdev 1.11 and riscos-mesa devkit 20.3.5-22 (`-Wl,-u,riscos_mesa_gp
 | **Pi 4 (pi4-socrates, RISC OS 5.30), stock RISC3D 0.17 (V3DRender 0.26) after DAClamp** | GPU, ioquake3's own defaults | 480x300 window | **138** |
 | Pi 4, same | GPU | 1024x768 window | 77 |
 | Pi 4, same | GPU | 1280x800 full screen | 69 |
-| Pi 4, V3DRender 0.16 with riscos-doom3's test patches | GPU, ioquake3's own defaults | 480x300 window | 138 |
-| Pi 4, same | GPU | 1024x768 window | 72 |
-| Pi 4, same | GPU | 1680x1050 full screen | 45 |
 | RoMac 0.1.230 (Apple M3 Pro, Linux3D) | GPU, software defaults | 480x300 window | 48.5 |
 | RoMac, same | GPU, ioquake3's own defaults | 480x300 window | 70.7 |
 | RoMac, same | GPU, ioquake3's own defaults | 960x720 window | 61.8 |
 
-- **The test V3DRender** is "16k+nohigh" (`tests/v3drender/playable.patch` in riscos-dhewm3),
-  loaded after DAClamp.
 - **RISC3D 0.17 runs Quake 3 with no patches** (tested 23 Nov 2026 on pi4-socrates). It was
   loaded by hand: `DAClamp`, then `Obey !RISC3D.!Boot`.
   - Every run had 0 BO failures, 0 resets and 0 MMU errors.
   - The 4,096-handle limit that blocks Doom 3 doesn't touch Quake 3: a whole session made
     about 1,900 buffers.
-  - **On a 64K colour desktop, a window is garbled; full screen is fine.** In a 640x480
-    window on socrates' 1280x800 64K desktop (ModeFlags &40C0, Log2BPP 4), the GPU picture
-    shows striped, stretched and false-coloured. It looks like 32-bit pixels copied raw into
-    a 16-bit screen. Full screen at the same desktop was correct. riscos-n64 and
-    riscos-half-life see the same in a window, so it's riscos-mesa's EGL window plot, not this
-    game. riscos-half-life has an SDL patch for the software (sprite) path
-    (`riscos/sdl2/patches/09-gl-in-64k-colour-modes.patch` there). (An earlier note here said
-    64K was fine: that run's `WimpMode ... C64K` hadn't changed the mode.)
+  - **On a 64K colour desktop, a window is garbled; full screen is fine.** Same as
+    [riscos-mupen64plus item 1](https://github.com/davidpsharp/riscos-mupen64plus/blob/main/docs/RISC3D-0.17-report.md#1-64k-colour-desktops-the-gl-window-shows-the-wrong-pixels-new).
 - **On RoMac**, a frame at 480x300 costs nearly as much as one at 960x720. The time goes on the
   cost of each GL call, not on pixels: Quake 3 makes about 90 draws and 80 texture binds a
   frame.
