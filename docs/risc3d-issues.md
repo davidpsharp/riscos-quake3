@@ -24,6 +24,9 @@ made with crossdev 1.11 and riscos-mesa devkit 20.3.5-22 (`-Wl,-u,riscos_mesa_gp
 | Machine | Drawing | Size | fps |
 |---|---|---|---|
 | Pi 4 (pi4-plato, RISC OS 5.30) | software Mesa, software defaults | 480x300 window | 35 |
+| **Pi 4 (pi4-socrates, RISC OS 5.30), stock RISC3D 0.17 (V3DRender 0.26) after DAClamp** | GPU, ioquake3's own defaults | 480x300 window | **138** |
+| Pi 4, same | GPU | 1024x768 window | 77 |
+| Pi 4, same | GPU | 1280x800 full screen | 69 |
 | Pi 4, V3DRender 0.16 with riscos-doom3's test patches | GPU, ioquake3's own defaults | 480x300 window | 138 |
 | Pi 4, same | GPU | 1024x768 window | 72 |
 | Pi 4, same | GPU | 1680x1050 full screen | 45 |
@@ -33,9 +36,13 @@ made with crossdev 1.11 and riscos-mesa devkit 20.3.5-22 (`-Wl,-u,riscos_mesa_gp
 
 - **The test V3DRender** is "16k+nohigh" (`tests/v3drender/playable.patch` in riscos-dhewm3),
   loaded after DAClamp.
-- **RISC3D 0.17 (V3DRender 0.26) isn't tested here yet.** Quake 3 uses far fewer buffers than
-  Doom 3, so riscos-dhewm3's remaining blocker, the 4,096-handle limit, probably doesn't touch
-  it. 0.17 run after DAClamp, or after !MesaLibs at boot, may well run it stock.
+- **RISC3D 0.17 runs Quake 3 with no patches** (tested 23 Nov 2026 on pi4-socrates). It was
+  loaded by hand: `DAClamp`, then `Obey !RISC3D.!Boot`.
+  - Every run had 0 BO failures, 0 resets and 0 MMU errors.
+  - The 4,096-handle limit that blocks Doom 3 doesn't touch Quake 3: a whole session made
+    about 1,900 buffers.
+  - It works the same on socrates' 64K colour desktop. The GPU path shows the window
+    correctly there; the 64K garbling seen by other ports is in the software (sprite) path.
 - **On RoMac**, a frame at 480x300 costs nearly as much as one at 960x720. The time goes on the
   cost of each GL call, not on pixels: Quake 3 makes about 90 draws and 80 texture binds a
   frame.
@@ -60,13 +67,34 @@ made with crossdev 1.11 and riscos-mesa devkit 20.3.5-22 (`-Wl,-u,riscos_mesa_gp
   the next `GLimp_SetMode`. On the GPU, Mesa draws into the window's own memory (imported into
   V3DRender), so deleting the context then finishes a frame in freed memory. V3DRender answers
   EBADF (-9) and Mesa aborts.
-- **Workaround, in the game:** delete the context, then destroy the window, then quit SDL video
-  (`ioq3/code/sdl/sdl_glimp.c`, `GLimp_Shutdown`).
+- **Workaround, in the game:** delete the context, then destroy the window
+  (`ioq3/code/sdl/sdl_glimp.c`, `GLimp_Shutdown`). See item 2 for why SDL video is no longer
+  quit there.
 - **Suggestion:** this order is legal in SDL and harmless on Linux, so other SDL ports will hit
   it. riscos-mesa's SDL could make the context stop drawing to a window when that window is
   destroyed, or Mesa could treat a vanished surface as "nothing to finish" rather than abort.
 
-## 2. Relative mouse mode in riscos-mesa's SDL (mouse look)
+## 2. Restarting SDL video loses the GPU: the next context is software
+
+- **Seen:** RISC3D 0.17 on pi4-socrates. After a `vid_restart`, the game came back with
+  GL_RENDERER "Mesa OffScreen" (Mesa 20.3.5, software) instead of "V3D 4.2.14.0". It ran at
+  software speed, and `*V3DRender` showed no file open. With `V3DM$Trace` set, making the new
+  context sent the GPU module no requests at all, so riscos-mesa never tried the GPU.
+  - This happened after the item 1 fix, which stopped the crash.
+  - Earlier `vid_restart` checks on plato and RoMac only looked for a crash, so they would have
+    missed it.
+- **Cause:** not pinned down. ioquake3's `GLimp_Shutdown` calls
+  `SDL_QuitSubSystem(SDL_INIT_VIDEO)`, and `GLimp_SetMode` calls `SDL_Init(SDL_INIT_VIDEO)`
+  again. The GPU library's own state (`decide()` in `osmesa/r3d_switch.c`) is kept for the
+  life of the program, so the loss is somewhere in SDL's video quit and init.
+- **Workaround, in the game:** keep SDL video up across a restart; `SDL_Quit` ends it at exit
+  (`ioq3/code/sdl/sdl_glimp.c`). Then `vid_restart`, full screen to a window and a window to full
+  screen all stay on the GPU, with 0 resets and 0 MMU errors.
+- **Suggestion:** a program that stops and starts SDL video (`SDL_QuitSubSystem`, or `SDL_Quit`
+  then `SDL_Init`) should get the GPU again. ioquake3 does it at every `vid_restart`, and other ioquake3-based
+  ports (iortcw) will too.
+
+## 3. Relative mouse mode in riscos-mesa's SDL (mouse look)
 
 These were found with RISC3D builds, though they're in SDL, not the GPU stack. They are fixed
 by patches in `riscos/sdl2/patches`, which riscos-dhewm3 shares (and riscos-half-life will).
@@ -83,7 +111,7 @@ Each patch is against SDL 2.32.10 as riscos-mesa 2df5c85 carries it.
   centre is rounded to a pixel.
 - **Suggestion:** take 06 to 08 into riscos-mesa's SDL overlay.
 
-## 3. Rorth screenshots of a GPU window show bands from different frames
+## 4. Rorth screenshots of a GPU window show bands from different frames
 
 - **Seen:** on the Pi 4 GPU, a Rorth screenshot during play shows horizontal bands, each from a
   different frame.
@@ -92,7 +120,7 @@ Each patch is against SDL 2.32.10 as riscos-mesa 2df5c85 carries it.
 - **Question for Andy:** does V3DRender, or riscos-mesa's swap, wait for the frame to finish
   before the window's memory is shown, and for vsync?
 
-## 4. Minor
+## 5. Minor
 
 - **Linking libMesaGPU statically** adds about 15 MB: the game's `!RunImage` is 30 MB. That's
   fine, but it means a game won't pick up a Mesa fix without being rebuilt.

@@ -230,3 +230,8 @@
 16:41 pi4-plato r3d V3D GPU (doom3 V3DTest), 1024x768 window, GPU defaults: 833 frames 11.6 seconds 71.7 fps 9.0/13.9/34.0/2.2 ms
 16:42 pi4-plato r3d V3D GPU (doom3 V3DTest), 1680x1050 full screen, GPU defaults: 833 frames 18.7 seconds 44.6 fps 18.0/22.4/37.0/2.6 ms
 16:50 pi4-plato r3d V3D GPU, vid_restart fix, 1024x768 window: 833 frames 11.6 seconds 71.6 fps 10.0/14.0/34.0/2.2 ms
+09:28 pi4-socrates r3d RISC3D 0.17 (V3DRender 0.26, stock), 480x300 window, GPU defaults: 833 frames 6.0 seconds 138.0 fps 4.0/7.2/37.0/3.0 ms
+09:29 pi4-socrates r3d RISC3D 0.17 stock, 1024x768 window, GPU defaults: 833 frames 10.8 seconds 76.9 fps 9.0/13.0/41.0/2.3 ms
+09:29 pi4-socrates r3d RISC3D 0.17 stock, 1280x800 full screen, GPU defaults: 833 frames 12.0 seconds 69.2 fps 11.0/14.5/40.0/2.1 ms
+09:47 pi4-socrates r3d+keep SDL video, RISC3D 0.17 stock, 64K desktop, 480x300 window: 833 frames 6.0 seconds 138.6 fps 4.0/7.2/39.0/3.0 ms
+09:48 pi4-socrates r3d+keep SDL video, RISC3D 0.17 stock, 1280x800 full screen: 833 frames 12.0 seconds 69.3 fps 11.0/14.4/49.0/2.2 ms

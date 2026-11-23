@@ -116,9 +116,12 @@ void GLimp_Shutdown( void )
 		SDL_DestroyWindow( SDL_window );
 		SDL_window = NULL;
 	}
-#endif
 
+	// SDL video stays up (SDL_Quit ends it at exit): started again, its
+	// next GL context was software Mesa, not the GPU (RISC3D 0.17, Pi 4)
+#else
 	SDL_QuitSubSystem( SDL_INIT_VIDEO );
+#endif
 }
 
 /*
