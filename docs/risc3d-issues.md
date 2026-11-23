@@ -41,8 +41,14 @@ made with crossdev 1.11 and riscos-mesa devkit 20.3.5-22 (`-Wl,-u,riscos_mesa_gp
   - Every run had 0 BO failures, 0 resets and 0 MMU errors.
   - The 4,096-handle limit that blocks Doom 3 doesn't touch Quake 3: a whole session made
     about 1,900 buffers.
-  - It works the same on socrates' 64K colour desktop. The GPU path shows the window
-    correctly there; the 64K garbling seen by other ports is in the software (sprite) path.
+  - **On a 64K colour desktop, a window is garbled; full screen is fine.** In a 640x480
+    window on socrates' 1280x800 64K desktop (ModeFlags &40C0, Log2BPP 4), the GPU picture
+    shows striped, stretched and false-coloured. It looks like 32-bit pixels copied raw into
+    a 16-bit screen. Full screen at the same desktop was correct. riscos-n64 and
+    riscos-half-life see the same in a window, so it's riscos-mesa's EGL window plot, not this
+    game. riscos-half-life has an SDL patch for the software (sprite) path
+    (`riscos/sdl2/patches/09-gl-in-64k-colour-modes.patch` there). (An earlier note here said
+    64K was fine: that run's `WimpMode ... C64K` hadn't changed the mode.)
 - **On RoMac**, a frame at 480x300 costs nearly as much as one at 960x720. The time goes on the
   cost of each GL call, not on pixels: Quake 3 makes about 90 draws and 80 texture binds a
   frame.
