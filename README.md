@@ -12,6 +12,10 @@ mouse and keyboard, bots, and the internet server browser. On a Pi 4 a bot match
 runs at about 30 to 35 frames a second, drawing 480x300 and scaled up to the
 screen by the Pi's display hardware.
 
+![ioquake3 in a window on the RISC OS desktop: the Quake III Arena demo's q3dm1](https://github.com/davidpsharp/riscos-quake3/releases/download/risc3d-preview2/screenshot-romac-window.png)
+
+*In a window on the RISC OS desktop (RoMac, with RISC3D drawing on the Mac's GPU).*
+
 - `ioq3/`: ioquake3 at upstream commit 87a99d1, with the RISC OS changes
   (all under `__riscos__` or `if(RISCOS)`).
 - `riscos/`: the cross-build (Docker image `q3-riscos-r3d`: riscos-crossdev 1.11 with
