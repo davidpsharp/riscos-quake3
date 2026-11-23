@@ -12,9 +12,16 @@ mouse and keyboard, bots, and the internet server browser. On a Pi 4 a bot match
 runs at about 30 to 35 frames a second, drawing 480x300 and scaled up to the
 screen by the Pi's display hardware.
 
-![ioquake3 in a window on the RISC OS desktop: the Quake III Arena demo's q3dm1](https://github.com/davidpsharp/riscos-quake3/releases/download/risc3d-preview2/screenshot-romac-window.png)
+<p>
+<img src="https://github.com/davidpsharp/riscos-quake3/releases/download/risc3d-preview2/screenshot-pi4-rocket-fight.png" width="49%" alt="A bot firing rockets down a corridor in q3dm7, in a window on the RISC OS desktop">
+<img src="https://github.com/davidpsharp/riscos-quake3/releases/download/risc3d-preview2/screenshot-pi4-rocket-explosion.png" width="49%" alt="A rocket explosion on the stairs in q3dm7">
+<img src="https://github.com/davidpsharp/riscos-quake3/releases/download/risc3d-preview2/screenshot-pi4-lava-pit.png" width="49%" alt="The lava pit in q3dm7">
+<img src="https://github.com/davidpsharp/riscos-quake3/releases/download/risc3d-preview2/screenshot-romac-window.png" width="49%" alt="ioquake3 in a window on the RISC OS desktop: the Quake III Arena demo's q3dm1">
+</p>
 
-*In a window on the RISC OS desktop (RoMac, with RISC3D drawing on the Mac's GPU).*
+*In a window on the RISC OS desktop. The first three are a bot match on q3dm7 on a Raspberry Pi 4
+(RISC3D drawing on its GPU, following a bot with the HUD hidden); the last is q3dm1 on RoMac
+(RISC3D drawing on the Mac's GPU).*
 
 - `ioq3/`: ioquake3 at upstream commit 87a99d1, with the RISC OS changes
   (all under `__riscos__` or `if(RISCOS)`).
