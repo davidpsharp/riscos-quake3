@@ -7,7 +7,7 @@ cd /work
 V=$(sed -n 's/^#define RISCOS_PORT_VERSION "\(.*\)"/\1/p' ioq3/code/qcommon/q_platform.h)
 D=$(sed -n 's/^#define RISCOS_PORT_DATE "\(.*\)"/\1/p' ioq3/code/qcommon/q_platform.h)
 grep -q "^Version $V ($D)\$" "riscos/app/!ioquake3/!Help,fff" || { echo "!Help doesn't say Version $V ($D)" >&2; exit 1; }
-B=build/riscos
+B=${B:-build/riscos-r3d}   # as build.sh
 A=$B/app/!ioquake3
 rm -rf $B/app && mkdir -p $B/app
 cp -r riscos/app/!ioquake3 $B/app/

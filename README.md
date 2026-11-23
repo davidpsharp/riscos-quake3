@@ -33,6 +33,14 @@ QVMs (1999) are too old for ioquake3, so the package carries ioquake3's, in
 build of ioquake3 (`-DBUILD_GAME_QVMS=ON`, which builds q3lcc and q3asm) and zip
 `baseq3/vm` into `data/qbase/demoq3/zz-ioq3-vm.pk3` before packaging.
 
+## On a GPU (RISC3D)
+
+This branch links riscos-mesa's libMesaGPU, so the game draws on a GPU when
+RISC3D (Andrew Youll's GPU layer) has a driver: on a Pi 4
+(V3DRender) or in RoMac. It then uses ioquake3's own quality defaults (lightmaps,
+full resolution). Without a driver it draws in software as before. Results and
+the issues seen are in `docs/risc3d-issues.md`.
+
 ## Getting the game data
 
 ioquake3 is only the engine. The data:
@@ -76,7 +84,7 @@ installer on its icon does the same without the download.
 | Timer | `Sys_Milliseconds` from `OS_ReadMonotonicTime` plus HAL counter 0: UnixLib's `gettimeofday` counts in centiseconds, which made frame timing jump in 10 ms steps |
 | Renderer | `r_glFastest` (`GL_PERSPECTIVE_CORRECTION_HINT`, `GL_FASTEST`) keeps mipmapped textures on riscos-mesa's NEON route; vertex lighting and no multitexture by default, put back after a game's `default.cfg` (OpenArena's turns vertex lighting off) |
 | Display | `r_renderHeight`/`r_renderWidth`/`r_overlay` set riscos-mesa SDL's render size and overlay; full screen is SDL's multitasking full screen window, which the overlay needs; the renderer takes the GL drawable's size |
-| Input | riscos-mesa's SDL has no relative mouse mode or warp: full screen, the game reads the mouse (`OS_Word 21,4`) and puts it back in the middle (`21,3`, `21,5`). A full screen window counts as focused (SDL never gives input focus) |
+| Input | Mouse look through SDL's relative mouse mode, with this port's fixes to riscos-mesa's SDL (`riscos/sdl2/patches` 04-08: RoMac's pointer, motion in screen pixels, no jump when it starts, the centre on a whole pixel). A full screen window counts as focused (SDL never gives input focus) |
 | UI | `q3_ui` recognises the demo (`com_basegame demoq3`): demo menus, no CD key. Error dialogs are Wimp error boxes |
 | Desktop | Icon (`!Sprites`, `!Sprites22`; drawn by `riscos/tools/make_icon.py`); the icon bar menu has Info (version, authors), Help and Quit, from the SDL in `riscos/sdl2` (riscos-mesa's, with DevilutionX's menu patch and a fix for the task's name) |
 | Tools | `com_fpsLog N` (averaged fps and per-part times every N seconds); `r_speeds 1` counts draw calls and texture binds; `Q3Prof` sampling profiler (below) |
