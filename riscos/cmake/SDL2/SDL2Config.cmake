@@ -1,4 +1,4 @@
-# RISC OS port, copyright David Sharp 2026
+# RISC OS port, copyright David Sharp 2026, GPL 2
 # SDL 2.26, linked statically.
 # The devkit's SDL2 brings OpenGL through EGL and OSMesa, so those come too.
 # OSMESA_LIBRARY and EGL_LIBRARY (cmake -D) link another libOSMesa.a or

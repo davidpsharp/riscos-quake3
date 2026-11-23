@@ -23,7 +23,7 @@
  * menu, Info window, the message window and its buttons, the handler swap around Wimp_Poll) is
  * from David Sharp's OpenTS RISC OS port (port/riscos/desktop.cpp).
  *
- * RISC OS port, copyright David Sharp 2026
+ * RISC OS port, copyright David Sharp 2026, GPL 2
  */
 #include "sha256.h"
 

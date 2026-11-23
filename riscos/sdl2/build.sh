@@ -1,5 +1,5 @@
 #!/bin/sh
-# RISC OS port, copyright David Sharp 2026
+# RISC OS port, copyright David Sharp 2026, GPL 2
 # Builds SDL 2.32.10 for RISC OS: upstream's source, riscos-mesa's RISC OS overlay
 # (overlay/, a copy: see overlay/SOURCE) and then this port's own fixes (patches/,
 # which should go to riscos-mesa in time). Run inside the q3-riscos image:

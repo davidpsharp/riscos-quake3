@@ -1,4 +1,4 @@
-# RISC OS port, copyright David Sharp 2026
+# RISC OS port, copyright David Sharp 2026, GPL 2
 # CMake toolchain for ioquake3 on RISC OS 5 (ARMv7 with NEON: Raspberry Pi 2 and later),
 # riscos-crossdev's toolchain file plus the riscos-mesa devkit's SDL2 and OpenAL.
 include($ENV{RCD_DIR}/cmake/riscos.cmake)

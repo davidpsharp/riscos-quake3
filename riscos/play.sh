@@ -1,5 +1,5 @@
 #!/bin/sh
-# RISC OS port, copyright David Sharp 2026
+# RISC OS port, copyright David Sharp 2026, GPL 2
 # Times live play on a RISC OS machine: a bot match on a map, spectating
 # (following) a bot, with com_fpsLog's averages every 5 seconds.
 #   riscos/play.sh <target> <label> <seconds> [cvar settings...]

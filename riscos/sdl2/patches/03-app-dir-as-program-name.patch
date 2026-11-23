@@ -1,4 +1,4 @@
-RISC OS port, copyright David Sharp 2026
+RISC OS port, copyright David Sharp 2026, GPL 2
 
 --- a/src/video/riscos/SDL_riscoswindow.c	2026-10-27 00:57:10
 +++ b/src/video/riscos/SDL_riscoswindow.c	2026-10-27 00:57:10

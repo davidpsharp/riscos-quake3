@@ -1,4 +1,4 @@
-RISC OS port, copyright David Sharp 2026
+RISC OS port, copyright David Sharp 2026, GPL 2
 
 --- a/src/video/riscos/SDL_riscosframebuffer.c
 +++ b/src/video/riscos/SDL_riscosframebuffer.c

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# RISC OS port, copyright David Sharp 2026
+# RISC OS port, copyright David Sharp 2026, GPL 2
 """riscos-mesa's s_triangle.c, fast_tex_image: the mip level of a triangle
 (GL_FASTEST hint) was two sqrtf calls and a log2f, UnixLib C functions,
 for every triangle. With no LOD bias the level is

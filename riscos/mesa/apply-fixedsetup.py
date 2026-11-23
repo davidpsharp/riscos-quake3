@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# RISC OS port, copyright David Sharp 2026
+# RISC OS port, copyright David Sharp 2026, GPL 2
 """riscos-mesa's s_context.h: FloatToFixed, which the triangle setup
 (s_tritemp.h) calls some twenty times a triangle for the edges' and
 attributes' fixed point starts and steps, is lroundf: a C function in

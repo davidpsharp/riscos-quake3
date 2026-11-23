@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# RISC OS port, copyright David Sharp 2026
+# RISC OS port, copyright David Sharp 2026, GPL 2
 """Draws the application's icon, 512x512 with transparency: a steel disc
 with a sight ring and a glowing "3" made of two arcs (no font, and nothing of
 id Software's logos). riscos/tools/make_sprites.py makes the sprites from it.

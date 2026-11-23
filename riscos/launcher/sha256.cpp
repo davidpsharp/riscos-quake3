@@ -1,5 +1,5 @@
 /* SHA-256 (FIPS 180-4), written for the dhewm3 RISC OS launcher (riscos-doom3). */
-/* RISC OS port, copyright David Sharp 2026 */
+/* RISC OS port, copyright David Sharp 2026, GPL 2 */
 #include "sha256.h"
 #include <stdio.h>
 #include <string.h>

@@ -97,4 +97,4 @@ at the project's home. It uses riscos-mesa (Mesa, SDL2, OpenAL Soft:
 MIT/zlib/LGPL) and UnixLib. Quake III Arena's data is id Software's and
 isn't included.
 
-RISC OS port, copyright David Sharp 2026.
+RISC OS port, copyright David Sharp 2026, GPL 2.

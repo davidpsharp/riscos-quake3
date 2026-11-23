@@ -1,4 +1,4 @@
 | !Boot for ioquake3: the icon, when the Filer first sees the application
-| RISC OS port, copyright David Sharp 2026
+| RISC OS port, copyright David Sharp 2026, GPL 2
 Set ioquake3$Dir <Obey$Dir>
 IfThere <ioquake3$Dir>.!Sprites Then IconSprites <ioquake3$Dir>.!Sprites

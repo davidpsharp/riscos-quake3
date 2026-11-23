@@ -1,5 +1,5 @@
 #!/bin/sh
-# RISC OS port, copyright David Sharp 2026
+# RISC OS port, copyright David Sharp 2026, GPL 2
 # Runs a command in the q3-riscos cross-build image with the repository at /work.
 #   docker build --platform linux/amd64 -t q3-riscos-r3d riscos/docker
 cd "$(dirname "$0")/.."

@@ -1,5 +1,5 @@
 #!/bin/sh
-# RISC OS port, copyright David Sharp 2026
+# RISC OS port, copyright David Sharp 2026, GPL 2
 # Builds riscos-mesa's libOSMesa.a from source with this port's patches, into
 # build/mesa-src-a53/stage/lib (riscos/cmake/SDL2 then links it instead of the
 # devkit's). The source tree lives in a Docker volume (Mesa's tarball doesn't
