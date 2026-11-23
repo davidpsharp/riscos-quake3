@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# RISC OS port, copyright David Sharp 2026
 """Adds the pair gather to riscos-mesa's s_triangle.c (ro_tex_group, BGR):
 for groups whose four pixels each have their two texels of a row side by
 side (s1 == s0 + 1: nothing wrapped or clamped between them), each row's

@@ -96,3 +96,5 @@ ioquake3 is GPL 2 (or later): the source, with the RISC OS changes, is
 at the project's home. It uses riscos-mesa (Mesa, SDL2, OpenAL Soft:
 MIT/zlib/LGPL) and UnixLib. Quake III Arena's data is id Software's and
 isn't included.
+
+RISC OS port, copyright David Sharp 2026.

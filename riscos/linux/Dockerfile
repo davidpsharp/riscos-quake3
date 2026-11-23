@@ -1,3 +1,4 @@
+# RISC OS port, copyright David Sharp 2026
 # Native Linux ioquake3 (x86-64) for recording benchmark demos headless, under Xvfb.
 FROM debian:bookworm
 RUN apt-get update && apt-get install -y --no-install-recommends \

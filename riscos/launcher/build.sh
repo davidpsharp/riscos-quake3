@@ -1,4 +1,5 @@
 #!/bin/sh
+# RISC OS port, copyright David Sharp 2026
 # Builds the launcher (!ioquake3.Launcher: fetches the free demo when there's no game data) in
 # the q3-riscos image:
 #   riscos/sdk.sh riscos/launcher/build.sh

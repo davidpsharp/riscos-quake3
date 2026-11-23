@@ -1,4 +1,5 @@
 #!/bin/sh
+# RISC OS port, copyright David Sharp 2026
 # Profiles the benchmark demo on a RISC OS machine with the Q3Prof sampler
 # (ioq3/code/sys/sys_riscos_prof.c), and prints the flat profile.
 #   riscos/prof.sh <target> <unstripped ELF> <label> [cvar settings...]

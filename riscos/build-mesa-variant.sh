@@ -1,4 +1,5 @@
 #!/bin/sh
+# RISC OS port, copyright David Sharp 2026
 # Builds ioquake3 against a libOSMesa.a built from riscos-mesa's source in
 # build/mesa-src (stage/lib), into build/riscos-mesa/RunImage,ff8.
 #   riscos/sdk.sh riscos/build-mesa-variant.sh

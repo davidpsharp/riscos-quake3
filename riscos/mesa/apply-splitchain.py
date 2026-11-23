@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# RISC OS port, copyright David Sharp 2026
 """riscos-mesa's s_triangle.c, ro_tex_group's BGR gather: the sixteen vld3
 lane loads went into two register sets, eight dependent loads each. Here
 they go into four (lanes 0-3 and 4-7 apart, the other lanes zero) that

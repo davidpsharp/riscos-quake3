@@ -1,3 +1,4 @@
+# RISC OS port, copyright David Sharp 2026
 # Cross-build environment for ioquake3 on RISC OS 5 (ARMv7, Raspberry Pi):
 # riscos-crossdev 1.11 (GCCSDK GCC 10.2, UnixLib 5.0.3.7) with riscos-mesa's
 # 20.3.5-22 devkit in place of the one it carries (20.3.5-18): Mesa OpenGL 2.1

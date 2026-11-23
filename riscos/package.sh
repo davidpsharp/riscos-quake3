@@ -1,4 +1,5 @@
 #!/bin/sh
+# RISC OS port, copyright David Sharp 2026
 # Makes build/riscos/app/!ioquake3 from the build: run in the q3-riscos image after build.sh.
 #   riscos/sdk.sh riscos/package.sh
 set -e

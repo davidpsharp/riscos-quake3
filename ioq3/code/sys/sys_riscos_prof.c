@@ -9,6 +9,8 @@
  *
  * Set the system variable Q3Prof to a file name before the program starts;
  * the pcs are written there, one hex address a line, when it exits.
+ *
+ * RISC OS port, copyright David Sharp 2026
  */
 #ifdef __riscos__
 

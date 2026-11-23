@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# RISC OS port, copyright David Sharp 2026
 """Makes a RISC OS sprite file from a PNG.
 
     make_sprites.py <in.png> <out,ff9> name:WxH[:dpi] [name:WxH[:dpi] ...]

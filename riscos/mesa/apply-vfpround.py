@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# RISC OS port, copyright David Sharp 2026
 """Mesa's src/util/rounding.h: _mesa_lroundevenf (behind IROUND, F_TO_I,
 UNCLAMPED_FLOAT_TO_UBYTE: every vertex colour's float to byte conversion
 among much else) calls lrintf, which in UnixLib is a C function. With VFP

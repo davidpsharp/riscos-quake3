@@ -18,6 +18,11 @@ screen by the Pi's display hardware.
   riscos-mesa's 20.3.5-22 devkit),
   the application (`app/!ioquake3`), and the benchmark and profiling tools.
 
+RISC OS port, copyright David Sharp 2026: the files under `riscos/` (except
+`riscos/sdl2/overlay`, riscos-mesa's) and the new files `ioq3/code/qcommon/riscos_gpu.h` and
+`ioq3/code/sys/sys_riscos_prof.c`. ioquake3's own files keep their notices, with the RISC OS
+changes under `__riscos__` or `if(RISCOS)`.
+
 ## Building
 
 ```sh

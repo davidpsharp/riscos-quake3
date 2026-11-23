@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# RISC OS port, copyright David Sharp 2026
 """Turns the RISC OS sampling profiler's pcs (one hex address a line) into a
 flat profile, using `nm -n` output of the unstripped ELF.
     riscos/profsym.py build/syms.txt build/prof.txt [top]"""

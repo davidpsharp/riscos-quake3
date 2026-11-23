@@ -1,4 +1,5 @@
 | !Run for ioquake3 on RISC OS
+| RISC OS port, copyright David Sharp 2026
 | The game data goes beside !RunImage: baseq3 (Quake III Arena), demoq3
 | (the free demo) or another game's folder.
 Set ioquake3$Dir <Obey$Dir>

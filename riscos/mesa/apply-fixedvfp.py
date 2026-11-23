@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# RISC OS port, copyright David Sharp 2026
 """riscos-mesa's s_context.h, after apply-fixedsetup.py: ro_float_to_fixed
 as one VFP conversion, vcvtr.s32.f32 (the current rounding mode, to nearest
 even), instead of the truncate-and-fix-up C code. Ties (an exact .5) round

@@ -7,6 +7,8 @@ its name (r3 0: none) and flags (r4 bit 1: it draws in software too, as
 RoMac's does without a host GPU). As riscos-mesa decides, RISC3D$Disable or
 LIBGL_ALWAYS_SOFTWARE set means software. Asked once, before any context:
 the render size is chosen before the window is made.
+
+RISC OS port, copyright David Sharp 2026
 ===========================================================================
 */
 #ifndef RISCOS_GPU_H

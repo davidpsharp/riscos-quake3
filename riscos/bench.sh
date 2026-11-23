@@ -1,4 +1,5 @@
 #!/bin/sh
+# RISC OS port, copyright David Sharp 2026
 # Times the benchmark demo on a RISC OS machine through Rorth's ro-run.
 #   riscos/bench.sh <target> <label> [cvar settings...]
 # e.g. riscos/bench.sh pi4-socrates 320x240 r_customwidth 320 r_customheight 240

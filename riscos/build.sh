@@ -1,4 +1,5 @@
 #!/bin/sh
+# RISC OS port, copyright David Sharp 2026
 # Builds ioquake3 for RISC OS in the q3-riscos Docker image:
 #   riscos/sdk.sh riscos/build.sh [build type] [extra cmake args]
 set -e

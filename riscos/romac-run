@@ -1,4 +1,5 @@
 #!/bin/sh
+# RISC OS port, copyright David Sharp 2026
 # This port's own RoMac (RoMac's risc3d build: RISC3D on the Mac's GPU), for
 # testing through Rorth (target romac-q3, port 7220).
 #
