@@ -14,18 +14,22 @@ screen by the Pi's display hardware.
 
 - `ioq3/`: ioquake3 at upstream commit 87a99d1, with the RISC OS changes
   (all under `__riscos__` or `if(RISCOS)`).
-- `riscos/`: the cross-build (Docker image `q3-riscos`, from riscos-crossdev),
+- `riscos/`: the cross-build (Docker image `q3-riscos-r3d`: riscos-crossdev 1.11 with
+  riscos-mesa's 20.3.5-22 devkit),
   the application (`app/!ioquake3`), and the benchmark and profiling tools.
 
 ## Building
 
 ```sh
-docker build --platform linux/amd64 -t q3-riscos riscos/docker
-riscos/sdk.sh riscos/sdl2/build.sh # SDL with the icon bar menu (build/riscos-sdl2)
-riscos/mesa/build.sh               # riscos-mesa from source with this port's patches (build/mesa-src-a53/stage)
-riscos/sdk.sh riscos/build.sh      # build/riscos/RelWithDebInfo/ioquake3 (ELF, with symbols)
-riscos/sdk.sh riscos/package.sh    # build/riscos/app/!ioquake3 and build/riscos/ioquake3-riscos-VERSION.zip
+docker build --platform linux/amd64 -t q3-riscos-r3d riscos/docker
+riscos/sdk.sh riscos/sdl2/build.sh # SDL with this port's patches (build/riscos-sdl2-r3d/stage)
+riscos/sdk.sh riscos/build.sh      # build/riscos-r3d/RelWithDebInfo/ioquake3 (ELF, with symbols)
+riscos/sdk.sh riscos/package.sh    # build/riscos-r3d/app/!ioquake3 and build/riscos-r3d/ioquake3-riscos-VERSION.zip
 ```
+
+The game links the devkit's libOSMesa (software) and libMesaGPU (the Pi 4's GPU).
+`riscos/mesa/build.sh` builds a faster software libOSMesa with this port's patches,
+but only for the older 20.3.5-16 devkit (v0.1.2); it isn't brought forward to -22 yet.
 
 The game code runs as QVM bytecode (through ioquake3's ARM JIT). The demo's own
 QVMs (1999) are too old for ioquake3, so the package carries ioquake3's, in
@@ -35,7 +39,7 @@ build of ioquake3 (`-DBUILD_GAME_QVMS=ON`, which builds q3lcc and q3asm) and zip
 
 ## On a GPU (RISC3D)
 
-This branch links riscos-mesa's libMesaGPU, so the game draws on a GPU when
+The game links riscos-mesa's libMesaGPU, so the game draws on a GPU when
 RISC3D (Andrew Youll's GPU layer) has a driver: on a Pi 4
 (V3DRender) or in RoMac. It then uses ioquake3's own quality defaults (lightmaps,
 full resolution). Without a driver it draws in software as before. Results and
