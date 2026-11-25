@@ -26,7 +26,7 @@ screen by the Pi's display hardware.
 - `ioq3/`: ioquake3 at upstream commit 87a99d1, with the RISC OS changes
   (all under `__riscos__` or `if(RISCOS)`).
 - `riscos/`: the cross-build (Docker image `q3-riscos-r3d`: riscos-crossdev 1.11 with
-  riscos-mesa's 20.3.5-22 devkit),
+  riscos-mesa's 20.3.5-23 devkit),
   the application (`app/!ioquake3`), and the benchmark and profiling tools.
 
 RISC OS port, copyright David Sharp 2026: the files under `riscos/` (except
@@ -46,7 +46,7 @@ riscos/sdk.sh riscos/package.sh    # build/riscos-r3d/app/!ioquake3 and build/ri
 
 The game links the devkit's libOSMesa (software) and libMesaGPU (the Pi 4's GPU).
 `riscos/mesa/build.sh` builds a faster software libOSMesa with this port's patches,
-but only for the older 20.3.5-16 devkit (v0.1.2); it isn't brought forward to -22 yet.
+but only for the older 20.3.5-16 devkit (v0.1.2); it isn't brought forward to -23 yet.
 
 The game code runs as QVM bytecode (through ioquake3's ARM JIT). The demo's own
 QVMs (1999) are too old for ioquake3, so the package carries ioquake3's, in
@@ -61,6 +61,9 @@ RISC3D (Andrew Youll's GPU layer) has a driver: on a Pi 4
 (V3DRender) or in RoMac. It then uses ioquake3's own quality defaults (lightmaps,
 full resolution). Without a driver it draws in software as before. Results and
 the issues seen are in `docs/risc3d-issues.md`.
+Tested with RISC3D 0.22 (with !MesaLibs 20.3.5-23 also installed) on a Pi 4, 25 Nov 2026.
+The game is linked statically, so it needs only `!RISC3D` in `!Boot.Resources`; from 0.22
+that no longer depends on !MesaLibs booting first (RISC3D's release notes).
 
 ## Getting the game data
 

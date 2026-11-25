@@ -2,10 +2,31 @@
 
 Summary for RISC3D's author, all three ports: [RISC3D-for-Andy.md](https://github.com/davidpsharp/riscos-dhewm3/blob/main/docs/RISC3D-for-Andy.md). This file is the Quake 3 evidence.
 
+## Status, 25 Nov 2026 (RISC3D 0.22, riscos-mesa 20.3.5-23)
+
+Rechecked on pi4-plato with the newest published releases: RISC3D 0.22 (RISC3D module 0.11,
+V3DRender 0.37, !RISC3DSetup 1.09), !MesaLibs 20.3.5-23, and the game rebuilt with the
+20.3.5-23 devkit. For items 1 and 2, the game was built without its workaround and run.
+
+| | Status |
+|---|---|
+| Question: is `RISC3D_Info` a supported way to ask before a context? | **Answered: yes.** RISC3D's README now documents it for this. |
+| DAClamp by hand / !MesaLibs booting first (the 128 MB cap) | **Fixed in RISC3D 0.22**, by its release notes: V3DRender lifts the cap and !RISC3D runs DAClamp. Not proven separately here, because plato's !MesaLibs also runs DAClamp, and it boots first. |
+| 1. Deleting the window before its GL context aborts | **Still there with -23.** Without the workaround, the first `vid_restart` aborts ("wait failed: -9"). |
+| 2. Restarting SDL video loses the GPU | **Still there with -23.** Without the workaround, the second context is "Mesa OffScreen". Andy's 0.22 notes credit riscos-mesa with a fix for SDL video restarts, so it's probably in 20.3.5-24 (in testing). |
+| 3. Relative mouse mode | **Still open.** riscos-mesa's published SDL overlay hasn't changed since 2df5c85. |
+| 4. Banded Rorth screenshots | **Answered.** V3DRender 0.37's PRESENT has the GPU copy finished frames to the window, and riscos-mesa 20.3.5-24 will use it. Until then, see riscos-kb's lessons/2026-11-23-tear-free-screenshots-of-a-gpu-game.md. |
+| 64K colour window garbled | **Not yet testable.** The fix is in riscos-mesa, credited in the 0.22 notes, but not in a published release. |
+
+With 0.22 and the -23 build, speed matches 0.17 (see the plato rows below). V3DRender's
+counters after the runs show 0 resets, 0 timeouts and 0 binner overflows, and no files
+left open after the game quit. The 4,096-buffer limit is gone in 0.22, but it never touched Quake 3.
+
 ## Results
 
 All runs are `riscos/bench.sh`: 833 frames of a four-bot match on q3dm1. The build is static,
-made with crossdev 1.11 and riscos-mesa devkit 20.3.5-22 (`-Wl,-u,riscos_mesa_gpu -lMesaGPU`).
+made with crossdev 1.11 and riscos-mesa devkit 20.3.5-22, or 20.3.5-23 where marked
+(`-Wl,-u,riscos_mesa_gpu -lMesaGPU`).
 
 | Machine | Drawing | Size | fps |
 |---|---|---|---|
@@ -13,6 +34,9 @@ made with crossdev 1.11 and riscos-mesa devkit 20.3.5-22 (`-Wl,-u,riscos_mesa_gp
 | **Pi 4 (pi4-socrates, RISC OS 5.30), stock RISC3D 0.17 (V3DRender 0.26) after DAClamp** | GPU, ioquake3's own defaults | 480x300 window | **138** |
 | Pi 4, same | GPU | 1024x768 window | 77 |
 | Pi 4, same | GPU | 1280x800 full screen | 69 |
+| **Pi 4 (pi4-plato, RISC OS 5.30), RISC3D 0.22 (V3DRender 0.37), -23 build** | GPU, ioquake3's own defaults | 480x300 window | **138** |
+| Pi 4, same | GPU | 1024x768 window | 72 |
+| Pi 4, same | GPU | 1680x1050 full screen | 45 |
 | RoMac 0.1.230 (Apple M3 Pro, Linux3D) | GPU, software defaults | 480x300 window | 48.5 |
 | RoMac, same | GPU, ioquake3's own defaults | 480x300 window | 70.7 |
 | RoMac, same | GPU, ioquake3's own defaults | 960x720 window | 61.8 |
@@ -35,8 +59,8 @@ made with crossdev 1.11 and riscos-mesa devkit 20.3.5-22 (`-Wl,-u,riscos_mesa_gp
   It also checks `RISC3D$Disable` and `LIBGL_ALWAYS_SOFTWARE` itself, because of riscos-dhewm3's
   item 1. The code is in `ioq3/code/qcommon/riscos_gpu.h`.
 
-  **Question for Andy:** is that SWI and its flags a supported way to ask, before any context,
-  whether the GPU will draw?
+  ~~**Question for Andy:** is that SWI and its flags a supported way to ask, before any context,
+  whether the GPU will draw?~~ Answered yes: RISC3D's README documents it (25 Nov).
 
 ## 1. Deleting the window before its GL context aborts the program (riscos-mesa on a GPU)
 
@@ -92,7 +116,7 @@ Each patch is against SDL 2.32.10 as riscos-mesa 2df5c85 carries it.
   centre is rounded to a pixel.
 - **Suggestion:** take 06 to 08 into riscos-mesa's SDL overlay.
 
-## 4. Rorth screenshots of a GPU window show bands from different frames
+## 4. Rorth screenshots of a GPU window show bands from different frames (answered: PRESENT, see the status table)
 
 - **Seen:** on the Pi 4 GPU, a Rorth screenshot during play shows horizontal bands, each from a
   different frame.
