@@ -11,6 +11,10 @@ New in 0.2.0: drawing on the GPU through RISC3D 0.22 or later (for a
 Pi 4: github.com/adyoull/riscos-risc3d), and how to use the full game
 from Steam (below).
 
+Home page: https://davidsharp.com/riscos/quake3/
+Contact (questions, bug reports): https://davidsharp.com/contact/
+or raise an issue at github.com/davidpsharp/riscos-quake3/issues
+
 Game data
 ---------
 ioquake3 is the engine only. Put game data beside !RunImage, in this
@@ -115,7 +119,11 @@ Settings that matter for speed (in the console, or q3config.cfg):
 Each of these but the last three needs vid_restart (or a restart) to take
 effect.
 
-Windowed: r_fullscreen 0, r_mode -1, r_customwidth/r_customheight.
+Alt and Enter (Return) switches between full screen and a window on the
+desktop, and back; Setup > System > Fullscreen does the same. The window's
+size is Setup > System > Video Mode (or r_mode -1 with
+r_customwidth/r_customheight). In a window, use a 16 million colour
+desktop mode.
 
 Files
 -----
@@ -125,7 +133,7 @@ The console log, settings and screenshots go in the game's folder
 Source and licence
 ------------------
 ioquake3 is GPL 2 (or later): the source, with the RISC OS changes, is
-at the project's home. It uses riscos-mesa (Mesa, SDL2, OpenAL Soft:
+at github.com/davidpsharp/riscos-quake3. It uses riscos-mesa (Mesa, SDL2, OpenAL Soft:
 MIT/zlib/LGPL) and UnixLib. Quake III Arena's data is id Software's and
 isn't included.
 

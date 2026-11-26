@@ -8,10 +8,16 @@ A port of [ioquake3](https://github.com/ioquake/ioq3) (Quake III Arena's engine)
 to RISC OS 5 on ARMv7 (Raspberry Pi 2 and later; tuned for the Pi 4), drawing with
 [riscos-mesa](https://github.com/adyoull/riscos-mesa)'s software OpenGL through SDL2.
 
-It plays: the Quake III Arena demo runs from its own menus, full screen, with
+It plays: the Quake III Arena demo runs from its own menus, full screen or in a
+window (Alt+Enter switches), with
 mouse and keyboard, bots, and the internet server browser. On a Pi 4 a bot match
 runs at about 30 to 35 frames a second, drawing 480x300 and scaled up to the
 screen by the Pi's display hardware.
+
+Home page: https://davidsharp.com/riscos/quake3/
+
+Contact (questions, bug reports): https://davidsharp.com/contact/, or raise an
+[issue](https://github.com/davidpsharp/riscos-quake3/issues) here.
 
 <p>
 <img src="https://github.com/davidpsharp/riscos-quake3/releases/download/risc3d-preview2/screenshot-pi4-rocket-fight.png" width="49%" alt="A bot firing rockets down a corridor in q3dm7, in a window on the RISC OS desktop">

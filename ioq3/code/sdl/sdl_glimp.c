@@ -967,6 +967,7 @@ static qboolean GLimp_StartDriverAndSetMode(int mode, qboolean fullscreen, qbool
 		SDL_SetHint("SDL_RISCOS_APP_AUTHOR", "id Software; ioquake3 contributors");
 		SDL_SetHint("SDL_RISCOS_APP_PORTED_BY", "David Sharp");
 		SDL_SetHint("SDL_RISCOS_APP_VERSION", RISCOS_PORT_VERSION " (" RISCOS_PORT_DATE ")");
+		SDL_SetHint("SDL_RISCOS_APP_WEBSITE", "https://davidsharp.com/riscos/quake3/");
 #endif
 
 		if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -1333,7 +1334,11 @@ void GLimp_EndFrame( void )
 
 		if( needToToggle )
 		{
+#ifndef __riscos__
+			// On RISC OS the quick toggle keeps drawing at the old size (full screen's, in a
+			// window), so always restart: that gives the window its own size (r_mode).
 			sdlToggled = SDL_SetWindowFullscreen( SDL_window, r_fullscreen->integer ) >= 0;
+#endif
 
 			// SDL_WM_ToggleFullScreen didn't work, so do it the slow way
 			if( !sdlToggled )

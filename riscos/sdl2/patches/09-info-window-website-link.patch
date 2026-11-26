@@ -1,0 +1,188 @@
+RISC OS port, copyright David Sharp 2026, GPL 2
+
+--- a/src/video/riscos/SDL_riscosevents.c
++++ b/src/video/riscos/SDL_riscosevents.c
+@@ -790,6 +790,7 @@
+ static int riscos_menu_items[3];        /* item number -> RISCOS_MENU_* */
+ static int riscos_info_window = -1;
+ static int riscos_info_task;            /* the task it belongs to */
++static int riscos_info_link = -1;       /* its Website field's icon, or -1 */
+ 
+ typedef struct RISCOS_InfoIcon
+ {
+@@ -815,17 +816,94 @@
+     if (_kernel_swi(OS_File, &regs, &regs) != NULL || regs.r[0] == 0)
+         return NULL;
+     return path;
++}
++
++/* 2026: an Info field's value: the hint, but the website without its
++   "https://", so that it fits. */
++static const char *
++RISCOS_InfoValue(const char *hint)
++{
++    const char *v = SDL_GetHint(hint);
++    if (v && SDL_strcmp(hint, "SDL_RISCOS_APP_WEBSITE") == 0) {
++        if (SDL_strncmp(v, "https://", 8) == 0)
++            v += 8;
++        else if (SDL_strncmp(v, "http://", 7) == 0)
++            v += 7;
++    }
++    return v;
++}
++
++/* 2026: opens SDL_RISCOS_APP_WEBSITE in a web browser: through the URI
++   module if it's loaded (it isn't on every RISC OS 5); else by broadcasting
++   Message_URL to a running browser; if that comes back unclaimed (event 19),
++   RISCOS_WebsiteNotTaken starts one through the URLOpen_ alias a browser
++   sets when the Filer sees it. */
++#define RISCOS_MESSAGE_URL 0x4AF80
++
++static void
++RISCOS_OpenWebsite(int task)
++{
++    const char *url = SDL_GetHint("SDL_RISCOS_APP_WEBSITE");
++    _kernel_swi_regs regs;
++    RISCOS_Message message;
++
++    if (!url || !*url || SDL_strlen(url) >= sizeof(message.data))
++        return;
++    regs.r[0] = 0;
++    regs.r[1] = (int)url;
++    regs.r[2] = task;
++    if (_kernel_swi(0x4E381 /* URI_Dispatch */, &regs, &regs) == NULL)
++        return;
++    SDL_zero(message);
++    SDL_strlcpy((char *)message.data, url, sizeof(message.data));
++    message.size = (20 + (int)SDL_strlen(url) + 1 + 3) & ~3;
++    message.action = RISCOS_MESSAGE_URL;
++    regs.r[0] = 18;                     /* User_Message_Recorded */
++    regs.r[1] = (int)&message;
++    regs.r[2] = 0;                      /* to every task */
++    _kernel_swi(Wimp_SendMessage, &regs, &regs);
+ }
+ 
++static void
++RISCOS_WebsiteNotTaken(void)
++{
++    const char *url = SDL_GetHint("SDL_RISCOS_APP_WEBSITE");
++    char alias[40], command[300];
++    struct { int number; char text[252]; } error;
++    _kernel_swi_regs regs;
++    size_t scheme;
++
++    if (!url)
++        return;
++    scheme = SDL_strchr(url, ':') ? (size_t)(SDL_strchr(url, ':') - url) : 0;
++    if (scheme > 0 && scheme < 16) {
++        SDL_snprintf(alias, sizeof(alias), "Alias$URLOpen_%.*s", (int)scheme, url);
++        if (_kernel_getenv(alias, command, sizeof(command)) == NULL) {
++            SDL_snprintf(command, sizeof(command), "URLOpen_%.*s %s", (int)scheme, url, url);
++            regs.r[0] = (int)command;
++            if (_kernel_swi(Wimp_StartTask, &regs, &regs) == NULL)
++                return;
++        }
++    }
++    error.number = 0;
++    SDL_snprintf(error.text, sizeof(error.text),
++                 "No web browser is running or known to the Filer. The website is %s", url);
++    regs.r[0] = (int)&error;
++    regs.r[1] = 1;                      /* OK */
++    regs.r[2] = (int)RISCOS_AppName();
++    _kernel_swi(Wimp_ReportError, &regs, &regs);
++}
++
+ /* "About this program", laid out as Edit's progInfo template: labels on
+    the left, the values in sunken fields beside them. */
+ static int
+ RISCOS_InfoWindow(int task)
+ {
+-    static const char *labels[5] = { "Name", "Purpose", "Author", "Ported by", "Version" };
+-    static const char *hints[5] = { NULL, "SDL_RISCOS_APP_PURPOSE", "SDL_RISCOS_APP_AUTHOR",
+-                                    "SDL_RISCOS_APP_PORTED_BY", "SDL_RISCOS_APP_VERSION" };
+-    static char values[5][64];
++    static const char *labels[6] = { "Name", "Purpose", "Author", "Ported by", "Version", "Website" };
++    static const char *hints[6] = { NULL, "SDL_RISCOS_APP_PURPOSE", "SDL_RISCOS_APP_AUTHOR",
++                                    "SDL_RISCOS_APP_PORTED_BY", "SDL_RISCOS_APP_VERSION",
++                                    "SDL_RISCOS_APP_WEBSITE" };
++    static char values[6][64];
+     static const char title[] = "About this program";
+     static const char field_valid[] = "R2";
+     static struct {
+@@ -843,7 +921,7 @@
+         const char *title_validation;
+         int title_length;
+         int icon_count;
+-        RISCOS_InfoIcon icons[10];
++        RISCOS_InfoIcon icons[12];
+     } block;
+     static const unsigned char colours[8] = { 7, 2, 7, 1, 12, 14, 12, 0 };
+     _kernel_swi_regs regs;
+@@ -855,13 +933,14 @@
+     SDL_memset(&block, 0, sizeof(block));
+     /* the fields are as wide as the longest value (16 OS units a character
+        in the desktop font, and a margin) */
+-    for (i = 0; i < 5; i++) {
+-        const char *v = i == 0 ? RISCOS_AppName() : SDL_GetHint(hints[i]);
++    for (i = 0; i < 6; i++) {
++        const char *v = i == 0 ? RISCOS_AppName() : RISCOS_InfoValue(hints[i]);
+         if (v)
+             w = SDL_max(w, 16 * (int)SDL_strlen(v) + 48);
+     }
+-    for (i = 0; i < 5; i++) {
+-        const char *v = i == 0 ? RISCOS_AppName() : SDL_GetHint(hints[i]);
++    riscos_info_link = -1;
++    for (i = 0; i < 6; i++) {
++        const char *v = i == 0 ? RISCOS_AppName() : RISCOS_InfoValue(hints[i]);
+         int top = -4 - 60 * rows;
+         if (!v || !*v)
+             continue;
+@@ -869,6 +948,12 @@
+         block.icons[2 * rows].x0 = 184; block.icons[2 * rows].y0 = top - 52;
+         block.icons[2 * rows].x1 = 184 + w; block.icons[2 * rows].y1 = top;
+         block.icons[2 * rows].flags = 0x1700613D;  /* text, border, filled, indirected, centred */
++        if (i == 5) {
++            /* 2026: the Website field is a link: dark blue, and a click
++               (button type 3) reports it */
++            block.icons[2 * rows].flags = 0x1800313D;
++            riscos_info_link = 2 * rows;
++        }
+         block.icons[2 * rows].buffer = values[i];
+         block.icons[2 * rows].validation = field_valid;
+         block.icons[2 * rows].length = (int)SDL_strlen(values[i]) + 1;
+@@ -1031,6 +1116,12 @@
+                brings it back to the front, as in RDPClient */
+             if (driverdata->full_window)
+                 RISCOS_WimpToFront(driverdata);
++        } else if (event->click.window == riscos_info_window && riscos_info_link != -1 &&
++                   event->click.icon == riscos_info_link && (event->click.buttons & 5)) {
++            /* 2026: the Info window's Website link; then close the menu */
++            RISCOS_OpenWebsite(driverdata->wimp_task);
++            regs.r[1] = -1;
++            _kernel_swi(Wimp_CreateMenu, &regs, &regs);
+         } else if (event->click.window == -2 && event->click.icon == driverdata->iconbar_icon) {
+             if (event->click.buttons & 2) {
+                 RISCOS_IconbarMenu(_this, event->click.x);
+@@ -1072,6 +1163,10 @@
+     case 17: /* User_Message */
+     case 18: /* User_Message_Recorded */
+         RISCOS_WimpMessage(_this, &event->message);
++        break;
++    case 19: /* User_Message_Acknowledge: a message of ours came back unclaimed */
++        if (event->message.action == RISCOS_MESSAGE_URL)
++            RISCOS_WebsiteNotTaken();
+         break;
+     default:
+         break;
+--- a/src/video/riscos/SDL_riscoswindow.c
++++ b/src/video/riscos/SDL_riscoswindow.c
+@@ -46,7 +46,8 @@
+ 
+ /* Messages we want besides Message_Quit, which every task gets:
+    Message_PreQuit and Message_ModeChange (see SDL_riscosevents.c). */
+-static const int riscos_wimp_messages[] = { 8 /* Message_PreQuit */, 0x400C1 /* Message_ModeChange */, 0 };
++static const int riscos_wimp_messages[] = { 8 /* Message_PreQuit */, 0x400C1 /* Message_ModeChange */,
++                                             0x4AF80 /* Message_URL, for the Info window's link */, 0 };
+ 
+ /* 2026: the program's own name (task name, icon bar menu title) and icon
+    bar sprite, found from its application directory: a program run as

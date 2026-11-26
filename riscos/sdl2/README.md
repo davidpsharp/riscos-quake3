@@ -30,6 +30,12 @@ first time).
     program started by its `!Run`, it is taken as the application. SDL took
     its parent instead, so the task was called `!RunImage`, the icon bar icon
     was the generic one and Help found no `!Help`.
+  - `09-info-window-website-link.patch` (this port's, on top of 02): a last
+    Info row, Website, from the hint `SDL_RISCOS_APP_WEBSITE` (the full
+    https URL; shown without the scheme), in dark blue. A Select or Adjust
+    click opens it (URI_Dispatch, else Message_URL, else
+    `URLOpen_https`, else an error box with the address) and closes the
+    menu.
 
 To change a patch: build once, edit the file in
 `build/riscos-sdl2/SDL-release-2.26.0`, and make the patch again with `diff -u`
