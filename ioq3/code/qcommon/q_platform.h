@@ -282,8 +282,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 // The RISC OS port's own version and date: the icon bar Info window shows
 // them (sdl/sdl_glimp.c), and riscos/package.sh checks !Help says the same
-#define RISCOS_PORT_VERSION "0.1.2"
-#define RISCOS_PORT_DATE "1 Nov 2026"
+#define RISCOS_PORT_VERSION "0.2.0"
+#define RISCOS_PORT_DATE "26 Nov 2026"
 
 #endif
 

@@ -1,7 +1,8 @@
 # ioquake3 for RISC OS
 
-Version 0.1.2 (1 Nov 2026). New since 0.1.1: settings saved by 0.1.0 are moved on
-to the quicker texture and curve defaults once, and LAN play has been tested.
+Version 0.2.0 (26 Nov 2026). New since 0.1.2: it draws on the GPU through RISC3D
+(0.22 or later; a Pi 4's V3D, or RoMac on a Mac) when there's a driver, and in software
+when there isn't; and the full game from Steam has been tested.
 
 A port of [ioquake3](https://github.com/ioquake/ioq3) (Quake III Arena's engine)
 to RISC OS 5 on ARMv7 (Raspberry Pi 2 and later; tuned for the Pi 4), drawing with
