@@ -11,7 +11,7 @@ V3DRender 0.37, !RISC3DSetup 1.09), !MesaLibs 20.3.5-23, and the game rebuilt wi
 | | Status |
 |---|---|
 | Question: is `RISC3D_Info` a supported way to ask before a context? | **Answered: yes.** RISC3D's README now documents it for this. |
-| DAClamp by hand / !MesaLibs booting first (the 128 MB cap) | **Fixed in RISC3D 0.22**, by its release notes: V3DRender lifts the cap and !RISC3D runs DAClamp. Not proven separately here, because plato's !MesaLibs also runs DAClamp, and it boots first. |
+| DAClamp by hand / !MesaLibs booting first (the 128 MB cap) | **Fixed in RISC3D 0.22**: V3DRender lifts the cap and !RISC3D runs DAClamp. Proven by riscos-n64 on pi4-socrates, 26 Nov 2026: with only !RISC3D 0.22 in !Boot.Resources (no !MesaLibs, MesaLibs$Dir unset), V3DRender 0.37 loaded at boot, *V3DRender showed 256 MB of buffer memory, and Mario ran on the GPU with no errors. |
 | 1. Deleting the window before its GL context aborts | **Still there with -23.** Without the workaround, the first `vid_restart` aborts ("wait failed: -9"). |
 | 2. Restarting SDL video loses the GPU | **Still there with -23.** Without the workaround, the second context is "Mesa OffScreen". Andy's 0.22 notes credit riscos-mesa with a fix for SDL video restarts, so it's probably in 20.3.5-24 (in testing). |
 | 3. Relative mouse mode | **Still open.** riscos-mesa's published SDL overlay hasn't changed since 2df5c85. |
