@@ -73,10 +73,17 @@ ioquake3 is only the engine. The data:
   demo installer, `linuxq3ademo-1.11-6.x86.gz.sh` (a shell script with a tar
   archive inside: `demoq3/pak0.pk3`), on id's FTP mirrors, e.g.
   <https://ftp.gwdg.de/pub/misc/ftp.idsoftware.com/idstuff/quake3/linux/linuxq3ademo-1.11-6.x86.gz.sh>.
-- **The full game**: Quake III Arena (with Team Arena) from Steam or GOG
-  (<https://ioquake3.org/buy/> keeps the links), for `baseq3/pak0.pk3`, plus
-  id's point release data, `pak1.pk3` to `pak8.pk3`, free from
-  <https://ioquake3.org/extras/patch-data/> (`quake3-latest-pk3s.zip`).
+- **The full game**: Quake III Arena from Steam or GOG
+  (<https://ioquake3.org/buy/> keeps the links). Copy `pak0.pk3` to `pak8.pk3`,
+  and `q3key`, from the installed game's `baseq3` folder (Steam:
+  `steamapps/common/Quake 3 Arena/baseq3`) into a `baseq3` folder in
+  `!ioquake3`. Steam's copy includes id's point release data (`pak1` to `pak8`,
+  1.32); a CD copy has only `pak0`, and the rest is free from
+  <https://ioquake3.org/extras/patch-data/> (`quake3-latest-pk3s.zip`). Without
+  `q3key` the game asks for a CD key at each start, and Escape skips it. Leave
+  out the PC's `q3config.cfg`. Tested with Steam's files in RoMac, 26 Nov 2026:
+  the intro movie, full menus and a map the demo hasn't (q3dm6) with bots.
+  Team Arena (`missionpack`) hasn't been tried.
 - **OpenArena** (free, GPL and CC licensed): 0.8.8's `baseoa` pk3 files, from
   <https://openarena.ws> or its mirror,
   <https://download.tuxfamily.org/openarena/rel/088/openarena-0.8.8.zip>.

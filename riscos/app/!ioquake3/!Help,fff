@@ -22,16 +22,43 @@ application:
    drop it on the icon bar icon; or put pak0/pk3 from it in demoq3 by
    hand. demoq3.zz-ioq3-vm/pk3, already there, holds ioquake3's game
    code, which the demo's own is too old for.
- - The full game: make a baseq3 folder and put pak0/pk3 to pak8/pk3 in
-   it. pak0 is on the CD, or buy the game from Steam or GOG (see
-   ioquake3.org/buy); pak1 to pak8 are id's free point release data,
-   from ioquake3.org/extras/patch-data.
+ - The full game: make a baseq3 folder here and put pak0/pk3 to
+   pak8/pk3 in it. See "The full game" below.
  - OpenArena (free, openarena.ws): put the pk3 files from OpenArena
    0.8.8's baseoa folder in a baseoa folder here. It's slower than
    Quake III (its maps draw more): about 10 to 20 frames a second;
    r_renderHeight 240 helps.
 
 !Run uses baseq3 if it's there, else baseoa, else demoq3.
+
+The full game
+-------------
+Buy Quake III Arena from Steam or GOG (see ioquake3.org/buy), install
+it on a PC or Mac, and find its baseq3 folder. With Steam on Windows
+that's in
+  C:\Program Files (x86)\Steam\steamapps\common\Quake 3 Arena\baseq3
+(in Steam: right-click the game, Manage, Browse local files).
+
+ 1. Open !ioquake3 (Shift and double-click it) and make a folder
+    called baseq3 in it.
+ 2. Copy pak0.pk3 to pak8.pk3 from the PC's baseq3 into it, by network
+    share, USB stick or SD card. On RISC OS they show as pak0/pk3 to
+    pak8/pk3: that's right. They need about 500 MB of disc space.
+ 3. Also copy q3key, the game's CD key, from the same folder. Without
+    it the game asks for a CD key each time it starts; pressing Escape
+    skips that, and the game plays the same.
+ 4. Don't copy q3config.cfg (the PC's settings: the wrong ones here)
+    or any other files.
+ 5. Double-click !ioquake3. It now starts Quake III Arena itself, with
+    all its maps.
+
+Steam's copy comes with pak1 to pak8 (id's point release data, version
+1.32). If yours has only pak0 (from a CD, say), get pak1 to pak8 free
+from ioquake3.org/extras/patch-data.
+
+You can leave the demo's demoq3 folder where it is: with baseq3 here,
+!Run starts the full game instead. Quake III: Team Arena (missionpack)
+hasn't been tried.
 
 You need SharedUnixLibrary and ARMEABISupport (from PackMan). For sound,
 SharedSoundBuffer and StreamManager, or DigitalRenderer, in !System.
