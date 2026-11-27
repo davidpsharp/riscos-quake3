@@ -24,6 +24,9 @@ Contact (questions, bug reports): https://davidsharp.com/contact/, or raise an
 <img src="https://github.com/davidpsharp/riscos-quake3/releases/download/risc3d-preview2/screenshot-pi4-rocket-explosion.png" width="49%" alt="A rocket explosion on the stairs in q3dm7">
 <img src="https://github.com/davidpsharp/riscos-quake3/releases/download/risc3d-preview2/screenshot-pi4-lava-pit.png" width="49%" alt="The lava pit in q3dm7">
 <img src="https://github.com/davidpsharp/riscos-quake3/releases/download/risc3d-preview2/screenshot-romac-window.png" width="49%" alt="ioquake3 in a window on the RISC OS desktop: the Quake III Arena demo's q3dm1">
+<img src="https://github.com/davidpsharp/riscos-quake3/releases/download/v0.2.0/screenshot-romac-full-game-visor.png" width="49%" alt="The full game from Steam in a window on the RISC OS desktop (RoMac): machine-gunning the bot Visor">
+<img src="https://github.com/davidpsharp/riscos-quake3/releases/download/v0.2.0/screenshot-romac-full-game-stairs.png" width="49%" alt="The full game on RoMac: a bot coming down the stairs under rocket fire">
+<img src="https://github.com/davidpsharp/riscos-quake3/releases/download/v0.2.0/screenshot-romac-full-game-frag.png" width="49%" alt="The full game on RoMac: You fragged Stripe, tied for 1st place">
 </p>
 
 *In a window on the RISC OS desktop. The first three are a bot match on q3dm7 on a Raspberry Pi 4
