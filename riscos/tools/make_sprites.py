@@ -5,9 +5,10 @@
     make_sprites.py <in.png> <out,ff9> name:WxH[:dpi] [name:WxH[:dpi] ...]
 
 Each sprite is the picture scaled to W x H pixels, in 32 bpp (sprite type 6)
-with a 1 bpp mask: pixels with alpha under 128 are transparent. The dpi
-(90 by default, 180 for the large icons of high resolution modes) is the same
-across and down. RISC OS 5 plots these in any screen mode.
+with an 8 bpp alpha mask (mode word bit 31), so RISC OS 5 blends its edges with
+whatever is behind it. The dpi (90 by default, 180 for the large icons of high
+resolution modes) is the same across and down. RISC OS 5 plots these in any
+screen mode.
 """
 import struct
 import sys
@@ -23,15 +24,10 @@ def sprite(picture, name, width, height, dpi):
         for x in range(width):
             r, g, b, _ = px[x, y]
             image += bytes((r, g, b, 0))  # each word is &00BBGGRR
-    mask_words = (width + 31) // 32
-    mask = bytearray()
+    mask = bytearray()  # a byte of alpha per pixel, each row a whole number of words
     for y in range(height):
-        row = [0] * mask_words
-        for x in range(width):
-            if px[x, y][3] >= 128:
-                row[x // 32] |= 1 << (x % 32)  # the leftmost pixel is bit 0
-        mask += struct.pack('<%dI' % mask_words, *row)
-    mode = (6 << 27) | (dpi << 14) | (dpi << 1) | 1
+        mask += bytes(px[x, y][3] for x in range(width)).ljust((width + 3) // 4 * 4, b'\0')
+    mode = (1 << 31) | (6 << 27) | (dpi << 14) | (dpi << 1) | 1
     header_size = 44
     total = header_size + len(image) + len(mask)
     header = struct.pack('<I12s7I', total, name.lower().encode('latin-1')[:12].ljust(12, b'\0'),
