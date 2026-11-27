@@ -1,11 +1,15 @@
 ioquake3 for RISC OS
 ====================
-Version 0.2.0 (26 Nov 2026)
+Version 0.2.1 (27 Nov 2026)
 
 Quake III Arena's engine (ioquake3), for RISC OS 5 on a Raspberry Pi 2 or
 later (best on a Pi 4). With RISC3D (a Pi 4's GPU, or RoMac on a Mac) the
 GPU draws it at full size; without, the processor draws it with
 riscos-mesa's OpenGL at a low resolution scaled up to fill the screen.
+
+New in 0.2.1: Alt and Enter switches between full screen and a window
+(going to a window now draws at the window's size), and the Info window
+has a Website link to the home page.
 
 New in 0.2.0: drawing on the GPU through RISC3D 0.22 or later (for a
 Pi 4: github.com/adyoull/riscos-risc3d), and how to use the full game
